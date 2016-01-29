@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This web.xml file is not required when using Servlet 3.0 container,
+     see implementation details http://jersey.java.net/nonav/documentation/latest/jax-rs.html -->
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <servlet>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.applegarage.reportes.elreportador</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Jersey Web Application</servlet-name>
+        <url-pattern>/webapi/*</url-pattern>
+    </servlet-mapping>
+    
+    
+	<!-- Report resources directory for preview. Defaults to ${birt home} -->
+	
+	<context-param>
+	  <param-name>BIRT_VIEWER_WORKING_FOLDER</param-name>
+	  <param-value>report</param-value>
+	</context-param>
+	
+	<!-- Flag whether the report resources can be accessed only under the working folder. Defaults to true -->
+	<context-param>
+	  <param-name>WORKING_FOLDER_ACCESS_ONLY</param-name>
+	  <param-value>true</param-value>
+	</context-param>
+	
+	<!-- Settings for how to deal with the url report path. For example, "http://host/repo/test.rptdesign".
+	  Following values are supported: 
+	  <all> - All paths.
+	  <domain> - Only the paths with host matches current domain. 
+	  The comparison is literal, "127.0.0.1" and "localhost" are 
+	  considered as different hosts. <none> - URL paths are not supported. 
+	  Defaults to "domain". -->
+	<context-param>
+	  <param-name>URL_REPORT_PATH_POLICY</param-name>
+	  <param-value>domain</param-value>
+	</context-param>
+	
+	<!-- Defines the BIRT viewer configuration file -->
+	<context-param>
+	  <param-name>BIRT_VIEWER_CONFIG_FILE</param-name>
+	  <param-value>WEB-INF/viewer.properties</param-value>
+	</context-param>
+	
+	<!-- Flag whether to allow server-side printing. Possible values are "ON" and "OFF". Defaults to "ON". -->
+	<context-param>
+	  <param-name>BIRT_VIEWER_PRINT_SERVERSIDE</param-name>
+	  <param-value>ON</param-value>
+	</context-param>
+	
+	<!-- Flag whether to force browser-optimized HTML output. Defaults to true -->
+	<context-param>
+	  <param-name>HTML_ENABLE_AGENTSTYLE_ENGINE</param-name>
+	  <param-value>true</param-value>
+	</context-param>
+	
+	<!-- Filename generator class/factory to use for the exported reports. -->
+	<context-param>
+	  <param-name>BIRT_FILENAME_GENERATOR_CLASS</param-name>
+	  <param-value>org.eclipse.birt.report.utility.filename.DefaultFilenameGenerator</param-value>
+	</context-param>
+	
+	<!-- Viewer Filter used to set the request character encoding to UTF-8. -->
+	<filter>
+	  <filter-name>ViewerFilter</filter-name>
+	  <filter-class>org.eclipse.birt.report.filter.ViewerFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>ViewerFilter</filter-name>
+	  <servlet-name>ViewerServlet</servlet-name>
+	</filter-mapping>
+	<filter-mapping>
+	  <filter-name>ViewerFilter</filter-name>
+	  <servlet-name>EngineServlet</servlet-name>
+	</filter-mapping>
+	
+	<!-- Viewer Servlet Context Listener -->
+	<listener>
+	  <listener-class>org.eclipse.birt.report.listener.ViewerServletContextListener</listener-class>
+	</listener>
+	
+	<!-- Viewer HttpSession Listener -->
+	<listener>
+	  <listener-class>org.eclipse.birt.report.listener.ViewerHttpSessionListener</listener-class>
+	</listener>
+	<!-- Viewer Servlet, Supports SOAP -->
+	<servlet>
+	  <servlet-name>ViewerServlet</servlet-name>
+	  <servlet-class>org.eclipse.birt.report.servlet.ViewerServlet</servlet-class>
+	</servlet>
+	
+	<!-- Engine Servlet -->
+	<servlet>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <servlet-class>org.eclipse.birt.report.servlet.BirtEngineServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	  <servlet-name>ViewerServlet</servlet-name>
+	  <url-pattern>/frameset</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>ViewerServlet</servlet-name>
+	  <url-pattern>/run</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <url-pattern>/preview</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <url-pattern>/download</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <url-pattern>/parameter</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <url-pattern>/document</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <url-pattern>/output</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	  <servlet-name>EngineServlet</servlet-name>
+	  <url-pattern>/extract</url-pattern>
+	</servlet-mapping>
+	
+	<!-- For Web module version higher than 2.3 -->
+	
+	<jsp-config>
+	  <taglib>
+	    <taglib-uri>/birt.tld</taglib-uri>
+	    <taglib-location>/WEB-INF/tlds/birt.tld</taglib-location>
+	  </taglib>
+	</jsp-config>
+	
+	
+	
+	<!-- For Web module version 2.3 -->
+	<!--
+	<taglib>
+		<taglib-uri>
+			/birt.tld
+	  </taglib-uri>
+	  <taglib-location>
+		/WEB-INF/tlds/
+	  </taglib-location>
+	</taglib>
+	-->
+</web-app>
