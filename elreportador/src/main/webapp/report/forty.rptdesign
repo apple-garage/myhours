@@ -25,9 +25,8 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost:8090/reportes</property>
+            <property name="odaURL">jdbc:mysql://localhost:3306/hour_report_db</property>
             <property name="odaUser">root</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">bWFydGlu</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -35,25 +34,36 @@
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">id</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="displayName">id</text-property>
                     <text-property name="heading">id</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">name</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="displayName">name</text-property>
                     <text-property name="heading">name</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">num_week</property>
-                    <text-property name="displayName">num_week</text-property>
-                    <text-property name="heading">num_week</text-property>
+                    <property name="columnName">start_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">start_date</text-property>
+                    <text-property name="heading">start_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">end_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">end_date</text-property>
+                    <text-property name="heading">end_date</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">SUM(wk.hours_x_week)</property>
+                    <property name="analysis">measure</property>
                     <text-property name="displayName">SUM(wk.hours_x_week)</text-property>
                     <text-property name="heading">SUM(wk.hours_x_week)</text-property>
                 </structure>
             </list-property>
+            <list-property name="parameters"/>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -68,11 +78,16 @@
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">num_week</property>
-                        <property name="dataType">integer</property>
+                        <property name="name">start_date</property>
+                        <property name="dataType">date</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">end_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">SUM(wk.hours_x_week)</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -96,20 +111,27 @@
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">num_week</property>
-                    <property name="nativeName">NUM_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="name">start_date</property>
+                    <property name="nativeName">START_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
+                    <property name="name">end_date</property>
+                    <property name="nativeName">END_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">SUM(wk.hours_x_week)</property>
                     <property name="nativeName">SUM(wk.hours_x_week)</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">3</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT e.id, e.name, w.num_week, SUM(wk.hours_x_week)
+            <xml-property name="queryText"><![CDATA[SELECT e.id, e.name, w.start_date, w.end_date, SUM(wk.hours_x_week)
 FROM work wk, week w,employee e
 WHERE wk.id_employee = e.id
 AND wk.id_week = w.id
@@ -224,7 +246,7 @@ HAVING SUM(wk.hours_x_week) > 40;
         </simple-master-page>
     </page-setup>
     <body>
-        <table id="6">
+        <table id="34">
             <property name="dataSet">get40</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -240,10 +262,16 @@ HAVING SUM(wk.hours_x_week) > 40;
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">num_week</property>
-                    <text-property name="displayName">num_week</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["num_week"]</expression>
-                    <property name="dataType">integer</property>
+                    <property name="name">start_date</property>
+                    <text-property name="displayName">start_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["start_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">end_date</property>
+                    <text-property name="displayName">end_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["end_date"]</expression>
+                    <property name="dataType">date</property>
                 </structure>
                 <structure>
                     <property name="name">SUM(wk.hours_x_week)</property>
@@ -252,70 +280,76 @@ HAVING SUM(wk.hours_x_week) > 40;
                     <property name="dataType">decimal</property>
                 </structure>
             </list-property>
-            <column id="30"/>
-            <column id="31">
-                <property name="textAlign">center</property>
-            </column>
-            <column id="32">
-                <property name="textAlign">center</property>
-            </column>
-            <column id="33">
-                <property name="textAlign">center</property>
-            </column>
+            <column id="63"/>
+            <column id="64"/>
+            <column id="65"/>
+            <column id="66"/>
+            <column id="67"/>
             <header>
-                <row id="7">
-                    <cell id="8">
-                        <label id="9">
+                <row id="35">
+                    <cell id="36">
+                        <label id="37">
                             <text-property name="text">id</text-property>
                         </label>
                     </cell>
-                    <cell id="10">
-                        <label id="11">
+                    <cell id="38">
+                        <label id="39">
                             <text-property name="text">name</text-property>
                         </label>
                     </cell>
-                    <cell id="12">
-                        <label id="13">
-                            <text-property name="text">num_week</text-property>
+                    <cell id="40">
+                        <label id="41">
+                            <text-property name="text">start_date</text-property>
                         </label>
                     </cell>
-                    <cell id="14">
-                        <label id="15">
+                    <cell id="42">
+                        <label id="43">
+                            <text-property name="text">end_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="44">
+                        <label id="45">
                             <text-property name="text">SUM(wk.hours_x_week)</text-property>
                         </label>
                     </cell>
                 </row>
             </header>
             <detail>
-                <row id="16">
-                    <cell id="17">
-                        <data id="18">
+                <row id="46">
+                    <cell id="47">
+                        <data id="48">
                             <property name="resultSetColumn">id</property>
                         </data>
                     </cell>
-                    <cell id="19">
-                        <data id="20">
+                    <cell id="49">
+                        <data id="50">
                             <property name="resultSetColumn">name</property>
                         </data>
                     </cell>
-                    <cell id="21">
-                        <data id="22">
-                            <property name="resultSetColumn">num_week</property>
+                    <cell id="51">
+                        <data id="52">
+                            <property name="resultSetColumn">start_date</property>
                         </data>
                     </cell>
-                    <cell id="23">
-                        <data id="24">
+                    <cell id="53">
+                        <data id="54">
+                            <property name="resultSetColumn">end_date</property>
+                        </data>
+                    </cell>
+                    <cell id="55">
+                        <data id="56">
                             <property name="resultSetColumn">SUM(wk.hours_x_week)</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="25">
-                    <cell id="26"/>
-                    <cell id="27"/>
-                    <cell id="28"/>
-                    <cell id="29"/>
+                <row id="57">
+                    <cell id="58"/>
+                    <cell id="59"/>
+                    <cell id="60"/>
+                    <cell id="61"/>
+                    <cell id="62"/>
                 </row>
             </footer>
         </table>

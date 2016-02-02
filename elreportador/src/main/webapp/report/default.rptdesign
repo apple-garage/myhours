@@ -26,11 +26,13 @@
             <property name="dataSetMode">multiple</property>
             <parameters>
                 <scalar-parameter name="week" id="12">
+                    <text-property name="helpText">End Date termina en un Viernes</text-property>
+                    <text-property name="promptText">End Date:</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">get_weeks</property>
                     <expression name="valueExpr">row["wid"]</expression>
-                    <expression name="labelExpr">row["wnum"]</expression>
+                    <expression name="labelExpr">row["endd"]</expression>
                     <expression name="sortByColumn">dataSetRow["wid"]</expression>
                     <property name="sortDirection">asc</property>
                     <property name="dataType">decimal</property>
@@ -39,10 +41,12 @@
                     </simple-property-list>
                     <property name="paramType">simple</property>
                     <property name="controlType">list-box</property>
+                    <property name="mustMatch">true</property>
                     <property name="fixedOrder">false</property>
                     <structure name="format"/>
                 </scalar-parameter>
                 <scalar-parameter name="employee" id="13">
+                    <text-property name="promptText">Empleado:</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">get_employees</property>
@@ -80,9 +84,8 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost:8090/reportes</property>
+            <property name="odaURL">jdbc:mysql://localhost:3306/hour_report_db</property>
             <property name="odaUser">root</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">bWFydGlu</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -102,10 +105,16 @@
                     <text-property name="heading">name</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">num_week</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">num_week</text-property>
-                    <text-property name="heading">num_week</text-property>
+                    <property name="columnName">start_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">start_date</text-property>
+                    <text-property name="heading">start_date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">end_date</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">end_date</text-property>
+                    <text-property name="heading">end_date</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">id_asigment</property>
@@ -135,16 +144,21 @@
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">num_week</property>
-                        <property name="dataType">integer</property>
+                        <property name="name">start_date</property>
+                        <property name="dataType">date</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">end_date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">id_asigment</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">hours_x_week</property>
                         <property name="dataType">integer</property>
                     </structure>
@@ -183,27 +197,34 @@ else{
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">num_week</property>
-                    <property name="nativeName">NUM_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="name">start_date</property>
+                    <property name="nativeName">START_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
+                    <property name="name">end_date</property>
+                    <property name="nativeName">END_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">id_asigment</property>
                     <property name="nativeName">ID_ASIGMENT</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                     <property name="name">hours_x_week</property>
                     <property name="nativeName">HOURS_X_WEEK</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select e.id, e.name, w.num_week, wk.id_asigment, wk.hours_x_week
+            <xml-property name="queryText"><![CDATA[select e.id, e.name, w.start_date, w.end_date, wk.id_asigment, wk.hours_x_week
 from work wk, week w,employee e
 where wk.id_employee = e.id
 and wk.id_week = w.id
@@ -397,10 +418,10 @@ from work;]]></xml-property>
                     <text-property name="heading">wid</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">wnum</property>
+                    <property name="columnName">endd</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">wnum</text-property>
-                    <text-property name="heading">wnum</text-property>
+                    <text-property name="displayName">endd</text-property>
+                    <text-property name="heading">endd</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -413,7 +434,7 @@ from work;]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">wnum</property>
+                        <property name="name">endd</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -429,16 +450,16 @@ from work;]]></xml-property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">wnum</property>
-                    <property name="nativeName">wnum</property>
+                    <property name="name">endd</property>
+                    <property name="nativeName">endd</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select id as wid, num_week as wnum
+            <xml-property name="queryText"><![CDATA[select id as wid, end_date as endd
 from week
 union
-select 0 as wid, "ALL" as wnum
+select 0 as wid, "ALL" as endd
 from week
 ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -601,7 +622,7 @@ where wk.id_employee = e.id
         </simple-master-page>
     </page-setup>
     <body>
-        <table id="126">
+        <table id="160">
             <property name="dataSet">by_assignment_week_employee</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -617,10 +638,16 @@ where wk.id_employee = e.id
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">num_week</property>
-                    <text-property name="displayName">num_week</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["num_week"]</expression>
-                    <property name="dataType">integer</property>
+                    <property name="name">start_date</property>
+                    <text-property name="displayName">start_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["start_date"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">end_date</property>
+                    <text-property name="displayName">end_date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["end_date"]</expression>
+                    <property name="dataType">date</property>
                 </structure>
                 <structure>
                     <property name="name">id_asigment</property>
@@ -635,76 +662,88 @@ where wk.id_employee = e.id
                     <property name="dataType">integer</property>
                 </structure>
             </list-property>
-            <column id="155"/>
-            <column id="156"/>
-            <column id="157"/>
-            <column id="158"/>
-            <column id="159"/>
+            <column id="194"/>
+            <column id="195"/>
+            <column id="196"/>
+            <column id="197"/>
+            <column id="198"/>
+            <column id="199"/>
             <header>
-                <row id="127">
-                    <cell id="128">
-                        <label id="129">
+                <row id="161">
+                    <cell id="162">
+                        <label id="163">
                             <text-property name="text">id</text-property>
                         </label>
                     </cell>
-                    <cell id="130">
-                        <label id="131">
+                    <cell id="164">
+                        <label id="165">
                             <text-property name="text">name</text-property>
                         </label>
                     </cell>
-                    <cell id="132">
-                        <label id="133">
-                            <text-property name="text">num_week</text-property>
+                    <cell id="166">
+                        <label id="167">
+                            <text-property name="text">start_date</text-property>
                         </label>
                     </cell>
-                    <cell id="134">
-                        <label id="135">
+                    <cell id="168">
+                        <label id="169">
+                            <text-property name="text">end_date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="170">
+                        <label id="171">
                             <text-property name="text">id_asigment</text-property>
                         </label>
                     </cell>
-                    <cell id="136">
-                        <label id="137">
+                    <cell id="172">
+                        <label id="173">
                             <text-property name="text">hours_x_week</text-property>
                         </label>
                     </cell>
                 </row>
             </header>
             <detail>
-                <row id="138">
-                    <cell id="139">
-                        <data id="140">
+                <row id="174">
+                    <cell id="175">
+                        <data id="176">
                             <property name="resultSetColumn">id</property>
                         </data>
                     </cell>
-                    <cell id="141">
-                        <data id="142">
+                    <cell id="177">
+                        <data id="178">
                             <property name="resultSetColumn">name</property>
                         </data>
                     </cell>
-                    <cell id="143">
-                        <data id="144">
-                            <property name="resultSetColumn">num_week</property>
+                    <cell id="179">
+                        <data id="180">
+                            <property name="resultSetColumn">start_date</property>
                         </data>
                     </cell>
-                    <cell id="145">
-                        <data id="146">
+                    <cell id="181">
+                        <data id="182">
+                            <property name="resultSetColumn">end_date</property>
+                        </data>
+                    </cell>
+                    <cell id="183">
+                        <data id="184">
                             <property name="resultSetColumn">id_asigment</property>
                         </data>
                     </cell>
-                    <cell id="147">
-                        <data id="148">
+                    <cell id="185">
+                        <data id="186">
                             <property name="resultSetColumn">hours_x_week</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="149">
-                    <cell id="150"/>
-                    <cell id="151"/>
-                    <cell id="152"/>
-                    <cell id="153"/>
-                    <cell id="154"/>
+                <row id="187">
+                    <cell id="188"/>
+                    <cell id="189"/>
+                    <cell id="190"/>
+                    <cell id="191"/>
+                    <cell id="192"/>
+                    <cell id="193"/>
                 </row>
             </footer>
         </table>
