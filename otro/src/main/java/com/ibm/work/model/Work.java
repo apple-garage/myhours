@@ -12,11 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.ibm.assignment.model.Assignment;
 import com.ibm.employee.model.Employee;
 import com.ibm.week.model.Week;
 
 @Entity
-@Table(name = "work", catalog = "reportes", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
+@Table(name = "work", catalog = "hour_report_db", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
 public class Work implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -28,20 +29,21 @@ public class Work implements java.io.Serializable{
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_WEEK")
 	private Week week;
-//	@ManyToOne(cascade = CascadeType.ALL)
-	@Column(name="ID_ASIGMENT")
-	private int idAsigment;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ASSIGNMENT")
+	private Assignment assignment;
 	@Column(name = "HOURS_X_WEEK")
 	private int hoursByWeek;
+	
 	
 	public Work(){
 	}
 	
-	public Work(Employee idEmployee, Week idWeek, int idAsigment, int hoursByWeek){
+	public Work(Employee idEmployee, Week idWeek, Assignment asigment, int hoursByWeek){
 //		this.id = id;
 		this.employee = idEmployee;
 		this.week = idWeek;
-		this.idAsigment = idAsigment;
+		this.assignment = asigment;
 		this.hoursByWeek = hoursByWeek;
 	}
 	
@@ -69,14 +71,6 @@ public class Work implements java.io.Serializable{
 		this.week = week;
 	}
 	
-	public int getIdAsigment() {
-		return this.idAsigment;
-	}
-	
-	public void setIdAsigment(int idAsigment){
-		this.idAsigment = idAsigment;
-	}
-	
 	public int getHoursByWeek() {
 		return this.hoursByWeek;
 	}
@@ -84,10 +78,18 @@ public class Work implements java.io.Serializable{
 	public void setHoursByWeek(int hoursByWeek){
 		this.hoursByWeek = hoursByWeek;
 	}
-	
+
+	public Assignment getAssignment() {
+		return assignment;
+	}
+
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
+
 	@Override
 	public String toString() {
-		return "Work [ID=" + id + ", EMPLOYEE=" + employee + ", WEEK= " + week + ", ASIGMENT= " + idAsigment + ", HOURS_X_WEEK= " + hoursByWeek +"]";
+		return "Work [ID=" + id + ", EMPLOYEE=" + employee + ", WEEK= " + week + ", ASIGMENT= " + assignment.getProjectName() + ", HOURS_X_WEEK= " + hoursByWeek +"]";
 	}
 
 }

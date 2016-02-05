@@ -9,8 +9,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.ibm.assignment.bo.AssignmentBo;
+import com.ibm.assignment.model.Assignment;
+import com.ibm.country.bo.CountryBo;
+import com.ibm.country.model.Country;
 import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.employee.model.Employee;
+import com.ibm.manager.bo.ManagerBo;
+import com.ibm.manager.model.Manager;
 import com.ibm.week.bo.WeekBo;
 import com.ibm.week.model.Week;
 import com.ibm.work.bo.WorkBo;
@@ -18,19 +24,36 @@ import com.ibm.work.model.Work;
 
 public class Parse {
 	final static int CELL_NAME = 1;
-	final static int CELL_EMPLOYEE_ID = 64;
-	final static int CELL_ASIGMENT = 47;
-	final static int CELL_WEEK1 = 105; //first column
+	final static int CELL_EMPLOYEE_COUNTRY = 7;
+	final static int CELL_SECTOR = 11;
+	final static int CELL_EMPLOYEE_ID = 2;
+	final static int CELL_JRSS = 40;
+	final static int CELL_ASIGMENT = 53;
+	final static int CELL_CLIENT_NAME = 18;
+	final static int CELL_PROJECT_NAME = 20;
+	final static int CELL_PROJECT_COUNTRY = 30;
+	final static int CELL_INDUSTRY = 35;
+	final static int CELL_CATEGORY = 55;
+	final static int CELL_MANAGER = 68;
+	final static int CELL_WEEK1 = 109; //first column week
 	
 	static WorkBo workBo;
 	static WeekBo weekBo;
 	static EmployeeBo employeeBo;
+	static AssignmentBo assignmentBo;
+	static ManagerBo managerBo;
+	static CountryBo countryBo;
 	static Week[] weeks = new Week[20];
 	
-	public Parse(WorkBo aWorkBo, WeekBo aWeekBo, EmployeeBo aEmployeeBo){
+	public Parse(WorkBo aWorkBo, WeekBo aWeekBo, EmployeeBo aEmployeeBo, AssignmentBo anAssignmentBo, 
+			ManagerBo aManagerBo, CountryBo aCountryBo){
+		
 		workBo = aWorkBo;
 		weekBo = aWeekBo;
 		employeeBo = aEmployeeBo;
+		assignmentBo = anAssignmentBo;
+		managerBo = aManagerBo;
+		countryBo = aCountryBo;
 	}
 	
 	public static void Prueba(String filePath){
@@ -38,7 +61,7 @@ public class Parse {
         FileInputStream file = new FileInputStream(new File(filePath));
 
         XSSFWorkbook workbook = new XSSFWorkbook(file);
-        XSSFSheet sheet = workbook.getSheetAt(2);
+        XSSFSheet sheet = workbook.getSheetAt(0);
 
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()){
@@ -60,13 +83,26 @@ public class Parse {
 	}
 
 	private static void processBody(Row row) {
-        Employee newEmployee = new Employee(row.getCell(CELL_EMPLOYEE_ID).toString(),row.getCell(CELL_NAME).toString());
-        employeeBo.create(newEmployee);
-        for(int i=0;i<20;i++){
-        	Work newWork = new Work(newEmployee,weeks[i],Integer.valueOf(row.getCell(CELL_ASIGMENT).toString()),(int) row.getCell((CELL_WEEK1+i)).getNumericCellValue());	
-        	workBo.save(newWork);
-        	System.out.println(newWork.toString());
-        }
+		
+		Country country = countryBo.getCountry(row.getCell(CELL_EMPLOYEE_COUNTRY).toString());
+		if(country.getId()==1){
+			Employee newEmployee = employeeBo.getEmployee(row.getCell(CELL_EMPLOYEE_ID).toString(),row.getCell(CELL_NAME).toString(), country, row.getCell(CELL_SECTOR).toString(), 
+					row.getCell(CELL_JRSS).toString());
+			
+			country = countryBo.getCountry(row.getCell(CELL_PROJECT_COUNTRY).toString());
+			String[] manager = row.getCell(CELL_MANAGER).toString().split("/");
+			Manager newManager = managerBo.getManager(manager[0]);
+			
+			Assignment newAssignment = assignmentBo.getAssignment(Integer.valueOf(row.getCell(CELL_ASIGMENT).toString()),row.getCell(CELL_PROJECT_NAME).toString(), 
+					row.getCell(CELL_CLIENT_NAME).toString(), country, row.getCell(CELL_INDUSTRY).toString(), row.getCell(CELL_CATEGORY).toString(), newManager);
+			
+	        for(int i=0;i<20;i++){
+	        	Work newWork = new Work(newEmployee,weeks[i],newAssignment,(int) row.getCell((CELL_WEEK1+i)).getNumericCellValue());	
+	        	if(newWork.getHoursByWeek()>0)
+	        		workBo.save(newWork);
+	//        	System.out.println(newWork.toString());
+	        }
+		}
 	}
 
 	private static void processHeader(Row row) {

@@ -24,6 +24,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				<value>com.ibm.employee.model.Employee</value>
 				<value>com.ibm.work.model.Work</value>
 				<value>com.ibm.week.model.Week</value>
+				<value>com.ibm.country.model.Country</value>
+				<value>com.ibm.manager.model.Manager</value>
+				<value>com.ibm.assignment.model.Assignment</value>
 			</list>
 		</property>
     </bean>

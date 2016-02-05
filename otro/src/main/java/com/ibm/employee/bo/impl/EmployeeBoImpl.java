@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ibm.country.model.Country;
 import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.employee.dao.EmployeeDao;
 import com.ibm.employee.model.Employee;
@@ -41,5 +42,15 @@ public class EmployeeBoImpl implements EmployeeBo{
 	
 	public List<Employee> findAll(){
 		return employeeDao.findAll();
+	}
+
+	@Override
+	public Employee getEmployee(String id, String name, Country country, String sector, String jrss) {
+		Employee aEmployee = findById(id);
+		if(aEmployee==null){
+			aEmployee = new Employee(id, name, country, sector, jrss);
+			save(aEmployee);
+		}
+		return aEmployee;
 	}
 }

@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibm.assignment.bo.AssignmentBo;
+import com.ibm.country.bo.CountryBo;
 import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.fileProcess.Parse;
+import com.ibm.manager.bo.ManagerBo;
 import com.ibm.week.bo.WeekBo;
 import com.ibm.work.bo.WorkBo;
 
@@ -30,6 +33,12 @@ public class MainController {
 	WorkBo workBo;
 	@Autowired
 	EmployeeBo employeeBo;
+	@Autowired
+	AssignmentBo assignmentBo;
+	@Autowired
+	ManagerBo managerBo;
+	@Autowired
+	CountryBo countryBo;
 
 	@RequestMapping(value ="/welcome", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
@@ -48,7 +57,7 @@ public class MainController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath))); 
                 stream.write(bytes);
                 stream.close();
-                Parse parse = new Parse(workBo, weekBo, employeeBo);
+                Parse parse = new Parse(workBo, weekBo, employeeBo, assignmentBo, managerBo, countryBo);
                 parse.Prueba(filePath);
                 return "You successfully uploaded";
             } catch (Exception e) {

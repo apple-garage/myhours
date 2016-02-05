@@ -34,8 +34,8 @@ public class EmployeeDaoImpl  extends CustomHibernateDaoSupport implements Emplo
 	
 	@Transactional
 	public Employee findById(String id){
-		Employee e1 = (Employee) getSessionFactory().getCurrentSession().get(Employee.class, id);
-		return e1;
+		Employee employee = (Employee) getSessionFactory().getCurrentSession().get(Employee.class, id);
+		return employee;
 	}
 	
 	@Transactional
