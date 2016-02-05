@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <cascading-parameter-group name="NewCascadingParameterGroup" id="74">
+            <property name="dataSet">qpais</property>
+            <property name="dataSetMode">multiple</property>
+            <parameters>
+                <scalar-parameter name="pais" id="75">
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataSetName">qpais</property>
+                    <expression name="valueExpr">row["cid"]</expression>
+                    <expression name="labelExpr">row["cname"]</expression>
+                    <expression name="sortByColumn">dataSetRow["cid"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">0</value>
+                    </simple-property-list>
+                    <property name="paramType">simple</property>
+                    <property name="controlType">list-box</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+                <scalar-parameter name="manager" id="76">
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataSetName">qmanager</property>
+                    <expression name="valueExpr">row["mid"]</expression>
+                    <expression name="labelExpr">row["mname"]</expression>
+                    <expression name="sortByColumn">dataSetRow["mid"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">0</value>
+                    </simple-property-list>
+                    <property name="controlType">list-box</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+            </parameters>
+        </cascading-parameter-group>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source" id="4">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://localhost:3306/hour_report_db</property>
+            <property name="odaUser">root</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qpais" id="71">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">cid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">cid</text-property>
+                    <text-property name="heading">cid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cname</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">cname</text-property>
+                    <text-property name="heading">cname</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">cid</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">cname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">cid</property>
+                    <property name="nativeName">cid</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">cname</property>
+                    <property name="nativeName">cname</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select country.ID as cid,country.COUNTRY as cname
+from country
+union
+select 0 as cid, "ALL" as cname
+from country]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>COUNTRY</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>COUNTRY</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>COUNTRY</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qmanager" id="72">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">mid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">mid</text-property>
+                    <text-property name="heading">mid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mname</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">mname</text-property>
+                    <text-property name="heading">mname</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">mid</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">mname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">mid</property>
+                    <property name="nativeName">mid</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">mname</property>
+                    <property name="nativeName">mname</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select manager.ID as mid,manager.NAME as mname
+from manager
+union
+select 0 as mid, "ALL" as mname
+from manager]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>NAME</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>NAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>NAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="test" id="77">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">SN</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">SN</text-property>
+                    <text-property name="heading">SN</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ESCLAVO</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">ESCLAVO</text-property>
+                    <text-property name="heading">ESCLAVO</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">NUM_SEMANA</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">NUM_SEMANA</text-property>
+                    <text-property name="heading">NUM_SEMANA</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">END_DATE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">END_DATE</text-property>
+                    <text-property name="heading">END_DATE</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PAIS</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">PAIS</text-property>
+                    <text-property name="heading">PAIS</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PROYECTO</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">PROYECTO</text-property>
+                    <text-property name="heading">PROYECTO</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">MANAGER</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">MANAGER</text-property>
+                    <text-property name="heading">MANAGER</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">SN</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">ESCLAVO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">NUM_SEMANA</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">END_DATE</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">PAIS</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">PROYECTO</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">MANAGER</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">SN</property>
+                    <property name="nativeName">ID_EMPLOYEE</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">ESCLAVO</property>
+                    <property name="nativeName">NAME</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">NUM_SEMANA</property>
+                    <property name="nativeName">NUM_WEEK</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">END_DATE</property>
+                    <property name="nativeName">END_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">PAIS</property>
+                    <property name="nativeName">COUNTRY</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">PROYECTO</property>
+                    <property name="nativeName">PROJECT_NAME</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">MANAGER</property>
+                    <property name="nativeName">NAME</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select wk.id_employee as SN, e.name as ESCLAVO, w.num_week as NUM_SEMANA, w.end_date as END_DATE, c.country as PAIS, a.project_name as PROYECTO, m.name as MANAGER
+from work as wk, employee as e, country as c, assignment as a, manager as m, week as w
+where wk.id_employee = e.id
+and wk.id_week = w.id
+and wk.id_assignment = a.id
+and a.id_manager = m.id
+and c.id = e.id_country]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID_EMPLOYEE</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id_employee</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id_employee</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>NAME</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>name</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>COUNTRY</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>country</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>country</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>PROJECT_NAME</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>project_name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>project_name</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>NAME</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>name</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="forty" id="78">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">eid</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">eid</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">eid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ename</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">ename</text-property>
+                    <text-property name="heading">ename</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cname</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">cname</text-property>
+                    <text-property name="heading">cname</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">wnum</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">wnum</text-property>
+                    <text-property name="heading">wnum</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">wend</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">wend</text-property>
+                    <text-property name="heading">wend</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">hours</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">hours</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">hours</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">project</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">project</text-property>
+                    <text-property name="heading">project</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">manager</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">manager</text-property>
+                    <text-property name="heading">manager</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">eid</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">ename</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">cname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">wnum</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">wend</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">hours</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">project</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">manager</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[var managerQuery = "";
+var fromQuery = "";
+var finalQueryAdd = "";
+
+//this.queryText += " GROUP BY wk.id_employee, wk.id_week HAVING SUM(wk.hours_x_week) > 40";
+
+
+ 
+//	QUERY NUEVA GUACHO
+fromQuery = "SELECT e.id AS a1, w.id AS a2";
+fromQuery += " FROM work wk, employee e, week w";
+fromQuery += " WHERE wk.id_week = w.id";
+fromQuery += " AND wk.id_employee = e.id";
+fromQuery += " GROUP BY wk.id_employee, wk.id_week";
+fromQuery += " HAVING SUM(wk.hours_x_week) <> 40";
+
+//finalQueryAdd = "SELECT wk.*";
+finalQueryAdd += /*" FROM work wk*/", (" + fromQuery + ")A";
+finalQueryAdd += " WHERE A.a1 = wk.id_employee";
+finalQueryAdd += " AND A.a2 = wk.id_week";
+finalQueryAdd += " AND wk.id_employee = e.id";	//Relaciones de la query "normal"
+finalQueryAdd += " AND wk.id_week = w.id";		//Relaciones de la query "normal"
+finalQueryAdd += " AND c.id = e.id_country";	//Relaciones de la query "normal"
+finalQueryAdd += " AND m.id = a.id_manager";	//Relaciones de la query "normal"
+finalQueryAdd += " AND a.id = wk.id_assignment";	//Relaciones de la query "normal"
+//finalQueryAdd += " ORDER BY 2,3";
+
+this.queryText += finalQueryAdd;
+
+// QUERY VIEJITA
+/*
+SELECT e.id as eid, e.name as ename, w.num_week as wnum, w.end_date as wend, wk.hours_x_week as hours, c.country as cname
+FROM work as wk, week as w, employee as e, country as c
+WHERE wk.id_employee = e.id
+AND wk.id_week = w.id
+AND c.id = e.id_country
+
+*/
+
+
+/*
+//	NO VA
+
+hoursQuery = "SELECT e.id, w.id";
+hoursQuery += " FROM work as wk, week as w, employee as e";
+hoursQuery += " WHERE wk.id_employee = e.id";
+hoursQuery += " AND wk.id_week = w.id";
+hoursQuery += " GROUP BY wk.id_employee, wk.id_week";
+hoursQuery += " HAVING SUM(wk.hours_x_week) > 40";
+
+hoursWeekQuery = "SELECT id_week FROM ( " + hoursQuery +") as hwt";
+hoursEmpQuery = "SELECT id_employee FROM ( " + hoursQuery +") as het";
+
+this.queryText += " AND wk.id_week IN (" + hoursWeekQuery + ")";
+this.queryText += " AND wk.id_employee IN (" + hoursEmpQuery + ")";
+*/
+
+if (params["pais"] != 0){
+	this.queryText += " AND e.id_country = '" + params["pais"] + "'";
+}
+
+if (params["manager"] != 0){
+	managerQuery = "SELECT DISTINCT w.id_employee";
+	managerQuery += " FROM work w";
+	managerQuery += " JOIN employee e ON w.id_employee = e.id";
+	managerQuery += " JOIN assignment a ON w.id_assignment = a.id";
+	managerQuery += " WHERE a.id_manager = '" + params["manager"] + "'";
+	
+	this.queryText += " AND wk.id_employee IN (" + managerQuery + ")";
+
+}
+
+this.queryText += " ORDER BY 2,3";]]></method>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">eid</property>
+                    <property name="nativeName">ID</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">ename</property>
+                    <property name="nativeName">NAME</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">cname</property>
+                    <property name="nativeName">COUNTRY</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">wnum</property>
+                    <property name="nativeName">NUM_WEEK</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">wend</property>
+                    <property name="nativeName">END_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">hours</property>
+                    <property name="nativeName">HOURS_X_WEEK</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">project</property>
+                    <property name="nativeName">PROJECT_NAME</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">manager</property>
+                    <property name="nativeName">NAME</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, w.num_week as wnum, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
+FROM work as wk, week as w, employee as e, country as c, manager as m, assignment as a]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="171">
+            <property name="dataSet">forty</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">eid</property>
+                    <text-property name="displayName">eid</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["eid"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ename</property>
+                    <text-property name="displayName">ename</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ename"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">cname</property>
+                    <text-property name="displayName">cname</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["cname"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">wnum</property>
+                    <text-property name="displayName">wnum</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["wnum"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">wend</property>
+                    <text-property name="displayName">wend</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["wend"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">hours</property>
+                    <text-property name="displayName">hours</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["hours"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">project</property>
+                    <text-property name="displayName">project</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["project"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">manager</property>
+                    <text-property name="displayName">manager</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["manager"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="215">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="216">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="217">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="218">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="219">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="220">
+                <property name="backgroundColor">#FFFF80</property>
+            </column>
+            <column id="221"/>
+            <column id="222"/>
+            <header>
+                <row id="172">
+                    <cell id="173">
+                        <label id="174">
+                            <text-property name="text">eid</text-property>
+                        </label>
+                    </cell>
+                    <cell id="175">
+                        <label id="176">
+                            <text-property name="text">ename</text-property>
+                        </label>
+                    </cell>
+                    <cell id="177">
+                        <label id="178">
+                            <text-property name="text">cname</text-property>
+                        </label>
+                    </cell>
+                    <cell id="179">
+                        <label id="180">
+                            <text-property name="text">wnum</text-property>
+                        </label>
+                    </cell>
+                    <cell id="181">
+                        <label id="182">
+                            <text-property name="text">wend</text-property>
+                        </label>
+                    </cell>
+                    <cell id="183">
+                        <label id="184">
+                            <text-property name="text">hours</text-property>
+                        </label>
+                    </cell>
+                    <cell id="185">
+                        <label id="186">
+                            <text-property name="text">project</text-property>
+                        </label>
+                    </cell>
+                    <cell id="187">
+                        <label id="188">
+                            <text-property name="text">manager</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="189">
+                    <cell id="190">
+                        <data id="191">
+                            <property name="resultSetColumn">eid</property>
+                        </data>
+                    </cell>
+                    <cell id="192">
+                        <data id="193">
+                            <property name="resultSetColumn">ename</property>
+                        </data>
+                    </cell>
+                    <cell id="194">
+                        <data id="195">
+                            <property name="resultSetColumn">cname</property>
+                        </data>
+                    </cell>
+                    <cell id="196">
+                        <data id="197">
+                            <property name="resultSetColumn">wnum</property>
+                        </data>
+                    </cell>
+                    <cell id="198">
+                        <data id="199">
+                            <property name="resultSetColumn">wend</property>
+                        </data>
+                    </cell>
+                    <cell id="200">
+                        <data id="201">
+                            <property name="resultSetColumn">hours</property>
+                        </data>
+                    </cell>
+                    <cell id="202">
+                        <data id="203">
+                            <property name="resultSetColumn">project</property>
+                        </data>
+                    </cell>
+                    <cell id="204">
+                        <data id="205">
+                            <property name="resultSetColumn">manager</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="206">
+                    <cell id="207"/>
+                    <cell id="208"/>
+                    <cell id="209"/>
+                    <cell id="210"/>
+                    <cell id="211"/>
+                    <cell id="212"/>
+                    <cell id="213"/>
+                    <cell id="214"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

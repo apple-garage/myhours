@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <cascading-parameter-group name="NewCascadingParameterGroup" id="74">
+            <property name="dataSet">queryPais</property>
+            <property name="dataSetMode">multiple</property>
+            <parameters>
+                <scalar-parameter name="pais" id="75">
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataSetName">queryPais</property>
+                    <expression name="valueExpr">row["cid"]</expression>
+                    <expression name="labelExpr">row["cname"]</expression>
+                    <expression name="sortByColumn">dataSetRow["cid"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">0</value>
+                    </simple-property-list>
+                    <property name="paramType">simple</property>
+                    <property name="controlType">list-box</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+                <scalar-parameter name="manager" id="76">
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <property name="dataSetName">queryManager</property>
+                    <expression name="valueExpr">row["mid"]</expression>
+                    <expression name="labelExpr">row["mname"]</expression>
+                    <expression name="sortByColumn">dataSetRow["mid"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">0</value>
+                    </simple-property-list>
+                    <property name="controlType">list-box</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+            </parameters>
+        </cascading-parameter-group>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source" id="4">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://localhost:3306/hour_report_db</property>
+            <property name="odaUser">root</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="queryManager" id="73">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">mid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">mid</text-property>
+                    <text-property name="heading">mid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mname</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">mname</text-property>
+                    <text-property name="heading">mname</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">mid</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">mname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">mid</property>
+                    <property name="nativeName">mid</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">mname</property>
+                    <property name="nativeName">mname</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select id mid , name mname
+from manager
+UNION
+select 0 mid , 'ALL' mname
+from manager]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>NAME</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>NAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>NAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="queryPais" id="70">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">cid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">cid</text-property>
+                    <text-property name="heading">cid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cname</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">cname</text-property>
+                    <text-property name="heading">cname</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">cid</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">cname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">cid</property>
+                    <property name="nativeName">cid</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">cname</property>
+                    <property name="nativeName">cname</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select id cid , country cname
+from country
+UNION 
+select 0 cid,'ALL' cname
+from country]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ID</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ID</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>COUNTRY</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>45</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>COUNTRY</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>COUNTRY</design:label>
+            <design:formattingHints>
+              <design:displaySize>45</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="get2projects" id="79">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">eid</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">eid</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">eid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ename</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">ename</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">ename</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">wend</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">wend</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">wend</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">project</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">project</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">project</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">hours</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">hours</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">hours</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">countryname</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">countryname</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">countryname</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">manager_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">manager_name</text-property>
+                    <text-property name="heading">manager_name</text-property>
+                </structure>
+            </list-property>
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">eid</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">ename</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">wend</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">project</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">hours</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">countryname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">manager_name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[if(params["pais"] !=0 )
+{
+	this.queryText += " and e.id_country = '" + params["pais"] + "' " ;
+}
+if (params["manager"] != 0)
+{
+	this.queryText += " and a.id_manager = '" + params["manager"] + "' ";
+}
+
+this.queryText += " order by e.id, wend"]]></method>
+            <property name="dataSource">Data Source</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">eid</property>
+                    <property name="nativeName">eid</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">ename</property>
+                    <property name="nativeName">ename</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">wend</property>
+                    <property name="nativeName">wend</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">project</property>
+                    <property name="nativeName">project</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">hours</property>
+                    <property name="nativeName">hours</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">countryname</property>
+                    <property name="nativeName">countryname</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">manager_name</property>
+                    <property name="nativeName">manager_name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT wk.id_employee as eid, e.name as ename, w.end_date as wend, a.project_name as project, wk.hours_x_week as hours, c.country as countryname, m.name as manager_name
+FROM work as wk, week as w, employee as e, country as c, assignment as a, manager as m, 
+(select employee.id as eid, work.id_week as wid
+from work,employee
+where employee.id = work.id_employee
+group by 1,2
+having count(*) > 1)A
+WHERE wk.id_employee = e.id
+AND wk.id_assignment = a.id
+AND wk.id_week = w.id
+and c.id = e.id_country
+and A.eid = wk.id_employee
+and A.wid = wk.id_week
+AND m.id = a.id_manager]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="356">
+            <property name="dataSet">get2projects</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">eid</property>
+                    <text-property name="displayName">eid</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["eid"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ename</property>
+                    <text-property name="displayName">ename</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ename"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">wend</property>
+                    <text-property name="displayName">wend</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["wend"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">project</property>
+                    <text-property name="displayName">project</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["project"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">hours</property>
+                    <text-property name="displayName">hours</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["hours"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">countryname</property>
+                    <text-property name="displayName">countryname</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["countryname"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">manager_name</property>
+                    <text-property name="displayName">manager_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["manager_name"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="390">
+                <property name="suppressDuplicates">true</property>
+                <property name="textAlign">center</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="391">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="392">
+                <property name="suppressDuplicates">true</property>
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="393">
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="394">
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="395">
+                <property name="verticalAlign">middle</property>
+            </column>
+            <column id="416">
+                <property name="verticalAlign">middle</property>
+            </column>
+            <header>
+                <row id="357">
+                    <cell id="358">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="359">
+                            <text-property name="text">SERIAL ID</text-property>
+                        </label>
+                    </cell>
+                    <cell id="360">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="361">
+                            <text-property name="text">NAME</text-property>
+                        </label>
+                    </cell>
+                    <cell id="362">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="363">
+                            <text-property name="text">COUNTRY</text-property>
+                        </label>
+                    </cell>
+                    <cell id="364">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="365">
+                            <text-property name="text">PROJECT NAME</text-property>
+                        </label>
+                    </cell>
+                    <cell id="366">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="367">
+                            <text-property name="text">WEEK DATE</text-property>
+                        </label>
+                    </cell>
+                    <cell id="368">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="369">
+                            <text-property name="text">HOURS WORKED</text-property>
+                        </label>
+                    </cell>
+                    <cell id="413">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <label id="417">
+                            <text-property name="text">MANAGER</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="370">
+                    <cell id="371">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="372">
+                            <property name="resultSetColumn">eid</property>
+                        </data>
+                    </cell>
+                    <cell id="373">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="374">
+                            <property name="resultSetColumn">ename</property>
+                        </data>
+                    </cell>
+                    <cell id="375">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="396">
+                            <property name="resultSetColumn">countryname</property>
+                        </data>
+                    </cell>
+                    <cell id="377">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="378">
+                            <property name="resultSetColumn">project</property>
+                        </data>
+                    </cell>
+                    <cell id="379">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="376">
+                            <property name="resultSetColumn">wend</property>
+                        </data>
+                    </cell>
+                    <cell id="381">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="380">
+                            <property name="resultSetColumn">hours</property>
+                        </data>
+                    </cell>
+                    <cell id="414">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                        <data id="418">
+                            <property name="resultSetColumn">manager_name</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="383">
+                    <cell id="384">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                    <cell id="385">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                    <cell id="386">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                    <cell id="387">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                    <cell id="388">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                    <cell id="389">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                    <cell id="415">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <property name="textAlign">right</property>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>
