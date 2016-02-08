@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">odaDriverClass</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">odaURL</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">odaUser</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">odaAutoCommit</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">odaIsolationMode</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">odaPassword</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">odaJndiName</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileName</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileStorePath</property>
+            <property name="id">4</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
@@ -567,12 +605,6 @@ and c.id = e.id_country]]></xml-property>
                     <text-property name="heading">cname</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">wnum</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">wnum</text-property>
-                    <text-property name="heading">wnum</text-property>
-                </structure>
-                <structure>
                     <property name="columnName">wend</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">wend</text-property>
@@ -618,26 +650,21 @@ and c.id = e.id_country]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
-                        <property name="name">wnum</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
                         <property name="name">wend</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">5</property>
                         <property name="name">hours</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">6</property>
                         <property name="name">project</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">7</property>
                         <property name="name">manager</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -657,7 +684,7 @@ fromQuery += " FROM work wk, employee e, week w";
 fromQuery += " WHERE wk.id_week = w.id";
 fromQuery += " AND wk.id_employee = e.id";
 fromQuery += " GROUP BY wk.id_employee, wk.id_week";
-fromQuery += " HAVING SUM(wk.hours_x_week) <> 40";
+fromQuery += " HAVING SUM(wk.hours_x_week) > 40";
 
 //finalQueryAdd = "SELECT wk.*";
 finalQueryAdd += /*" FROM work wk*/", (" + fromQuery + ")A";
@@ -715,7 +742,7 @@ if (params["manager"] != 0){
 
 }
 
-this.queryText += " ORDER BY 2,3";]]></method>
+this.queryText += " ORDER BY 2,1,4";]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -741,41 +768,34 @@ this.queryText += " ORDER BY 2,3";]]></method>
                 </structure>
                 <structure>
                     <property name="position">4</property>
-                    <property name="name">wnum</property>
-                    <property name="nativeName">NUM_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
                     <property name="name">wend</property>
                     <property name="nativeName">END_DATE</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">5</property>
                     <property name="name">hours</property>
                     <property name="nativeName">HOURS_X_WEEK</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">6</property>
                     <property name="name">project</property>
                     <property name="nativeName">PROJECT_NAME</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">7</property>
                     <property name="name">manager</property>
                     <property name="nativeName">NAME</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, w.num_week as wnum, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
+            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
 FROM work as wk, week as w, employee as e, country as c, manager as m, assignment as a]]></xml-property>
         </oda-data-set>
     </data-sets>
@@ -790,7 +810,13 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
         </simple-master-page>
     </page-setup>
     <body>
-        <table id="171">
+        <label id="288">
+            <property name="fontSize">16pt</property>
+            <property name="paddingBottom">10pt</property>
+            <expression name="bookmark" type="javascript">"http://google.com.ar"</expression>
+            <method name="onPrepare"><![CDATA[this.text = "Pais: " + params["pais"].displayText + " - Manager: " + params["manager"].displayText;]]></method>
+        </label>
+        <table id="223">
             <property name="dataSet">forty</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -810,12 +836,6 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <text-property name="displayName">cname</text-property>
                     <expression name="expression" type="javascript">dataSetRow["cname"]</expression>
                     <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">wnum</property>
-                    <text-property name="displayName">wnum</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["wnum"]</expression>
-                    <property name="dataType">integer</property>
                 </structure>
                 <structure>
                     <property name="name">wend</property>
@@ -841,130 +861,195 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <expression name="expression" type="javascript">dataSetRow["manager"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">Aggregation</property>
+                    <text-property name="displayName">groupCount</text-property>
+                    <property name="dataType">integer</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>by_employee</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">RUNNINGCOUNT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
-            <column id="215">
+            <column id="262">
                 <property name="suppressDuplicates">true</property>
-                <property name="verticalAlign">middle</property>
             </column>
-            <column id="216">
+            <column id="263">
                 <property name="suppressDuplicates">true</property>
-                <property name="verticalAlign">middle</property>
             </column>
-            <column id="217">
+            <column id="264">
                 <property name="suppressDuplicates">true</property>
-                <property name="verticalAlign">middle</property>
             </column>
-            <column id="218">
-                <property name="suppressDuplicates">true</property>
-                <property name="verticalAlign">middle</property>
-            </column>
-            <column id="219">
-                <property name="suppressDuplicates">true</property>
-                <property name="verticalAlign">middle</property>
-            </column>
-            <column id="220">
-                <property name="backgroundColor">#FFFF80</property>
-            </column>
-            <column id="221"/>
-            <column id="222"/>
+            <column id="265"/>
+            <column id="266"/>
+            <column id="267"/>
+            <column id="268"/>
             <header>
-                <row id="172">
-                    <cell id="173">
-                        <label id="174">
+                <row id="224">
+                    <cell id="225">
+                        <property name="textAlign">center</property>
+                        <label id="226">
                             <text-property name="text">eid</text-property>
                         </label>
                     </cell>
-                    <cell id="175">
-                        <label id="176">
+                    <cell id="227">
+                        <property name="textAlign">center</property>
+                        <label id="228">
                             <text-property name="text">ename</text-property>
                         </label>
                     </cell>
-                    <cell id="177">
-                        <label id="178">
+                    <cell id="229">
+                        <property name="textAlign">center</property>
+                        <label id="230">
                             <text-property name="text">cname</text-property>
                         </label>
                     </cell>
-                    <cell id="179">
-                        <label id="180">
-                            <text-property name="text">wnum</text-property>
-                        </label>
-                    </cell>
-                    <cell id="181">
-                        <label id="182">
+                    <cell id="231">
+                        <property name="textAlign">center</property>
+                        <label id="232">
                             <text-property name="text">wend</text-property>
                         </label>
                     </cell>
-                    <cell id="183">
-                        <label id="184">
+                    <cell id="233">
+                        <property name="textAlign">center</property>
+                        <label id="234">
                             <text-property name="text">hours</text-property>
                         </label>
                     </cell>
-                    <cell id="185">
-                        <label id="186">
+                    <cell id="235">
+                        <property name="textAlign">center</property>
+                        <label id="236">
                             <text-property name="text">project</text-property>
                         </label>
                     </cell>
-                    <cell id="187">
-                        <label id="188">
+                    <cell id="237">
+                        <property name="textAlign">center</property>
+                        <label id="238">
                             <text-property name="text">manager</text-property>
                         </label>
                     </cell>
                 </row>
             </header>
+            <group id="269">
+                <property name="groupName">by_employee</property>
+                <expression name="keyExpr" type="javascript">row["eid"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["eid"]</expression>
+                </structure>
+                <property name="repeatHeader">false</property>
+                <property name="hideDetail">false</property>
+                <header>
+                    <row id="270">
+                        <cell id="271"/>
+                        <cell id="272"/>
+                        <cell id="273"/>
+                        <cell id="274"/>
+                        <cell id="275"/>
+                        <cell id="276"/>
+                        <cell id="277"/>
+                    </row>
+                </header>
+                <footer>
+                    <row id="278">
+                        <property name="borderBottomColor">#808080</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <cell id="279"/>
+                        <cell id="280"/>
+                        <cell id="281"/>
+                        <cell id="282"/>
+                        <cell id="283"/>
+                        <cell id="284"/>
+                        <cell id="285"/>
+                    </row>
+                </footer>
+            </group>
             <detail>
-                <row id="189">
-                    <cell id="190">
-                        <data id="191">
+                <row id="239">
+                    <property name="whiteSpace">nowrap</property>
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">ne</property>
+                            <property name="backgroundColor">#EBECF5</property>
+                            <expression name="testExpr" type="javascript">row[0] % 2</expression>
+                            <simple-property-list name="value1">
+                                <value type="javascript">0</value>
+                            </simple-property-list>
+                        </structure>
+                    </list-property>
+                    <cell id="240">
+                        <property name="textAlign">center</property>
+                        <data id="287">
                             <property name="resultSetColumn">eid</property>
                         </data>
                     </cell>
-                    <cell id="192">
-                        <data id="193">
+                    <cell id="242">
+                        <property name="textAlign">center</property>
+                        <data id="243">
                             <property name="resultSetColumn">ename</property>
                         </data>
                     </cell>
-                    <cell id="194">
-                        <data id="195">
+                    <cell id="244">
+                        <property name="textAlign">center</property>
+                        <data id="245">
                             <property name="resultSetColumn">cname</property>
                         </data>
                     </cell>
-                    <cell id="196">
-                        <data id="197">
-                            <property name="resultSetColumn">wnum</property>
-                        </data>
-                    </cell>
-                    <cell id="198">
-                        <data id="199">
+                    <cell id="246">
+                        <property name="textAlign">center</property>
+                        <data id="247">
                             <property name="resultSetColumn">wend</property>
                         </data>
                     </cell>
-                    <cell id="200">
-                        <data id="201">
+                    <cell id="248">
+                        <property name="textAlign">center</property>
+                        <data id="249">
                             <property name="resultSetColumn">hours</property>
                         </data>
                     </cell>
-                    <cell id="202">
-                        <data id="203">
+                    <cell id="250">
+                        <property name="textAlign">center</property>
+                        <data id="251">
                             <property name="resultSetColumn">project</property>
                         </data>
                     </cell>
-                    <cell id="204">
-                        <data id="205">
+                    <cell id="252">
+                        <property name="textAlign">center</property>
+                        <data id="253">
                             <property name="resultSetColumn">manager</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="206">
-                    <cell id="207"/>
-                    <cell id="208"/>
-                    <cell id="209"/>
-                    <cell id="210"/>
-                    <cell id="211"/>
-                    <cell id="212"/>
-                    <cell id="213"/>
-                    <cell id="214"/>
+                <row id="254">
+                    <cell id="255">
+                        <property name="textAlign">center</property>
+                    </cell>
+                    <cell id="256">
+                        <property name="textAlign">center</property>
+                    </cell>
+                    <cell id="257">
+                        <property name="textAlign">center</property>
+                    </cell>
+                    <cell id="258">
+                        <property name="textAlign">center</property>
+                    </cell>
+                    <cell id="259">
+                        <property name="textAlign">center</property>
+                    </cell>
+                    <cell id="260">
+                        <property name="textAlign">center</property>
+                    </cell>
+                    <cell id="261">
+                        <property name="textAlign">center</property>
+                    </cell>
                 </row>
             </footer>
         </table>
