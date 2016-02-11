@@ -17,7 +17,7 @@ import com.ibm.employee.model.Employee;
 import com.ibm.week.model.Week;
 
 @Entity
-@Table(name = "work", catalog = "hour_report_db", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
+@Table(name = "work", catalog = "db_hour_report", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
 public class Work implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "manager", catalog = "hour_report_db", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "manager", catalog = "db_hour_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class Manager implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

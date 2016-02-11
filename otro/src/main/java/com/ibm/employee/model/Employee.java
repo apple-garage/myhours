@@ -15,7 +15,7 @@ import org.hibernate.annotations.Cascade;
 import com.ibm.country.model.Country;
 
 @Entity
-@Table(name = "employee", catalog = "hour_report_db", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "employee", catalog = "db_hour_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class Employee implements java.io.Serializable{
 	@Id
 	@Column(name = "ID", unique = true, nullable = false)

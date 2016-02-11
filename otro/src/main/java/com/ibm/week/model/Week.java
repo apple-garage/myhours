@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "week", catalog = "hour_report_db")
+@Table(name = "week", catalog = "db_hour_report")
 public class Week implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

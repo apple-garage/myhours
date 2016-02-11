@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "country", catalog = "hour_report_db", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "country", catalog = "db_hour_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class Country implements java.io.Serializable{
 	@Id
 	@Column(name = "ID", unique = true, nullable = false)
