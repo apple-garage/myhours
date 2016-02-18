@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ibm.assignment.bo.AssignmentBo;
 import com.ibm.country.bo.CountryBo;
 import com.ibm.employee.bo.EmployeeBo;
+import com.ibm.excel.bo.ExcelBo;
 import com.ibm.fileProcess.Parse;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.week.bo.WeekBo;
@@ -39,6 +40,8 @@ public class MainController {
 	ManagerBo managerBo;
 	@Autowired
 	CountryBo countryBo;
+	@Autowired
+	ExcelBo excelBo;
 
 	@RequestMapping(value ="/welcome", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
@@ -57,7 +60,7 @@ public class MainController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath))); 
                 stream.write(bytes);
                 stream.close();
-                Parse parse = new Parse(workBo, weekBo, employeeBo, assignmentBo, managerBo, countryBo);
+                Parse parse = new Parse(workBo, weekBo, employeeBo, assignmentBo, managerBo, countryBo,excelBo);
                 parse.Prueba(filePath);
                 return "You successfully uploaded";
             } catch (Exception e) {

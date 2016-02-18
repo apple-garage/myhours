@@ -41,6 +41,7 @@ public class EmployeeDaoImpl  extends CustomHibernateDaoSupport implements Emplo
 	@Transactional
 	public List<Employee> findAll(){
 		List<Employee> employeeList = getSessionFactory().getCurrentSession().createCriteria(Employee.class).list();
+		
 		return employeeList;
 	}
 	

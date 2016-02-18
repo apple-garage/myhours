@@ -1,3 +1,4 @@
+
 package com.ibm.fileProcess;
 
 import java.io.File;
@@ -15,13 +16,13 @@ import com.ibm.country.bo.CountryBo;
 import com.ibm.country.model.Country;
 import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.employee.model.Employee;
+import com.ibm.excel.bo.ExcelBo;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.manager.model.Manager;
 import com.ibm.week.bo.WeekBo;
 import com.ibm.week.model.Week;
 import com.ibm.work.bo.WorkBo;
 import com.ibm.work.model.Work;
-
 public class Parse {
 	final static int CELL_NAME = 1;
 	final static int CELL_EMPLOYEE_COUNTRY = 7;
@@ -43,10 +44,14 @@ public class Parse {
 	static AssignmentBo assignmentBo;
 	static ManagerBo managerBo;
 	static CountryBo countryBo;
+	static ExcelBo excelBo;
+	static Boolean flag;
 	static Week[] weeks = new Week[20];
 	
+	
+
 	public Parse(WorkBo aWorkBo, WeekBo aWeekBo, EmployeeBo aEmployeeBo, AssignmentBo anAssignmentBo, 
-			ManagerBo aManagerBo, CountryBo aCountryBo){
+			ManagerBo aManagerBo, CountryBo aCountryBo,ExcelBo aexcelBo){
 		
 		workBo = aWorkBo;
 		weekBo = aWeekBo;
@@ -54,6 +59,8 @@ public class Parse {
 		assignmentBo = anAssignmentBo;
 		managerBo = aManagerBo;
 		countryBo = aCountryBo;
+		excelBo = aexcelBo;
+		flag = true;
 	}
 	
 	public static void Prueba(String filePath){
@@ -64,17 +71,21 @@ public class Parse {
         XSSFSheet sheet = workbook.getSheetAt(0);
 
         Iterator<Row> rowIterator = sheet.iterator();
-        while (rowIterator.hasNext()){
+        while (rowIterator.hasNext() && flag){
             Row row = rowIterator.next();
             if(row.getRowNum()==11)
+            {
             	processHeader(row);
+            	if(flag)workBo.loadWorkHistory(weeks[0].getEndDate().toString());
+            }	
             if (row.getRowNum()>11 && !isEmpty(row.getCell(CELL_NAME)))
             	processBody(row);
             else{
-        		if (row.getRowNum()>11 && isEmpty(row.getCell(CELL_NAME)))
+        		if (row.getRowNum()>11 && isEmpty(row.getCell(CELL_NAME) ))
         		break;
             	}
         }
+        
         file.close();
     }
     catch (Exception e){
@@ -85,16 +96,16 @@ public class Parse {
 	private static void processBody(Row row) {
 		
 		Country country = countryBo.getCountry(row.getCell(CELL_EMPLOYEE_COUNTRY).toString());
-		if(country.getId()==1){
-			Employee newEmployee = employeeBo.getEmployee(row.getCell(CELL_EMPLOYEE_ID).toString(),row.getCell(CELL_NAME).toString(), country, row.getCell(CELL_SECTOR).toString(), 
-					row.getCell(CELL_JRSS).toString());
-			
-			country = countryBo.getCountry(row.getCell(CELL_PROJECT_COUNTRY).toString());
 			String[] manager = row.getCell(CELL_MANAGER).toString().split("/");
 			Manager newManager = managerBo.getManager(manager[0]);
+			Employee newEmployee = employeeBo.getEmployee(row.getCell(CELL_EMPLOYEE_ID).toString(),row.getCell(CELL_NAME).toString(), country, row.getCell(CELL_SECTOR).toString(), 
+					row.getCell(CELL_JRSS).toString(),newManager);
+			
+			country = countryBo.getCountry(row.getCell(CELL_PROJECT_COUNTRY).toString());
+			
 			
 			Assignment newAssignment = assignmentBo.getAssignment(Integer.valueOf(row.getCell(CELL_ASIGMENT).toString()),row.getCell(CELL_PROJECT_NAME).toString(), 
-					row.getCell(CELL_CLIENT_NAME).toString(), country, row.getCell(CELL_INDUSTRY).toString(), row.getCell(CELL_CATEGORY).toString(), newManager);
+					row.getCell(CELL_CLIENT_NAME).toString(), country, row.getCell(CELL_INDUSTRY).toString(), row.getCell(CELL_CATEGORY).toString());
 			
 	        for(int i=0;i<20;i++){
 	        	Work newWork = new Work(newEmployee,weeks[i],newAssignment,(int) row.getCell((CELL_WEEK1+i)).getNumericCellValue());	
@@ -102,7 +113,7 @@ public class Parse {
 	        		workBo.save(newWork);
 	//        	System.out.println(newWork.toString());
 	        }
-		}
+		
 	}
 
 	private static void processHeader(Row row) {
@@ -110,6 +121,7 @@ public class Parse {
 			Week aWeek = weekBo.findByDate(row.getCell((CELL_WEEK1+i)).toString());
 			weeks[i] = aWeek;
 		}
+		flag = excelBo.getExcel(weeks[0].getEndDate().toString());
 	}
 	
 	private static boolean isEmpty(Cell cell) {
@@ -130,6 +142,5 @@ public class Parse {
 //		}
 //		return null;
 //	}
-
 
 }

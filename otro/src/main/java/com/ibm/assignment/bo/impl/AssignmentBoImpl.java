@@ -37,10 +37,10 @@ public class AssignmentBoImpl implements AssignmentBo{
 	}
 
 	@Override
-	public Assignment getAssignment(int id, String projectName, String clientName, Country country, String industry, String category, Manager manager) {
+	public Assignment getAssignment(int id, String projectName, String clientName, Country country, String industry, String category) {
 		Assignment anAssignment = findAssignmentById(id);
 		if(anAssignment==null){
-			anAssignment = new Assignment(id, projectName, clientName, country, industry, category, manager);
+			anAssignment = new Assignment(id, projectName, clientName, country, industry, category);
 		}
 		return anAssignment;
 	}

@@ -1,5 +1,6 @@
 package com.ibm.work.bo.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class WorkBoImpl implements WorkBo{
 	
 	public List<Work> findAll(){
 		return workDao.findAll();
+	}
+	public void loadWorkHistory(String date){
+		workDao.loadWorkHistory(date);
 	}
 	
 }

@@ -14,6 +14,6 @@ public interface AssignmentBo {
 	
 	Assignment findAssignmentById(int id);
 
-	Assignment getAssignment(int id, String projectName, String clientName, Country country, String industry, String category, Manager manager);
+	Assignment getAssignment(int id, String projectName, String clientName, Country country, String industry, String category);
 
 }

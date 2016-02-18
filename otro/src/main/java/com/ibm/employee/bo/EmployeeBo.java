@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ibm.country.model.Country;
 import com.ibm.employee.model.Employee;
+import com.ibm.manager.model.Manager;
 
 public interface EmployeeBo {
 	
@@ -19,5 +20,5 @@ public interface EmployeeBo {
 
 	List<Employee> findAll();
 
-	Employee getEmployee(String id, String name, Country country, String sector, String jrss);
+	Employee getEmployee(String id, String name, Country country, String sector, String jrss, Manager manager);
 }

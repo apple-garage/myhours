@@ -2,6 +2,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="com.ibm.web.controller.MainController"%>
+<%@page import="com.ibm.employee.model.Employee" %>
+<%@page language="java" import="java.util.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +15,9 @@
 
 <style>
 </style>
+
+
+
 
 </head>
 
@@ -29,16 +34,12 @@
 		<form action="${logoutUrl}" method="post" id="logoutForm">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
-		<script>
-			function formSubmit() {
-				document.getElementById("logoutForm").submit();
-			}
-		</script>
+		
 
 
 		<c:if test="${pageContext.request.userPrincipal.name != null}">
 			<h3 style="position: absolute; top: -5px; right: 10px;">
-				<a href="javascript:formSubmit()">Logout</a>
+				<a href="javascript:formSubmit()">Salir</a>
 			</h3>
 		</c:if>
 
@@ -47,7 +48,7 @@
 			<li class="active"><a data-toggle="tab" href="#home"><h4>Inicio</h4></a></li>
 			<li><a data-toggle="tab" href="#menu1"><h4>Subir Archivo</h4></a></li>
 			<li><a data-toggle="tab" href="#menu2"><h4>Generar Reporte</h4></a></li>
-			<li><a class="disabled" style="cursor: not-allowed"	data-toggle="tooltip" data-placement="top" title="Proximamente"><h4>Administrar</h4></a></li>
+			<li><a data-toggle="tab" href="#menu3" data-placement="top" title="Proximamente"><h4>Administrar</h4></a></li>
 
 
 		</ul>
@@ -59,7 +60,9 @@
 			<div id="menu1" class="tab-pane fade">
 
 <!-- 
+
 				<form action="uploadFile?${_csrf.parameterName}=${_csrf.token}"  method="post" enctype="multipart/form-data" id="form" role="form">
+
 					<div class="fileinput fileinput-new input-group" data-provides="fileinput">
 					  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 					  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
@@ -68,6 +71,7 @@
 					<br>
 					<input class="btn btn-default" type="submit" value="Upload">${message}					
 				</form>
+
  -->
 
 
@@ -81,6 +85,16 @@
 					</div>
 				</form>
 
+		<button class="btn btn-primary" type="button" onClick="ocultarBarra">Ocultar</button>
+
+		<div class="progress" id="ocultar">
+		  <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">70%</div>
+		</div>
+
+		<div class="progress">
+		  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">40%</div>
+		</div>
+
 	
 
 			</div>
@@ -91,9 +105,9 @@
 					</button>
 					<ul class="dropdown-menu btn-block">
 						<li><a href="#"
-							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=query40.rptdesign'">Empleados	con mas de 40hs</a></li>
+							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=default.rptdesign'">Empleados	con mas de 40hs</a></li>
 						<li><a href="#"
-							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=DoubleProject.rptdesign'">Empleados con mas de 1 proyecto</a></li>
+							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=forty.rptdesign'">Empleados con mas de 1 proyecto</a></li>
 						<li><a href="#"
 							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=forty.rptdesign'">Empleados sin los feriados cargados</a></li>
 					</ul>
@@ -105,50 +119,163 @@
 
 			<div id="menu3" class="tab-pane fade">
 
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Crear nuevo usuario</button>
+			<div id="exampleModal">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCrear" data-whatever="@mdo">Crear Nuevo Usuario</button>
 
-				<div class="modal fade" id="exampleModal" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+				<div class="modal fade" id="modalCrear" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="exampleModalLabel">New message</h4>
+								<h4 class="modal-title" id="exampleModalLabel">Nuevo Usuario</h4>
 							</div>
 							<div class="modal-body">
 								<form>
 									<div class="form-group">
-										<label for="recipient-name" class="control-label">Recipient:</label>
+										<label for="recipient-name" class="control-label">Nombre:</label>
 										<input type="text" class="form-control" id="recipient-name">
 									</div>
 									<div class="form-group">
-										<label for="message-text" class="control-label">Message:</label>
-										<textarea class="form-control" id="message-text"></textarea>
+										<label for="recipient-surname" class="control-label">Apellido:</label>
+										<input type="text" class="form-control" id="recipient-surname">
 									</div>
+									<div class="form-group">
+										<label for="recipient-mail" class="control-label">Mail:</label>
+										<input type="text" class="form-control" id="recipient-mail">
+									</div>									
+									<div class="form-group">
+										<label for="recipient-username" class="control-label">Usuario:</label>
+										<input type="text" class="form-control" id="recipient-username">
+									</div>
+									<div class="form-group">
+										<label for="recipient-password" class="control-label">Contraseña:</label>
+										<input type="password" class="form-control" id="recipient-password">
+									</div>
+									<div class="radio">
+									<h4>Accesos del Usuario</h4>
+
+
+									<div>
+									<label class="checkbox-inline">
+									  <input type="checkbox" id="inlineCheckbox1" value="option1"> Generar Reportes
+									</label>
+									<label class="checkbox-inline">
+									  <input type="checkbox" id="inlineCheckbox2" value="option2"> Crear Usuarios
+									</label>
+									</div>
+									<div>
+									<label class="checkbox-inline">
+									  <input type="checkbox" id="inlineCheckbox3" value="option3"> Administrar Feriados
+									</label>
+									<label class="checkbox-inline">
+									  <input type="checkbox" id="inlineCheckbox3" value="option3"> Cargar archivos
+									</label>
+									</div>
+								
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Send
-									message</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+								<button type="button" class="btn btn-primary">Crear</button>
 							</div>
 						</div>
 					</div>
 				</div>
+				</div>
+				
+				
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myOtherModal">
+				  Modificar Usuario
+				</button>
+				
+				<!-- Modal -->
+				<div class="modal fade" id="myOtherModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				        <h4 class="modal-title" id="myModalLabel">Modificaciones</h4>
+				      </div>
+				      <div class="modal-body">
 
-
+						<div class="dropdown">
+							<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown">Seleccionar Usuario<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu btn-block">
+								<%
+									Employee ebo = new Employee();
+									java.util.List<String> list = new ArrayList();
+									list.add("hola");
+									list.add("chau");
+									
+								 %>
+								
+								<li><a href="#">Empleados</a>
+								<a href="#"> <%for(String txt : list ){%>
+  										<li><%=txt%><li>
+									<%}%></a>
+								</li>
+								
+								 
+								
+							</ul>
+						</div>
+						
+						
+						<div>
+							<label class="checkbox-inline">
+							  <input type="checkbox" id="inlineCheckbox1" value="option1"> Generar Reportes
+							</label>
+							<label class="checkbox-inline">
+							  <input type="checkbox" id="inlineCheckbox2" value="option2"> Crear Usuarios
+							</label>
+						</div>
+						<div>
+							<label class="checkbox-inline">
+							  <input type="checkbox" id="inlineCheckbox3" value="option3"> Administrar Feriados
+							</label>
+							<label class="checkbox-inline">
+							  <input type="checkbox" id="inlineCheckbox3" value="option3"> Cargar archivos
+							</label>
+						</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Save changes</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 			</div>
-
 		</div>
-
-
 	</div>
 	
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+	$(".modal").on('hidden.bs.modal', function (e) {
+		$(this).find("input,textarea,select").val('').end();
+		$('input:checkbox').removeAttr('checked');
+		})
+	})
+
+	function formSubmit() {
+		document.getElementById("logoutForm").submit();
+	}
+
+
+</script>
+
+
 
 
 </body>

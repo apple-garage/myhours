@@ -9,6 +9,7 @@ import com.ibm.country.model.Country;
 import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.employee.dao.EmployeeDao;
 import com.ibm.employee.model.Employee;
+import com.ibm.manager.model.Manager;
 
 @Service("employeeBo")
 public class EmployeeBoImpl implements EmployeeBo{
@@ -45,10 +46,10 @@ public class EmployeeBoImpl implements EmployeeBo{
 	}
 
 	@Override
-	public Employee getEmployee(String id, String name, Country country, String sector, String jrss) {
+	public Employee getEmployee(String id, String name, Country country, String sector, String jrss, Manager manager) {
 		Employee aEmployee = findById(id);
 		if(aEmployee==null){
-			aEmployee = new Employee(id, name, country, sector, jrss);
+			aEmployee = new Employee(id, name, country, sector, jrss, manager);
 			save(aEmployee);
 		}
 		return aEmployee;

@@ -1,7 +1,9 @@
 package com.ibm.work.dao.impl;
 
+
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,11 @@ public class WorkDaoImpl extends CustomHibernateDaoSupport implements WorkDao{
 	public List<Work> findAll(){
 		List<Work> worList = getSessionFactory().getCurrentSession().createCriteria(Work.class).list();
 		return worList;
+	}
+	@Transactional
+	public void loadWorkHistory(String date){
+		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("call load_work_history('"+date+"')");
+		query.executeUpdate();
 	}
 
 }

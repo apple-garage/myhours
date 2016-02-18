@@ -31,7 +31,7 @@ public class WeekDaoImpl extends CustomHibernateDaoSupport implements WeekDao{
 	@Transactional
 	public Week findByDate(String endDate){
 		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select * from week where END_DATE = str_to_date('"+endDate+"','%d %b %Y')");
-		query.addEntity(Week.class);
+		query.addEntity(Week.class) ;
 		Week aWeek = (Week) query.uniqueResult();
 		return aWeek; 
 	}

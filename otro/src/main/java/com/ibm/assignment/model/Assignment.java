@@ -30,21 +30,18 @@ public class Assignment implements java.io.Serializable{
 	private String industry;
 	@Column(name = "CATEGORY")
 	private String category;
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ID_MANAGER")
-	private Manager manager;
 	
 	public Assignment(){
 	}
 	
-	public Assignment(int id, String projectName, String clientName, Country country, String industry, String category, Manager manager) {
+	public Assignment(int id, String projectName, String clientName, Country country, String industry, String category) {
 		this.id = id;
 		this.projectName = projectName;
 		this.clientName = clientName;
 		this.country = country;
 		this.industry = industry;
 		this.category = category;
-		this.manager = manager;
+
 	}
 	
 	public int getId() {
@@ -83,17 +80,11 @@ public class Assignment implements java.io.Serializable{
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public Manager getManager() {
-		return manager;
-	}
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
 
 	@Override
 	public String toString() {
 		return "Assignment [id=" + id + ", projectName=" + projectName + ", clientName=" + clientName + ", country="
-				+ country + ", industry=" + industry + ", category=" + category + ", manager=" + manager + "]";
+				+ country + ", industry=" + industry + ", category=" + category + "]";
 	}
 
 	

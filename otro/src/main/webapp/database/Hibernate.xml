@@ -27,6 +27,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				<value>com.ibm.country.model.Country</value>
 				<value>com.ibm.manager.model.Manager</value>
 				<value>com.ibm.assignment.model.Assignment</value>
+				<value>com.ibm.excel.model.Excel</value>
 			</list>
 		</property>
     </bean>
