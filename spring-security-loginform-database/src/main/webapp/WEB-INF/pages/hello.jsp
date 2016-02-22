@@ -91,11 +91,11 @@
 					</button>
 					<ul class="dropdown-menu btn-block">
 						<li><a href="#"
-							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=default.rptdesign'">Empleados	con mas de 40hs</a></li>
+							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=query40.rptdesign'">Empleados	con mas de 40hs</a></li>
 						<li><a href="#"
-							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=forty.rptdesign'">Empleados con mas de 1 proyecto</a></li>
+							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=multiProjects.rptdesign'">Empleados con mas de 1 proyecto</a></li>
 						<li><a href="#"
-							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=forty.rptdesign'">Empleados sin los feriados cargados</a></li>
+							onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=holidays.rptdesign'">Empleados sin los feriados cargados</a></li>
 					</ul>
 				</div>
 
