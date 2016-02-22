@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">79</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">79</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">79</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">96</property>
     <parameters>
-        <cascading-parameter-group name="porHoras" id="74">
-            <property name="dataSet">qpais</property>
+        <cascading-parameter-group name="filtros" id="74">
+            <property name="dataSet">queryPais</property>
             <property name="dataSetMode">multiple</property>
             <parameters>
                 <scalar-parameter name="pais" id="75">
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
-                    <property name="dataSetName">qpais</property>
+                    <property name="dataSetName">queryPais</property>
                     <expression name="valueExpr">row["cid"]</expression>
                     <expression name="labelExpr">row["cname"]</expression>
                     <expression name="sortByColumn">dataSetRow["cid"]</expression>
@@ -31,7 +45,7 @@
                 <scalar-parameter name="manager" id="76">
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
-                    <property name="dataSetName">qmanager</property>
+                    <property name="dataSetName">queryManager</property>
                     <expression name="valueExpr">row["mid"]</expression>
                     <expression name="labelExpr">row["mname"]</expression>
                     <expression name="sortByColumn">dataSetRow["mid"]</expression>
@@ -46,30 +60,6 @@
                 </scalar-parameter>
             </parameters>
         </cascading-parameter-group>
-        <scalar-parameter name="horas" id="327">
-            <property name="valueType">static</property>
-            <property name="dataType">integer</property>
-            <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">1</value>
-            </simple-property-list>
-            <list-property name="selectionList">
-                <structure>
-                    <property name="value">1</property>
-                    <property name="label">Empleados con más de 40 horas por semana</property>
-                </structure>
-                <structure>
-                    <property name="value">-1</property>
-                    <property name="label">Empleados con menos de 40 horas por semana</property>
-                </structure>
-            </list-property>
-            <property name="paramType">simple</property>
-            <property name="controlType">radio-button</property>
-            <property name="fixedOrder">true</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
     </parameters>
     <data-sources>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source" id="4">
@@ -96,117 +86,7 @@
         </oda-data-source>
     </data-sources>
     <data-sets>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qpais" id="71">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">cid</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">cid</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">cid</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">cname</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">cname</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">cname</text-property>
-                </structure>
-            </list-property>
-            <list-property name="parameters"/>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">cid</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">cname</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">Data Source</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">cid</property>
-                    <property name="nativeName">cid</property>
-                    <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">cname</property>
-                    <property name="nativeName">cname</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select 0 cid,'ALL' cname
-
-UNION
-
-select id cid , country cname
-from country]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>2.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>ID</design:name>
-              <design:position>1</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
-            <design:precision>11</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>ID</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>ID</design:label>
-            <design:formattingHints>
-              <design:displaySize>11</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>COUNTRY</design:name>
-              <design:position>2</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>45</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>COUNTRY</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>COUNTRY</design:label>
-            <design:formattingHints>
-              <design:displaySize>45</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qmanager" id="72">
-            <property name="nullsOrdering">nulls lowest</property>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="queryManager" id="73">
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">mid</property>
@@ -324,49 +204,21 @@ if (params["pais"] != 0){
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="test" id="77">
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="queryPais" id="70">
             <list-property name="columnHints">
                 <structure>
-                    <property name="columnName">SN</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">SN</text-property>
-                    <text-property name="heading">SN</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">ESCLAVO</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">ESCLAVO</text-property>
-                    <text-property name="heading">ESCLAVO</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">NUM_SEMANA</property>
+                    <property name="columnName">cid</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">NUM_SEMANA</text-property>
-                    <text-property name="heading">NUM_SEMANA</text-property>
+                    <text-property name="displayName">cid</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">cid</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">END_DATE</property>
+                    <property name="columnName">cname</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">END_DATE</text-property>
-                    <text-property name="heading">END_DATE</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">PAIS</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">PAIS</text-property>
-                    <text-property name="heading">PAIS</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">PROYECTO</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">PROYECTO</text-property>
-                    <text-property name="heading">PROYECTO</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">MANAGER</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">MANAGER</text-property>
-                    <text-property name="heading">MANAGER</text-property>
+                    <text-property name="displayName">cname</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">cname</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -374,37 +226,12 @@ if (params["pais"] != 0){
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">SN</property>
-                        <property name="dataType">string</property>
+                        <property name="name">cid</property>
+                        <property name="dataType">decimal</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">ESCLAVO</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">NUM_SEMANA</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">4</property>
-                        <property name="name">END_DATE</property>
-                        <property name="dataType">date</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
-                        <property name="name">PAIS</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">6</property>
-                        <property name="name">PROYECTO</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">7</property>
-                        <property name="name">MANAGER</property>
+                        <property name="name">cname</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -413,61 +240,25 @@ if (params["pais"] != 0){
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
-                    <property name="name">SN</property>
-                    <property name="nativeName">ID_EMPLOYEE</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
+                    <property name="name">cid</property>
+                    <property name="nativeName">cid</property>
+                    <property name="dataType">decimal</property>
+                    <property name="nativeDataType">-5</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">ESCLAVO</property>
-                    <property name="nativeName">NAME</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">NUM_SEMANA</property>
-                    <property name="nativeName">NUM_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">4</property>
-                    <property name="name">END_DATE</property>
-                    <property name="nativeName">END_DATE</property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
-                    <property name="name">PAIS</property>
-                    <property name="nativeName">COUNTRY</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">6</property>
-                    <property name="name">PROYECTO</property>
-                    <property name="nativeName">PROJECT_NAME</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">7</property>
-                    <property name="name">MANAGER</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="name">cname</property>
+                    <property name="nativeName">cname</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select wk.id_employee as SN, e.name as ESCLAVO, w.num_week as NUM_SEMANA, w.end_date as END_DATE, c.country as PAIS, a.project_name as PROYECTO, m.name as MANAGER
-from work as wk, employee as e, country as c, assignment as a, manager as m, week as w
-where wk.id_employee = e.id
-and wk.id_week = w.id
-and wk.id_assignment = a.id
-and a.id_manager = m.id
-and c.id = e.id_country]]></xml-property>
+            <xml-property name="queryText"><![CDATA[select 0 cid,'ALL' cname
+
+UNION
+
+select id cid , country cname
+from country]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -477,42 +268,21 @@ and c.id = e.id_country]]></xml-property>
         <design:resultColumnDefinitions>
           <design:attributes>
             <design:identifier>
-              <design:name>ID_EMPLOYEE</design:name>
+              <design:name>ID</design:name>
               <design:position>1</design:position>
             </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>10</design:precision>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
             <design:scale>0</design:scale>
             <design:nullability>NotNullable</design:nullability>
             <design:uiHints>
-              <design:displayName>id_employee</design:displayName>
+              <design:displayName>ID</design:displayName>
             </design:uiHints>
           </design:attributes>
           <design:usageHints>
-            <design:label>id_employee</design:label>
+            <design:label>ID</design:label>
             <design:formattingHints>
-              <design:displaySize>10</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>NAME</design:name>
-              <design:position>2</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>50</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>name</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>name</design:label>
-            <design:formattingHints>
-              <design:displaySize>50</design:displaySize>
+              <design:displaySize>11</design:displaySize>
             </design:formattingHints>
           </design:usageHints>
         </design:resultColumnDefinitions>
@@ -520,60 +290,18 @@ and c.id = e.id_country]]></xml-property>
           <design:attributes>
             <design:identifier>
               <design:name>COUNTRY</design:name>
-              <design:position>3</design:position>
+              <design:position>2</design:position>
             </design:identifier>
             <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
             <design:precision>45</design:precision>
             <design:scale>0</design:scale>
             <design:nullability>Nullable</design:nullability>
             <design:uiHints>
-              <design:displayName>country</design:displayName>
+              <design:displayName>COUNTRY</design:displayName>
             </design:uiHints>
           </design:attributes>
           <design:usageHints>
-            <design:label>country</design:label>
-            <design:formattingHints>
-              <design:displaySize>45</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>PROJECT_NAME</design:name>
-              <design:position>4</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>45</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>project_name</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>project_name</design:label>
-            <design:formattingHints>
-              <design:displaySize>45</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>NAME</design:name>
-              <design:position>5</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>45</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>name</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>name</design:label>
+            <design:label>COUNTRY</design:label>
             <design:formattingHints>
               <design:displaySize>45</design:displaySize>
             </design:formattingHints>
@@ -585,7 +313,7 @@ and c.id = e.id_country]]></xml-property>
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="forty" id="78">
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="get2projects" id="79">
             <property name="nullsOrdering">nulls lowest</property>
             <list-property name="columnHints">
                 <structure>
@@ -599,19 +327,34 @@ and c.id = e.id_country]]></xml-property>
                     <property name="columnName">ename</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">ename</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">ename</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">cname</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">cname</text-property>
-                    <text-property name="heading">cname</text-property>
+                    <property name="columnName">wid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">wid</text-property>
+                    <text-property name="heading">wid</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">wend</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">wend</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">wend</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">project</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">project</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">project</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">cat</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">cat</text-property>
+                    <text-property name="heading">cat</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">hours</property>
@@ -621,16 +364,30 @@ and c.id = e.id_country]]></xml-property>
                     <text-property name="heading">hours</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">project</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">project</text-property>
-                    <text-property name="heading">project</text-property>
+                    <property name="columnName">cid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">cid</text-property>
+                    <text-property name="heading">cid</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">manager</property>
+                    <property name="columnName">countryname</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">manager</text-property>
-                    <text-property name="heading">manager</text-property>
+                    <text-property name="displayName">countryname</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">countryname</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">mid</text-property>
+                    <text-property name="heading">mid</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">manager_name</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">manager_name</text-property>
+                    <property name="onColumnLayout">false</property>
+                    <text-property name="heading">manager_name</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -648,8 +405,8 @@ and c.id = e.id_country]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">cname</property>
-                        <property name="dataType">string</property>
+                        <property name="name">wid</property>
+                        <property name="dataType">integer</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
@@ -658,161 +415,161 @@ and c.id = e.id_country]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
-                        <property name="name">hours</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">6</property>
                         <property name="name">project</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
+                        <property name="position">6</property>
+                        <property name="name">cat</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
                         <property name="position">7</property>
-                        <property name="name">manager</property>
+                        <property name="name">hours</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">cid</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">countryname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">mid</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">manager_name</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
             </structure>
-            <method name="beforeOpen"><![CDATA[var fromQuery = "";
-var finalQueryAdd = "";
-var operador;
-
-//this.queryText += " GROUP BY wk.id_employee, wk.id_week HAVING SUM(wk.hours_x_week) > 40";
-
-if(params["horas"] == -1){
-	operador = "<";
-}else{
- 	operador = ">";
- }
- 
-// query original
-// SELECT e.id as eid, e.name as ename, c.country as cname, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
-// FROM work as wk, week as w, employee as e, country as c, manager as m, assignment as a
- 
-//	para el JOIN mas abajo 
-fromQuery = "SELECT e.id AS a1, w.id AS a2";
-fromQuery += " FROM work wk, employee e, week w";
-fromQuery += " WHERE wk.id_week = w.id";
-fromQuery += " AND wk.id_employee = e.id";
-fromQuery += " GROUP BY wk.id_employee, wk.id_week";
-fromQuery += " HAVING SUM(wk.hours_x_week) " + operador + " 40";
-
-
-//finalQueryAdd = "SELECT wk.*";
-finalQueryAdd += /*" FROM work wk*/", (" + fromQuery + ")A";
-finalQueryAdd += " WHERE A.a1 = wk.id_employee";
-finalQueryAdd += " AND A.a2 = wk.id_week";
-finalQueryAdd += " AND wk.id_employee = e.id";	//	**									**
-finalQueryAdd += " AND wk.id_week = w.id";		//	**									**
-finalQueryAdd += " AND c.id = e.id_country";	//	**	Relaciones de las otras tablas	**
-finalQueryAdd += " AND m.id = e.id_manager";	//	**									**
-finalQueryAdd += " AND a.id = wk.id_assignment";//	**									**
-//finalQueryAdd += " ORDER BY 2,3";
-
-this.queryText += finalQueryAdd;
-
-// QUERY VIEJITA
-/*
-SELECT e.id as eid, e.name as ename, w.num_week as wnum, w.end_date as wend, wk.hours_x_week as hours, c.country as cname
-FROM work as wk, week as w, employee as e, country as c
-WHERE wk.id_employee = e.id
-AND wk.id_week = w.id
-AND c.id = e.id_country
-
-*/
-
-
-/*
-//	NO VA
-
-hoursQuery = "SELECT e.id, w.id";
-hoursQuery += " FROM work as wk, week as w, employee as e";
-hoursQuery += " WHERE wk.id_employee = e.id";
-hoursQuery += " AND wk.id_week = w.id";
-hoursQuery += " GROUP BY wk.id_employee, wk.id_week";
-hoursQuery += " HAVING SUM(wk.hours_x_week) > 40";
-
-hoursWeekQuery = "SELECT id_week FROM ( " + hoursQuery +") as hwt";
-hoursEmpQuery = "SELECT id_employee FROM ( " + hoursQuery +") as het";
-
-this.queryText += " AND wk.id_week IN (" + hoursWeekQuery + ")";
-this.queryText += " AND wk.id_employee IN (" + hoursEmpQuery + ")";
-*/
-
-if (params["pais"] != 0){
-	this.queryText += " AND e.id_country = '" + params["pais"] + "'";
+            <method name="beforeOpen"><![CDATA[if(params["pais"] !=0 )
+{
+	this.queryText += " and B.cid = '" + params["pais"] + "' " ;
+}
+if (params["manager"] != 0)
+{
+	this.queryText += " and B.mid = '" + params["manager"] + "' ";
 }
 
-if (params["manager"] != 0){
-	this.queryText += " AND e.id_manager = '" + params["manager"] + "'";
-}
-
-this.queryText += " ORDER BY cname, eid, wend";]]></method>
+this.queryText += " order by B.cid, B.eid, B.wend"]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
                     <property name="name">eid</property>
-                    <property name="nativeName">ID</property>
+                    <property name="nativeName">eid</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">ename</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="nativeName">ename</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">cname</property>
-                    <property name="nativeName">COUNTRY</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
+                    <property name="name">wid</property>
+                    <property name="nativeName">wid</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">wend</property>
-                    <property name="nativeName">END_DATE</property>
+                    <property name="nativeName">wend</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
-                    <property name="name">hours</property>
-                    <property name="nativeName">HOURS_X_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
+                    <property name="name">project</property>
+                    <property name="nativeName">project</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">6</property>
-                    <property name="name">project</property>
-                    <property name="nativeName">PROJECT_NAME</property>
+                    <property name="name">cat</property>
+                    <property name="nativeName">cat</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">7</property>
-                    <property name="name">manager</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="name">hours</property>
+                    <property name="nativeName">hours</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">cid</property>
+                    <property name="nativeName">cid</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">countryname</property>
+                    <property name="nativeName">countryname</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">mid</property>
+                    <property name="nativeName">mid</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">manager_name</property>
+                    <property name="nativeName">manager_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
-FROM work as wk, week as w, employee as e, country as c, manager as m, assignment as a]]></xml-property>
+            <xml-property name="queryText"><![CDATA[SELECT B.* FROM
+
+	(SELECT wk.id_employee as eid, e.name as ename, wk.ID_WEEK as wid, w.end_date as wend, a.project_name as project, a.category as cat, wk.hours_x_week as hours, e.id_country as cid, c.country as countryname, m.id as mid, m.name as manager_name
+	FROM `work` as wk
+	
+	JOIN `employee` as e ON wk.id_employee = e.id
+	JOIN `week` as w ON w.ID = wk.ID_WEEK
+	JOIN `country` as c ON c.ID = e.ID_COUNTRY
+	JOIN `assignment` as a ON wk.ID_ASSIGNMENT = a.ID
+	JOIN `manager` as m ON e.ID_MANAGER = m.ID) AS B
+	
+JOIN 
+	(select e.id as eid, wk.id_week as wid, a.category as cat, GROUP_CONCAT(a.project_name)
+	from `work` as wk, `employee` as e, `assignment` as a
+	where e.ID = wk.ID_EMPLOYEE
+	and wk.ID_ASSIGNMENT = a.ID
+	and a.CATEGORY <> 'Holiday'
+	and a.CATEGORY <> 'Vacation'
+	and a.CATEGORY <> 'Time Not Worked'
+	and a.CATEGORY <> 'Illness'
+	group by 1,2,3
+	having count(*) > 1) AS A
+	ON A.eid = B.eid
+		AND A.wid = B.wid
+		AND A.cat = B.cat
+]]></xml-property>
         </oda-data-set>
     </data-sets>
-    <styles>
-        <style name="background" id="326">
-            <property name="backgroundAttachment">fixed</property>
-            <property name="backgroundImage">accenture.png</property>
-        </style>
-    </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
-            <property name="backgroundAttachment">fixed</property>
             <property name="backgroundColor">white</property>
             <page-header>
                 <grid id="316">
@@ -846,15 +603,15 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                             </label>
                         </cell>
                     </row>
-                    <row id="356">
+                    <row id="421">
                         <property name="verticalAlign">middle</property>
-                        <cell id="357">
+                        <cell id="422">
                             <property name="colSpan">2</property>
                             <property name="rowSpan">1</property>
                             <text-data id="351">
                                 <property name="fontSize">16pt</property>
                                 <property name="textAlign">center</property>
-                                <expression name="valueExpr">params["horas"].displayText</expression>
+                                <expression name="valueExpr">"Empleados con más de un proyecto asignado"</expression>
                                 <property name="contentType">html</property>
                             </text-data>
                             <label id="288">
@@ -963,11 +720,12 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
         </simple-master-page>
     </page-setup>
     <body>
-        <table id="223">
-            <property name="pageBreakAfter">auto</property>
-            <property name="pageBreakBefore">auto</property>
-            <property name="pageBreakInside">auto</property>
-            <property name="dataSet">forty</property>
+        <table id="356">
+            <property name="borderBottomStyle">none</property>
+            <property name="borderLeftStyle">none</property>
+            <property name="borderRightStyle">none</property>
+            <property name="borderTopStyle">none</property>
+            <property name="dataSet">get2projects</property>
             <list-property name="boundDataColumns">
                 <structure>
                     <property name="name">eid</property>
@@ -982,22 +740,10 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">cname</property>
-                    <text-property name="displayName">cname</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["cname"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
                     <property name="name">wend</property>
                     <text-property name="displayName">wend</text-property>
                     <expression name="expression" type="javascript">dataSetRow["wend"]</expression>
                     <property name="dataType">date</property>
-                </structure>
-                <structure>
-                    <property name="name">hours</property>
-                    <text-property name="displayName">hours</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["hours"]</expression>
-                    <property name="dataType">integer</property>
                 </structure>
                 <structure>
                     <property name="name">project</property>
@@ -1006,191 +752,109 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">manager</property>
-                    <text-property name="displayName">manager</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["manager"]</expression>
+                    <property name="name">hours</property>
+                    <text-property name="displayName">hours</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["hours"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">countryname</property>
+                    <text-property name="displayName">countryname</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["countryname"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">sumh</property>
-                    <text-property name="displayName">tabletotals</text-property>
-                    <property name="dataType">float</property>
-                    <property name="aggregateFunction">SUM</property>
-                    <list-property name="arguments">
-                        <structure>
-                            <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["hours"]</expression>
-                        </structure>
-                    </list-property>
-                    <property name="allowExport">true</property>
+                    <property name="name">manager_name</property>
+                    <text-property name="displayName">manager_name</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["manager_name"]</expression>
+                    <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">grp_count_w</property>
-                    <text-property name="displayName">group_count_week</text-property>
+                    <property name="name">total_emp</property>
+                    <text-property name="displayName">total_employees</text-property>
                     <property name="dataType">integer</property>
-                    <simple-property-list name="aggregateOn">
-                        <value>by_employee</value>
-                    </simple-property-list>
                     <property name="aggregateFunction">COUNTDISTINCT</property>
                     <list-property name="arguments">
                         <structure>
                             <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["wend"]</expression>
+                            <expression name="value" type="javascript">row["eid"]</expression>
                         </structure>
                     </list-property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">sum_grp_week</property>
-                    <text-property name="displayName">sum_grp_week</text-property>
-                    <property name="dataType">float</property>
-                    <property name="aggregateFunction">SUM</property>
-                    <list-property name="arguments">
-                        <structure>
-                            <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["grp_count_w"]</expression>
-                        </structure>
-                    </list-property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">overflow</property>
-                    <text-property name="displayName">hours_overflow</text-property>
-                    <expression name="expression" type="javascript">row["sumh"] - row["sum_grp_week"]*40</expression>
-                    <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
             </list-property>
-            <property name="pageBreakInterval">40</property>
-            <column id="262">
+            <column id="390">
+                <property name="suppressDuplicates">true</property>
+                <property name="textAlign">center</property>
+            </column>
+            <column id="391">
                 <property name="suppressDuplicates">true</property>
             </column>
-            <column id="263">
+            <column id="392">
                 <property name="suppressDuplicates">true</property>
             </column>
-            <column id="264">
-                <property name="suppressDuplicates">true</property>
-            </column>
-            <column id="265"/>
-            <column id="266"/>
-            <column id="267"/>
-            <column id="268">
+            <column id="393"/>
+            <column id="394"/>
+            <column id="395"/>
+            <column id="416">
                 <property name="suppressDuplicates">true</property>
             </column>
             <header>
-                <row id="224">
+                <row id="357">
                     <property name="backgroundColor">#B4B4B4</property>
-                    <cell id="225">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <cell id="358">
+                        <property name="backgroundAttachment">scroll</property>
+                        <property name="backgroundPositionX">0%</property>
+                        <property name="backgroundPositionY">0%</property>
+                        <property name="backgroundRepeat">repeat</property>
+                        <property name="fontFamily">serif</property>
+                        <property name="fontSize">10pt</property>
+                        <property name="fontWeight">normal</property>
+                        <property name="fontStyle">normal</property>
+                        <property name="fontVariant">normal</property>
+                        <property name="color">black</property>
+                        <property name="textLineThrough">none</property>
+                        <property name="textOverline">none</property>
+                        <property name="textUnderline">none</property>
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="marginTop">0pt</property>
+                        <property name="marginLeft">0pt</property>
+                        <property name="marginBottom">0pt</property>
+                        <property name="marginRight">0pt</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
                         <property name="textAlign">center</property>
-                        <label id="226">
-                            <text-property name="text">Serial Number</text-property>
-                        </label>
-                    </cell>
-                    <cell id="227">
-                        <property name="textAlign">center</property>
-                        <label id="228">
-                            <text-property name="text">Name</text-property>
-                        </label>
-                    </cell>
-                    <cell id="229">
-                        <property name="textAlign">center</property>
-                        <label id="230">
-                            <text-property name="text">Country</text-property>
-                        </label>
-                    </cell>
-                    <cell id="231">
-                        <property name="textAlign">center</property>
-                        <label id="232">
-                            <text-property name="text">End Date</text-property>
-                        </label>
-                    </cell>
-                    <cell id="233">
-                        <property name="textAlign">center</property>
-                        <label id="234">
-                            <text-property name="text">Hours</text-property>
-                        </label>
-                    </cell>
-                    <cell id="235">
-                        <property name="textAlign">center</property>
-                        <label id="236">
-                            <text-property name="text">Assignment</text-property>
-                        </label>
-                    </cell>
-                    <cell id="237">
-                        <property name="textAlign">center</property>
-                        <label id="238">
-                            <text-property name="text">Manager</text-property>
-                        </label>
-                    </cell>
-                </row>
-            </header>
-            <group id="269">
-                <property name="groupName">by_employee</property>
-                <expression name="keyExpr" type="javascript">row["eid"]</expression>
-                <structure name="toc">
-                    <expression name="expressionValue" type="javascript">row["eid"]</expression>
-                </structure>
-                <property name="repeatHeader">false</property>
-                <property name="hideDetail">false</property>
-                <property name="pageBreakAfter">auto</property>
-                <property name="pageBreakBefore">auto</property>
-                <property name="pageBreakInside">avoid</property>
-                <header>
-                    <row id="270">
+                        <property name="letterSpacing">normal</property>
+                        <property name="lineHeight">normal</property>
+                        <property name="orphans">2</property>
+                        <property name="textTransform">none</property>
+                        <property name="whiteSpace">normal</property>
+                        <property name="widows">2</property>
+                        <property name="wordSpacing">normal</property>
+                        <property name="display">block</property>
+                        <property name="pageBreakAfter">auto</property>
+                        <property name="pageBreakBefore">auto</property>
                         <property name="pageBreakInside">auto</property>
-                        <cell id="271">
-                            <property name="paddingTop">4pt</property>
-                        </cell>
-                        <cell id="272"/>
-                        <cell id="273"/>
-                        <cell id="274"/>
-                        <cell id="275"/>
-                        <cell id="276"/>
-                        <cell id="277"/>
-                    </row>
-                </header>
-                <footer>
-                    <row id="278">
-                        <property name="borderBottomColor">#808080</property>
-                        <property name="borderBottomStyle">solid</property>
-                        <property name="borderBottomWidth">thin</property>
-                        <property name="pageBreakInside">auto</property>
-                        <cell id="279">
-                            <property name="paddingBottom">4pt</property>
-                        </cell>
-                        <cell id="280"/>
-                        <cell id="281"/>
-                        <cell id="282"/>
-                        <cell id="283"/>
-                        <cell id="284"/>
-                        <cell id="285"/>
-                    </row>
-                </footer>
-            </group>
-            <detail>
-                <row id="239">
-                    <property name="whiteSpace">nowrap</property>
-                    <property name="pageBreakInside">auto</property>
-                    <list-property name="highlightRules">
-                        <structure>
-                            <property name="operator">eq</property>
-                            <property name="backgroundColor">#EBEBEB</property>
-                            <expression name="testExpr" type="javascript">row[0] % 2</expression>
-                            <simple-property-list name="value1">
-                                <value type="javascript">0.0</value>
-                            </simple-property-list>
-                        </structure>
-                    </list-property>
-                    <cell id="240">
-                        <property name="textAlign">center</property>
-                        <data id="287">
+                        <property name="showIfBlank">false</property>
+                        <property name="canShrink">false</property>
+                        <property name="overflow">hidden</property>
+                        <label id="359">
                             <property name="backgroundAttachment">scroll</property>
                             <property name="backgroundPositionX">0%</property>
                             <property name="backgroundPositionY">0%</property>
                             <property name="backgroundRepeat">repeat</property>
-                            <property name="fontFamily">"Courier New"</property>
+                            <property name="fontFamily">serif</property>
                             <property name="fontSize">10pt</property>
-                            <property name="fontWeight">bold</property>
+                            <property name="fontWeight">normal</property>
                             <property name="fontStyle">normal</property>
                             <property name="fontVariant">normal</property>
                             <property name="color">black</property>
@@ -1217,6 +881,189 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                             <property name="paddingLeft">1pt</property>
                             <property name="paddingBottom">1pt</property>
                             <property name="paddingRight">1pt</property>
+                            <property name="textAlign">center</property>
+                            <property name="letterSpacing">normal</property>
+                            <property name="lineHeight">normal</property>
+                            <property name="orphans">2</property>
+                            <property name="textTransform">none</property>
+                            <property name="whiteSpace">normal</property>
+                            <property name="widows">2</property>
+                            <property name="wordSpacing">normal</property>
+                            <property name="display">block</property>
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="showIfBlank">false</property>
+                            <property name="canShrink">false</property>
+                            <property name="overflow">hidden</property>
+                            <text-property name="text">SERIAL ID</text-property>
+                        </label>
+                    </cell>
+                    <cell id="360">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="361">
+                            <property name="backgroundAttachment">scroll</property>
+                            <property name="backgroundPositionX">0%</property>
+                            <property name="backgroundPositionY">0%</property>
+                            <property name="backgroundRepeat">repeat</property>
+                            <property name="fontFamily">serif</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">normal</property>
+                            <property name="fontStyle">normal</property>
+                            <property name="fontVariant">normal</property>
+                            <property name="color">black</property>
+                            <property name="textLineThrough">none</property>
+                            <property name="textOverline">none</property>
+                            <property name="textUnderline">none</property>
+                            <property name="borderBottomColor">black</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">black</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="borderRightColor">black</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderRightWidth">medium</property>
+                            <property name="borderTopColor">black</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="marginLeft">0pt</property>
+                            <property name="marginBottom">0pt</property>
+                            <property name="marginRight">0pt</property>
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingLeft">1pt</property>
+                            <property name="paddingBottom">1pt</property>
+                            <property name="paddingRight">1pt</property>
+                            <property name="textAlign">center</property>
+                            <property name="letterSpacing">normal</property>
+                            <property name="lineHeight">normal</property>
+                            <property name="orphans">2</property>
+                            <property name="textTransform">none</property>
+                            <property name="whiteSpace">normal</property>
+                            <property name="widows">2</property>
+                            <property name="wordSpacing">normal</property>
+                            <property name="display">block</property>
+                            <property name="pageBreakAfter">auto</property>
+                            <property name="pageBreakBefore">auto</property>
+                            <property name="pageBreakInside">auto</property>
+                            <property name="showIfBlank">false</property>
+                            <property name="canShrink">false</property>
+                            <property name="overflow">hidden</property>
+                            <text-property name="text">NAME</text-property>
+                        </label>
+                    </cell>
+                    <cell id="362">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="363">
+                            <text-property name="text">COUNTRY</text-property>
+                        </label>
+                    </cell>
+                    <cell id="364">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="365">
+                            <text-property name="text">PROJECT NAME</text-property>
+                        </label>
+                    </cell>
+                    <cell id="366">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="367">
+                            <text-property name="text">WEEK DATE</text-property>
+                        </label>
+                    </cell>
+                    <cell id="368">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="369">
+                            <text-property name="text">HOURS WORKED</text-property>
+                        </label>
+                    </cell>
+                    <cell id="413">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="417">
+                            <text-property name="text">MANAGER</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="370">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="textAlign">center</property>
+                    <list-property name="highlightRules">
+                        <structure>
+                            <property name="operator">eq</property>
+                            <property name="backgroundColor">#DADEE7</property>
+                            <expression name="testExpr" type="javascript">row[0] % 2</expression>
+                            <simple-property-list name="value1">
+                                <value type="javascript">0</value>
+                            </simple-property-list>
+                        </structure>
+                    </list-property>
+                    <cell id="371">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="372">
+                            <property name="backgroundAttachment">scroll</property>
+                            <property name="backgroundPositionX">0%</property>
+                            <property name="backgroundPositionY">0%</property>
+                            <property name="backgroundRepeat">repeat</property>
+                            <property name="fontFamily">"Courier New"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="fontStyle">normal</property>
+                            <property name="fontVariant">normal</property>
+                            <property name="color">black</property>
+                            <property name="textLineThrough">none</property>
+                            <property name="textOverline">none</property>
+                            <property name="textUnderline">none</property>
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="marginTop">0pt</property>
+                            <property name="marginLeft">0pt</property>
+                            <property name="marginBottom">0pt</property>
+                            <property name="marginRight">0pt</property>
+                            <property name="paddingTop">1pt</property>
+                            <property name="paddingLeft">1pt</property>
+                            <property name="paddingBottom">1pt</property>
+                            <property name="paddingRight">1pt</property>
                             <property name="textAlign">left</property>
                             <property name="letterSpacing">normal</property>
                             <property name="lineHeight">normal</property>
@@ -1235,89 +1082,173 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                             <property name="resultSetColumn">eid</property>
                         </data>
                     </cell>
-                    <cell id="242">
-                        <property name="textAlign">center</property>
-                        <data id="243">
+                    <cell id="373">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="374">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderTopStyle">none</property>
                             <property name="textAlign">left</property>
                             <property name="resultSetColumn">ename</property>
                         </data>
                     </cell>
-                    <cell id="244">
-                        <property name="textAlign">center</property>
-                        <data id="245">
-                            <property name="resultSetColumn">cname</property>
+                    <cell id="375">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="396">
+                            <property name="resultSetColumn">countryname</property>
                         </data>
                     </cell>
-                    <cell id="246">
-                        <property name="textAlign">center</property>
-                        <data id="247">
-                            <property name="resultSetColumn">wend</property>
-                        </data>
-                    </cell>
-                    <cell id="248">
-                        <property name="textAlign">center</property>
-                        <data id="249">
-                            <property name="resultSetColumn">hours</property>
-                        </data>
-                    </cell>
-                    <cell id="250">
-                        <property name="textAlign">center</property>
-                        <data id="251">
+                    <cell id="377">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="378">
                             <property name="resultSetColumn">project</property>
                         </data>
                     </cell>
-                    <cell id="252">
-                        <property name="textAlign">center</property>
-                        <data id="253">
+                    <cell id="379">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="376">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="resultSetColumn">wend</property>
+                        </data>
+                    </cell>
+                    <cell id="381">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="380">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderTopStyle">none</property>
+                            <property name="resultSetColumn">hours</property>
+                        </data>
+                    </cell>
+                    <cell id="414">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="418">
+                            <property name="borderBottomStyle">none</property>
+                            <property name="borderLeftStyle">none</property>
+                            <property name="borderRightStyle">none</property>
+                            <property name="borderTopStyle">none</property>
                             <property name="textAlign">left</property>
-                            <property name="resultSetColumn">manager</property>
+                            <property name="resultSetColumn">manager_name</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="254">
-                    <property name="backgroundColor">#C0C0C0</property>
-                    <property name="pageBreakInside">auto</property>
-                    <cell id="255">
-                        <property name="textAlign">center</property>
-                        <text id="338">
-                            <property name="fontWeight">bold</property>
-                            <property name="display">inline</property>
+                <row id="383">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <cell id="384">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <text id="423">
                             <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Horas Excedentes Totales]]></text-property>
+                            <text-property name="content"><![CDATA[Total Empleados:]]></text-property>
                         </text>
                     </cell>
-                    <cell id="256">
-                        <property name="textAlign">center</property>
-                    </cell>
-                    <cell id="257">
-                        <property name="textAlign">center</property>
-                    </cell>
-                    <cell id="258">
-                        <property name="textAlign">center</property>
-                    </cell>
-                    <cell id="259">
-                        <property name="textAlign">center</property>
-                        <data id="358">
-                            <property name="resultSetColumn">overflow</property>
+                    <cell id="385">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="424">
+                            <property name="resultSetColumn">total_emp</property>
                         </data>
                     </cell>
-                    <cell id="260">
-                        <property name="textAlign">center</property>
+                    <cell id="386">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
                     </cell>
-                    <cell id="261">
-                        <property name="textAlign">center</property>
+                    <cell id="387">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                    </cell>
+                    <cell id="388">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                    </cell>
+                    <cell id="389">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                    </cell>
+                    <cell id="415">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
                     </cell>
                 </row>
             </footer>
         </table>
     </body>
-    <property name="pageVariables">
-        <variable-element name="totalrecords">
-            <property name="type">report</property>
-        </variable-element>
-    </property>
     <list-property name="images">
         <structure>
             <property name="name">ibm_logo.jpg</property>
