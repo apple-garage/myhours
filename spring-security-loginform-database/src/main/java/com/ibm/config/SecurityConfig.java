@@ -30,9 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().formLogin().loginPage("/login").failureUrl("/login?error")
 				.usernameParameter("username")
 				.passwordParameter("password")
-				.and().logout().logoutSuccessUrl("/login?logout")
+				.and().logout().logoutSuccessUrl("/login")
 				.and().csrf()
 				.and().exceptionHandling().accessDeniedPage("/403");
+		http.authorizeRequests().antMatchers("/welcome/**").authenticated();
 	}
 	
 }

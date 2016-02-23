@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,30 +43,32 @@ public class MainController {
 	public ModelAndView defaultPage() {
 
 		ModelAndView model = new ModelAndView();
-		model.addObject("message", "Press here to upload the file");
 		model.setViewName("hello");
 		return model;
 
 	}
 
 	@RequestMapping(value="/uploadFile", method = RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
+    public ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file){
+		ModelAndView model = new ModelAndView();
+		String info;
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
-                String filePath = "C://Users/IBM_ADMIN/Desktop/reportes/" + file.getOriginalFilename();
-//                String filePath = "/Users/apple02/Desktop/reportes/" + file.getOriginalFilename();
+//                String filePath = "C://Users/IBM_ADMIN/Desktop/reportes/" + file.getOriginalFilename();
+                String filePath = "/Users/apple02/Desktop/reportes/" + file.getOriginalFilename();
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath))); 
                 stream.write(bytes);
                 stream.close();
                 Parse parse = new Parse(workBo, weekBo, employeeBo, assignmentBo, managerBo, countryBo);
                 parse.Prueba(filePath);
-                return "You successfully uploaded";
+                
+                return new ModelAndView("hello", "info","Cargo correctamente"); 
             } catch (Exception e) {
-                return "You failed to upload "+ e.getMessage();
+            	return model;
             }
         } else {
-            return "You failed to upload because the file was empty.";
+        	return new ModelAndView("hello", "info","No se pudo cargar el archivo correctamente");
         }
     }
 

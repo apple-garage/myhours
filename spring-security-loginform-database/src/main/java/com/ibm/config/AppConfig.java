@@ -47,8 +47,8 @@ public class AppConfig {
 		BasicDataSource ds = new BasicDataSource();
 	    ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setUrl("jdbc:mysql://localhost:3306/my_hours_report");
-		ds.setUsername("admin");
-		ds.setPassword("password");
+		ds.setUsername("root");
+		ds.setPassword("");
 		return ds;
 	}
 	
