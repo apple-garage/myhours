@@ -195,7 +195,7 @@ ProgressBar.prototype =
 	 */
 	__l_show : function( )
 	{
-		Element.show( this.__mask, this.__instance );		
+		[ this.__mask, this.__instance ].each( Element.show );
 		BirtPosition.center( this.__instance );
 	},
 	
@@ -204,7 +204,7 @@ ProgressBar.prototype =
 	 */
 	__l_hide : function( )
 	{
-		Element.hide( this.__instance, this.__mask );
+		[ this.__instance, this.__mask ].each( Element.hide );
 	},
 
 	/**
@@ -250,9 +250,9 @@ ProgressBar.prototype =
 			if ( !birtSoapRequest.getURL( ) ) return;
 			
 			var myAjax = new Ajax.Request( birtSoapRequest.getURL( ), { method: 'post', postBody: birtSoapRequest.__xml_document,
-			onSuccess: this.responseHandler, onFailure: this.invalidResponseHandler,
-			requestHeaders: ['Content-type', 'text/xml; charset=utf-8', 'SOAPAction', '""', 'request-type', 'SOAP', 'Connection', 'keep-alive' ] } );
-
+				contentType: 'text/xml; charset=utf-8',
+				onSuccess: this.responseHandler, onFailure: this.invalidResponseHandler,
+				requestHeaders: ['SOAPAction', '""', 'request-type', 'SOAP', 'Connection', 'keep-alive' ] } );
 			birtSoapRequest.reset( );												
 		}
 	},

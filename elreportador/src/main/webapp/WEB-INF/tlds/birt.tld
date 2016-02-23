@@ -7,8 +7,7 @@
 	<jsp-version>1.2</jsp-version>
 	<short-name>BIRT Tag Library</short-name>
 	<uri>http://www.eclipse.org/birt/taglibs/birt.tld</uri>
-	<description> 
-
+	<description>
 		This Tag Library makes user develope JSP with BIRT Viewer component easily.
 	</description>
 	
