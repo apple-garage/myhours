@@ -163,11 +163,11 @@ header{
 
 			<div id="exampleModal">
 			
-				<!-- Button trigger modal -->
+<!-- Button trigger modal -->
 			
 				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCrear">Crear Nuevo Usuario</button>
 
-<!-- Modal -->
+<!-- Modal Usuario -->
 
 				<div class="modal fade" id="modalCrear" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
 					<div class="modal-dialog" role="document">
@@ -258,11 +258,11 @@ header{
 				</div>
 				</div> 
 				
-				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#myOtherModal">Modificar Usuario</button>
+<!-- Button trigger modal -->
+				<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalMUsuario">Modificar Usuario</button>
 				
-				<!-- Modal -->
-				<div class="modal fade" id="myOtherModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Modal Modificar -->
+				<div class="modal fade" id="modalMUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
@@ -303,6 +303,119 @@ header{
 				    </div>
 				  </div>
 				</div>
+
+<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCargar">Cargar Feriado</button>
+<!-- Modal Feriado -->
+				<div class="modal fade" id="modalCargar" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title">Nuevo Feriado</h4>
+							</div>
+							<form id="newFeriado" role="form" data-toggle="validator" novalidate="true" method="post" >
+							<div class="modal-body">
+									<div class="form-group has-feedback">
+										<label class="control-label" for="feriadoDate" >Fecha:</label>
+										<input id="feriadoDate" type="text" class="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" name="feriadoDate" data-error="Debe ingresar una fecha" required="" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+										<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+										<div class="help-block with-errors"></div>				
+									</div>
+									<div class="form-group has-feedback">
+										<label class="control-label" for="inputName">Descripción:</label>
+										<input id="feriadoDescripcion" type="text" class="form-control" name="feriadoDescripcion" pattern="[A-Za-z0-9 ]{1,}" data-error="Utilize caracteres validos [a-z]" required="">
+										<span class="glyphicon form-control-feedback" aria-hidden="true"></span>		
+										<div class="help-block with-errors"></div>		
+									</div>
+
+									<div class="radio">
+									<h4>Paises en los que aplica</h4>
+
+									<div class="control-group">
+										<div>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Argentina" name="pais[]"> Argentina   
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Chile" name="pais[]"> Chile
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Colombia" name="pais[]">Colombia
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Ecuador" name="pais[]"> Ecuador
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Peru" name="pais[]"> Peru
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Uruguay" name="pais[]"> Uruguay
+										</label>
+										<label class="checkbox-inline">
+										  <input type="checkbox" value="Venezuela" name="pais[]"> Venezuela
+										</label>
+										</div>
+									</div>
+							</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+								<button type="submit" class="btn btn-primary" id="cargarFeriado">Cargar</button>
+							</div>
+								</form>
+						</div>
+					</div>
+				</div>
+<!-- Button trigger modal -->
+				<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalEliminar">Eliminar feriado</button>
+				
+<!-- Modal Modificar -->
+				<div class="modal fade" id="modalEliminar" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title">Eliminar feriados</h4>
+							</div>
+							<form id="newFeriado" role="form" data-toggle="validator" novalidate="true" method="post" >
+							<div class="modal-body">
+									<div class="form-group has-feedback">
+										<label class="control-label" for="feriadoDate" >Rango de fechas:</label>
+										<input type="text" class="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" name="feriadoStartDate" data-error="Debe ingresar una fecha" required="" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+										<input type="text" class="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" name="feriadoEndDate" data-error="Debe ingresar una fecha" required="" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+										<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+										<div class="help-block with-errors"></div>				
+									</div>
+									
+									<div class="dropdown">
+							<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="dropdownUsuarios">Seleccionar Pais<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu btn-block">
+								<li><a href="#">Argentina</a></li>
+								<li><a href="#">Chile</a></li>
+								<li><a href="#">Colombia</a></li>
+								<li><a href="#">Ecuador</a></li>
+								<li><a href="#">Peru</a></li>
+								<li><a href="#">Uruguay</a></li>
+								<li><a href="#">Venezuela</a></li>
+								
+							</ul>
+						</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+								<button type="submit" class="btn btn-primary" id="cargarFeriado">Buscar</button>
+							</div>
+								</form>
+						</div>
+					</div>
+				</div>
+							
 			</div>
 		</div>
 	
@@ -312,6 +425,7 @@ header{
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 	<script src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 	<script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/g/jquery.transition@1.7.2,jquery.collapse@1.1.1,bootstrap.datepicker-fork@1.3.0(js/bootstrap-datepicker.js)"></script>
 
 
 <script type="text/javascript">

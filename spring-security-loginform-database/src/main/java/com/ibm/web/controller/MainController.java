@@ -36,8 +36,6 @@ public class MainController {
 	AssignmentBo assignmentBo;
 	@Autowired
 	ManagerBo managerBo;
-	@Autowired
-	CountryBo countryBo;
 	
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {

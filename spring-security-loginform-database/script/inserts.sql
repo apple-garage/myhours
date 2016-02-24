@@ -49,3 +49,14 @@ insert into holiday (holiday, date) values ('viernes santo', '2016-03-25');
 /* country_has_holiday */
 insert into country_has_holiday values (1,1);
 insert into country_has_holiday values (1,2); 
+
+INSERT INTO `my_hours_report`.`users`
+(`user`,`user_name`,`user_password`,`enabled`,`mail`)
+VALUES
+('admin', 'user admin', 'admin', 1, 'prueba@ar.ibm.com');
+
+select * from roles;
+insert into roles (`roles`) values('ROLE_ADMIN');
+
+
+insert into users_roles values (1,1)
