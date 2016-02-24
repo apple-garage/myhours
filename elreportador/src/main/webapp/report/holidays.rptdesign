@@ -4,27 +4,15 @@
     <list-property name="propertyBindings">
         <structure>
             <property name="name">queryText</property>
-            <property name="id">353</property>
+            <property name="id">326</property>
         </structure>
         <structure>
             <property name="name">queryTimeOut</property>
-            <property name="id">353</property>
+            <property name="id">326</property>
         </structure>
         <structure>
             <property name="name">rowFetchSize</property>
-            <property name="id">353</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">78</property>
-        </structure>
-        <structure>
-            <property name="name">queryTimeOut</property>
-            <property name="id">78</property>
-        </structure>
-        <structure>
-            <property name="name">rowFetchSize</property>
-            <property name="id">78</property>
+            <property name="id">326</property>
         </structure>
     </list-property>
     <property name="units">in</property>
@@ -77,12 +65,13 @@
             <property name="dataSetMode">multiple</property>
             <parameters>
                 <scalar-parameter name="wFrom" id="328">
+                    <text-property name="promptText">Lunes</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">qWeekFrom</property>
                     <expression name="valueExpr">row["num_week"]</expression>
                     <expression name="labelExpr">row["monday"]</expression>
-                    <property name="dataType">integer</property>
+                    <property name="dataType">string</property>
                     <simple-property-list name="defaultValue">
                         <value type="constant">5</value>
                     </simple-property-list>
@@ -92,12 +81,13 @@
                     <structure name="format"/>
                 </scalar-parameter>
                 <scalar-parameter name="wTo" id="329">
+                    <text-property name="promptText">Viernes</text-property>
                     <property name="valueType">dynamic</property>
                     <property name="isRequired">true</property>
                     <property name="dataSetName">qWeekTo</property>
                     <expression name="valueExpr">row["num_week"]</expression>
-                    <expression name="labelExpr">row["end_date"]</expression>
-                    <property name="dataType">integer</property>
+                    <expression name="labelExpr">row["friday"]</expression>
+                    <property name="dataType">string</property>
                     <simple-property-list name="defaultValue">
                         <value type="constant">24</value>
                     </simple-property-list>
@@ -130,8 +120,7 @@
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
             <property name="odaURL">jdbc:mysql://localhost:3306/my_hours_report</property>
-            <property name="odaUser">admin</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
+            <property name="odaUser">root</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -363,482 +352,14 @@ if (params["pais"] != 0){
   </design:ResultSets>
 </model:DesignValues>]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="test" id="77">
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">SN</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">SN</text-property>
-                    <text-property name="heading">SN</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">ESCLAVO</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">ESCLAVO</text-property>
-                    <text-property name="heading">ESCLAVO</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">NUM_SEMANA</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">NUM_SEMANA</text-property>
-                    <text-property name="heading">NUM_SEMANA</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">END_DATE</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">END_DATE</text-property>
-                    <text-property name="heading">END_DATE</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">PAIS</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">PAIS</text-property>
-                    <text-property name="heading">PAIS</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">PROYECTO</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">PROYECTO</text-property>
-                    <text-property name="heading">PROYECTO</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">MANAGER</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">MANAGER</text-property>
-                    <text-property name="heading">MANAGER</text-property>
-                </structure>
-            </list-property>
-            <list-property name="parameters"/>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">SN</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">ESCLAVO</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">NUM_SEMANA</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">4</property>
-                        <property name="name">END_DATE</property>
-                        <property name="dataType">date</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
-                        <property name="name">PAIS</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">6</property>
-                        <property name="name">PROYECTO</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">7</property>
-                        <property name="name">MANAGER</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">Data Source</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">SN</property>
-                    <property name="nativeName">id_employee</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">ESCLAVO</property>
-                    <property name="nativeName">name</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">NUM_SEMANA</property>
-                    <property name="nativeName">num_week</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">4</property>
-                    <property name="name">END_DATE</property>
-                    <property name="nativeName">end_date</property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
-                    <property name="name">PAIS</property>
-                    <property name="nativeName">country</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">6</property>
-                    <property name="name">PROYECTO</property>
-                    <property name="nativeName">project_name</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">7</property>
-                    <property name="name">MANAGER</property>
-                    <property name="nativeName">name</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select wk.id_employee as SN, e.name as ESCLAVO, w.num_week as NUM_SEMANA, w.end_date as END_DATE, c.country as PAIS, a.project_name as PROYECTO, m.name as MANAGER
-from work as wk, employee as e, country as c, assignment as a, manager as m, week as w
-where wk.id_employee = e.id
-and wk.id_week = w.id
-and wk.id_assignment = a.id
-and e.id_manager = m.id
-and c.id = e.id_country]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>2.0</Version>
-  <design:ResultSets derivedMetaData="true">
-    <design:resultSetDefinitions>
-      <design:resultSetColumns>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>ID_EMPLOYEE</design:name>
-              <design:position>1</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>10</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>id_employee</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>id_employee</design:label>
-            <design:formattingHints>
-              <design:displaySize>10</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>NAME</design:name>
-              <design:position>2</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>50</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>NotNullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>name</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>name</design:label>
-            <design:formattingHints>
-              <design:displaySize>50</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>COUNTRY</design:name>
-              <design:position>3</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>45</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>country</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>country</design:label>
-            <design:formattingHints>
-              <design:displaySize>45</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>PROJECT_NAME</design:name>
-              <design:position>4</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>45</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>project_name</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>project_name</design:label>
-            <design:formattingHints>
-              <design:displaySize>45</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-        <design:resultColumnDefinitions>
-          <design:attributes>
-            <design:identifier>
-              <design:name>NAME</design:name>
-              <design:position>5</design:position>
-            </design:identifier>
-            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
-            <design:precision>45</design:precision>
-            <design:scale>0</design:scale>
-            <design:nullability>Nullable</design:nullability>
-            <design:uiHints>
-              <design:displayName>name</design:displayName>
-            </design:uiHints>
-          </design:attributes>
-          <design:usageHints>
-            <design:label>name</design:label>
-            <design:formattingHints>
-              <design:displaySize>45</design:displaySize>
-            </design:formattingHints>
-          </design:usageHints>
-        </design:resultColumnDefinitions>
-      </design:resultSetColumns>
-      <design:criteria/>
-    </design:resultSetDefinitions>
-  </design:ResultSets>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="checkHolydays" id="78">
-            <property name="nullsOrdering">nulls lowest</property>
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">eid</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">eid</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">eid</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">ename</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">ename</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">ename</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">cname</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">cname</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">cname</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">wend</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">wend</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">wend</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">wnum</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">wnum</text-property>
-                    <text-property name="heading">wnum</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">hours</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">hours</text-property>
-                    <property name="onColumnLayout">false</property>
-                    <text-property name="heading">hours</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">project_name</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">project_name</text-property>
-                    <text-property name="heading">project_name</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">category</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">category</text-property>
-                    <text-property name="heading">category</text-property>
-                </structure>
-            </list-property>
-            <list-property name="filter">
-                <structure>
-                    <property name="operator">ne</property>
-                    <expression name="expr" type="javascript">row["category"]</expression>
-                    <simple-property-list name="value1">
-                        <value>"Holiday"</value>
-                    </simple-property-list>
-                </structure>
-            </list-property>
-            <list-property name="parameters"/>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">eid</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">ename</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">cname</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">4</property>
-                        <property name="name">wend</property>
-                        <property name="dataType">date</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
-                        <property name="name">wnum</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">6</property>
-                        <property name="name">hours</property>
-                        <property name="dataType">integer</property>
-                    </structure>
-                    <structure>
-                        <property name="position">7</property>
-                        <property name="name">project_name</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">8</property>
-                        <property name="name">category</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <method name="beforeOpen"><![CDATA[var managerQuery = "";
-var isCountrySet = false;
-
-if (params["pais"] != 0){
-	this.queryText += " and e.id_country = '" + params["pais"] + "'";
-	isCountrySet = true;
-}
-
-if (params["manager"] != 0){
-	managerQuery = "SELECT DISTINCT w.id_employee"
-	+ "FROM work w"
-	+ " JOIN employee e ON w.id_employee = e.id"
-	+ " JOIN assignment a ON w.id_assignment = a.id"
-	+ " WHERE a.id_manager = '" + params["manager"] + "'";
-	
-	this.queryText += " AND wk.id_employee IN (" + managerQuery + ")";
-
-}
-
-this.queryText+= " AND w.num_week IN ( "
-				+ "SELECT w.num_week"
-				+ " FROM holiday AS h"
-				+ " JOIN country_has_holiday AS ch"
-				+ " ON h.id = ch.holidayid"
-				+ " JOIN country as c"
-				+ " ON c.id = ch.countryid"
-				+ " JOIN week as w"
-				+ " ON h.date between  w.start_date and w.end_date"
-				+ " WHERE c.id='"+  +"'";
-				
-//this.queryText += " GROUP BY wk.id_employee, wk.id_week";]]></method>
-            <property name="dataSource">Data Source</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">eid</property>
-                    <property name="nativeName">ID</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">ename</property>
-                    <property name="nativeName">NAME</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">cname</property>
-                    <property name="nativeName">COUNTRY</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">4</property>
-                    <property name="name">wend</property>
-                    <property name="nativeName">END_DATE</property>
-                    <property name="dataType">date</property>
-                    <property name="nativeDataType">91</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
-                    <property name="name">wnum</property>
-                    <property name="nativeName">NUM_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">6</property>
-                    <property name="name">hours</property>
-                    <property name="nativeName">HOURS_X_WEEK</property>
-                    <property name="dataType">integer</property>
-                    <property name="nativeDataType">4</property>
-                </structure>
-                <structure>
-                    <property name="position">7</property>
-                    <property name="name">project_name</property>
-                    <property name="nativeName">PROJECT_NAME</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">8</property>
-                    <property name="name">category</property>
-                    <property name="nativeName">CATEGORY</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, w.end_date as wend, w.num_week as wnum, wk.hours_x_week as hours, a.project_name, a.category
-FROM work as wk, week as w, employee as e, country as c, assignment as a
-WHERE wk.id_employee = e.id
-AND wk.id_week = w.id
-AND c.id = e.id_country
-AND a.id = wk.id_assignment]]></xml-property>
-        </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qWeekFrom" id="326">
             <property name="nullsOrdering">nulls lowest</property>
             <list-property name="computedColumns">
                 <structure>
                     <property name="name">monday</property>
-                    <expression name="expression">BirtDateTime.addDay(row["end_date"],-4)</expression>
-                    <property name="dataType">date</property>
+                    <expression name="expression">var d = BirtDateTime.addDay(row["end_date"],-4);&#13;
+BirtDateTime.year(d) + "-" + BirtDateTime.month(d,3) + "-" + BirtDateTime.day(d);</expression>
+                    <property name="dataType">string</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
@@ -873,7 +394,7 @@ AND a.id = wk.id_assignment]]></xml-property>
                     <structure>
                         <property name="position">3</property>
                         <property name="name">monday</property>
-                        <property name="dataType">date</property>
+                        <property name="dataType">string</property>
                     </structure>
                 </list-property>
             </structure>
@@ -900,6 +421,14 @@ where wk.id_week = w.id]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qWeekTo" id="353">
             <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">friday</property>
+                    <expression name="expression">var d = row["end_date"];&#13;
+BirtDateTime.year(d) + "-" + BirtDateTime.month(d,3) + "-" + BirtDateTime.day(d);</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">num_week</property>
@@ -928,6 +457,11 @@ where wk.id_week = w.id]]></xml-property>
                         <property name="name">end_date</property>
                         <property name="dataType">date</property>
                     </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">friday</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <method name="beforeOpen"><![CDATA[this.queryText += " AND w.num_week >= " + params["wFrom"];]]></method>
@@ -952,111 +486,6 @@ where wk.id_week = w.id]]></xml-property>
 from week as w, work as wk
 where wk.id_week = w.id]]></xml-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qHolidays" id="330">
-            <property name="nullsOrdering">nulls lowest</property>
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">country</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">country</text-property>
-                    <text-property name="heading">country</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">description</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">description</text-property>
-                    <text-property name="heading">description</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">date</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">date</text-property>
-                    <text-property name="heading">date</text-property>
-                </structure>
-            </list-property>
-            <list-property name="filter">
-                <structure>
-                    <property name="operator">between</property>
-                    <expression name="expr" type="javascript">row["date"]</expression>
-                    <simple-property-list name="value1">
-                        <value>params["wFrom"].value</value>
-                    </simple-property-list>
-                    <expression name="value2">params["wTo"].value</expression>
-                </structure>
-            </list-property>
-            <list-property name="parameters"/>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">country</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">description</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">date</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <method name="onFetch"><![CDATA[importPackage(Packages.java.util);
-//importPackage(Packages.java.sql.Date);
-
-if(!vars["holidates"].containsKey(row["country"])){
-	vars["holidates"].put(row["country"], new HashMap());
-}else{
-	vars["holidates"].get(row["country"]).put(row["description"], new HashMap());
-	vars["holidates"].get(row["country"]).get(row["description"]).put( BirtDateTime.week(row["date"]), row["date"] );
-}
-
-/*
-
-holidates: HashMap:
-			'country' => HashMap:
-						'holiday_name' => HashMap:
-											'week_number' => 'actual_date'
-
-*/]]></method>
-            <property name="dataSource">Data Source</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">country</property>
-                    <property name="nativeName">COUNTRY</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">description</property>
-                    <property name="nativeName">DESCRIPTION</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">date</property>
-                    <property name="nativeName">DATE</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">91</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[select c.country, h.description, h.date
-from holiday as h
-join country_has_holiday as ch
-on h.id = ch.holidayid
-join country as c
-on c.id = ch.countryid]]></xml-property>
-            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<model:DesignValues xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
-  <Version>2.0</Version>
-</model:DesignValues>]]></xml-property>
-        </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="qHolidaysTable" id="470">
             <property name="nullsOrdering">nulls lowest</property>
             <list-property name="columnHints">
@@ -1073,6 +502,12 @@ on c.id = ch.countryid]]></xml-property>
                     <text-property name="displayName">ename</text-property>
                     <property name="onColumnLayout">false</property>
                     <text-property name="heading">ename</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">mid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">mid</text-property>
+                    <text-property name="heading">mid</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">manager_name</property>
@@ -1199,7 +634,28 @@ on c.id = ch.countryid]]></xml-property>
                     <expression name="expr" type="javascript">row["wk_hours"] != row["h_hours"]</expression>
                 </structure>
             </list-property>
-            <list-property name="parameters"/>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">param_1</property>
+                    <property name="paramName">wFrom</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">param_2</property>
+                    <property name="paramName">wTo</property>
+                    <property name="nativeName"></property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">-1</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
@@ -1214,86 +670,91 @@ on c.id = ch.countryid]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
+                        <property name="name">mid</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
                         <property name="name">manager_name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">4</property>
+                        <property name="position">5</property>
                         <property name="name">cid</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">cname</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">h_wnum</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">h_wend</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">h_desc</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">h_dates</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">h_hours</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">wk_eid</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">wk_ename</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">wk_cid</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">14</property>
+                        <property name="position">15</property>
                         <property name="name">wk_cname</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">15</property>
+                        <property name="position">16</property>
                         <property name="name">wk_wend</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">16</property>
+                        <property name="position">17</property>
                         <property name="name">wk_wnum</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">17</property>
+                        <property name="position">18</property>
                         <property name="name">wk_hours</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">18</property>
+                        <property name="position">19</property>
                         <property name="name">wk_cat</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">19</property>
+                        <property name="position">20</property>
                         <property name="name">wk_project</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -1307,21 +768,15 @@ if (params["pais"] != 0){
 	whereSet = true;
 }
 
-// workaround hasta que se modifique la tabla employee
-// devuelve ID's de MANAGERS de assignments que son del pais elejido
-if (params["manager"] != 0){
-	managerQuery = "SELECT DISTINCT w.id_employee"
-	+ " FROM work w"
-	+ " JOIN employee e ON w.id_employee = e.id"
-	+ " JOIN assignment a ON w.id_assignment = a.id"
-	+ " WHERE a.id_manager = '" + params["manager"] + "'";
-	
+if (params["manager"] != 0)
+{
 	if(whereSet){
 		this.queryText += " AND";
 	}else{
 		this.queryText += " WHERE";
 	}
-	this.queryText += " hxe.eid IN (" + managerQuery + ")";
+
+	this.queryText += " hxe.mid = '" + params["manager"] + "' ";
 }]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
@@ -1341,118 +796,125 @@ if (params["manager"] != 0){
                 </structure>
                 <structure>
                     <property name="position">3</property>
+                    <property name="name">mid</property>
+                    <property name="nativeName">mid</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
                     <property name="name">manager_name</property>
                     <property name="nativeName">manager_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
                     <property name="name">cid</property>
                     <property name="nativeName">cid</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                     <property name="name">cname</property>
                     <property name="nativeName">cname</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                     <property name="name">h_wnum</property>
                     <property name="nativeName">h_wnum</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                     <property name="name">h_wend</property>
                     <property name="nativeName">h_wend</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                     <property name="name">h_desc</property>
                     <property name="nativeName">h_desc</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">h_dates</property>
                     <property name="nativeName">h_dates</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                     <property name="name">h_hours</property>
                     <property name="nativeName">h_hours</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">-5</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">wk_eid</property>
                     <property name="nativeName">wk_eid</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                     <property name="name">wk_ename</property>
                     <property name="nativeName">wk_ename</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">13</property>
+                    <property name="position">14</property>
                     <property name="name">wk_cid</property>
                     <property name="nativeName">wk_cid</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">14</property>
+                    <property name="position">15</property>
                     <property name="name">wk_cname</property>
                     <property name="nativeName">wk_cname</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">15</property>
+                    <property name="position">16</property>
                     <property name="name">wk_wend</property>
                     <property name="nativeName">wk_wend</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">16</property>
+                    <property name="position">17</property>
                     <property name="name">wk_wnum</property>
                     <property name="nativeName">wk_wnum</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">17</property>
+                    <property name="position">18</property>
                     <property name="name">wk_hours</property>
                     <property name="nativeName">wk_hours</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">3</property>
                 </structure>
                 <structure>
-                    <property name="position">18</property>
+                    <property name="position">19</property>
                     <property name="name">wk_cat</property>
                     <property name="nativeName">wk_cat</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">19</property>
+                    <property name="position">20</property>
                     <property name="name">wk_project</property>
                     <property name="nativeName">wk_project</property>
                     <property name="dataType">string</property>
@@ -1463,7 +925,7 @@ if (params["manager"] != 0){
 FROM
 
 (
-	SELECT emp.id AS eid, emp.name AS ename, m.name AS manager_name, emp.ID_COUNTRY AS cid, c.country AS cname, t2.h_wnum AS h_wnum, t2.h_wend AS h_wend, t2.h_desc AS h_desc, t2.h_dates AS h_dates, t2.h_hours AS h_hours
+	SELECT emp.id AS eid, emp.name AS ename, m.id as mid, m.name AS manager_name, emp.ID_COUNTRY AS cid, c.country AS cname, t2.h_wnum AS h_wnum, t2.h_wend AS h_wend, t2.h_desc AS h_desc, t2.h_dates AS h_dates, t2.h_hours AS h_hours
 	FROM employee AS emp
 	
 	-- join para el countrisito_name
@@ -1480,6 +942,7 @@ FROM
 		JOIN country_has_holiday AS ch ON h.id = ch.id_holiday
 		JOIN country AS c ON c.id = ch.id_country
 		JOIN WEEK AS w ON h.date BETWEEN w.start_date AND w.end_date
+		WHERE w.num_week BETWEEN ? AND ?
 		GROUP BY h_cid, h_cname, h_wnum, h_wend
 	) AS t2 ON emp.ID_COUNTRY = t2.h_cid
 	ORDER BY cname
@@ -1499,63 +962,42 @@ LEFT JOIN
 	-- AND e.id = '003941' AND w.num_week = 7
 	GROUP BY wk_eid, wk_wnum, wk_wend, wk_cat
 ) AS t1 ON hxe.eid = t1.wk_eid AND hxe.cid = t1.wk_cid AND hxe.h_wnum = t1.wk_wnum]]></xml-property>
-        </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="testmanager" id="560">
-            <property name="nullsOrdering">nulls lowest</property>
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">mid</property>
-                    <property name="analysis">measure</property>
-                    <text-property name="displayName">mid</text-property>
-                    <text-property name="heading">mid</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">mname</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">mname</text-property>
-                    <text-property name="heading">mname</text-property>
-                </structure>
-            </list-property>
-            <list-property name="parameters"/>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">mid</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">mname</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">Data Source</property>
-            <list-property name="resultSet">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">mid</property>
-                    <property name="nativeName">mid</property>
-                    <property name="dataType">decimal</property>
-                    <property name="nativeDataType">-5</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">mname</property>
-                    <property name="nativeName">mname</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-            </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT 0 as mid, 'ALL' as mname
-
-UNION
-
-SELECT distinct m.id AS mid, m.name AS mname
-FROM employee AS e
-JOIN work AS w ON w.id_employee = e.id
-JOIN manager AS m ON m.id = e.id_manager]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <DataSetParameters>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>1</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+    <parameter>
+      <design:ParameterDefinition>
+        <design:inOutMode>In</design:inOutMode>
+        <design:attributes>
+          <design:identifier>
+            <design:name></design:name>
+            <design:position>2</design:position>
+          </design:identifier>
+          <design:nativeDataTypeCode>-1</design:nativeDataTypeCode>
+          <design:precision>0</design:precision>
+          <design:scale>0</design:scale>
+          <design:nullability>Unknown</design:nullability>
+        </design:attributes>
+      </design:ParameterDefinition>
+    </parameter>
+  </DataSetParameters>
+</model:DesignValues>]]></xml-property>
         </oda-data-set>
     </data-sets>
     <page-setup>
@@ -1598,11 +1040,17 @@ JOIN manager AS m ON m.id = e.id_manager]]></xml-property>
                         <cell id="357">
                             <property name="colSpan">2</property>
                             <property name="rowSpan">1</property>
-                            <text-data id="351">
+                            <text id="569">
                                 <property name="fontSize">16pt</property>
                                 <property name="textAlign">center</property>
-                                <expression name="valueExpr">"Feriados no cargados para el rango de fechas:\n"&#13;
-+ params["wFrom"].displayText + " (Lunes) \t ~ \t" + params["wTo"].displayText + " (Viernes)"</expression>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[Feriados no cargados para el rango de fechas: ]]></text-property>
+                            </text>
+                            <text-data id="351">
+                                <property name="fontSize">14pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="textAlign">center</property>
+                                <expression name="valueExpr">"Lun. " + params["wFrom"].displayText + "    ~    Vie. " + params["wTo"].displayText;</expression>
                                 <property name="contentType">html</property>
                             </text-data>
                             <label id="288">
@@ -2058,12 +1506,6 @@ JOIN manager AS m ON m.id = e.id_manager]]></xml-property>
             </footer>
         </table>
     </body>
-    <property name="pageVariables">
-        <variable-element name="holidates">
-            <expression name="value" type="javascript">new Packages.java.util.HashMap();</expression>
-            <property name="type">report</property>
-        </variable-element>
-    </property>
     <list-property name="images">
         <structure>
             <property name="name">ibm_logo.jpg</property>

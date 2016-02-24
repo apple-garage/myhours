@@ -31,7 +31,7 @@
                     <property name="dataSetName">queryPais</property>
                     <expression name="valueExpr">row["cid"]</expression>
                     <expression name="labelExpr">row["cname"]</expression>
-                    <expression name="sortByColumn">dataSetRow["cid"]</expression>
+                    <expression name="sortByColumn">dataSetRow["cname"]</expression>
                     <property name="sortDirection">asc</property>
                     <property name="dataType">decimal</property>
                     <simple-property-list name="defaultValue">
@@ -48,7 +48,7 @@
                     <property name="dataSetName">queryManager</property>
                     <expression name="valueExpr">row["mid"]</expression>
                     <expression name="labelExpr">row["mname"]</expression>
-                    <expression name="sortByColumn">dataSetRow["mid"]</expression>
+                    <expression name="sortByColumn">dataSetRow["mname"]</expression>
                     <property name="sortDirection">asc</property>
                     <property name="dataType">decimal</property>
                     <simple-property-list name="defaultValue">
@@ -81,8 +81,7 @@
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
             <property name="odaURL">jdbc:mysql://localhost:3306/my_hours_report</property>
-            <property name="odaUser">admin</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">cGFzc3dvcmQ=</encrypted-property>
+            <property name="odaUser">root</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
