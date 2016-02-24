@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 4.5.0.v201506092134 Build &lt;@BUILD@></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">78</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">78</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">78</property>
+        </structure>
+    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
@@ -367,6 +381,12 @@ if (params["pais"] != 0){
                     <text-property name="displayName">MANAGER</text-property>
                     <text-property name="heading">MANAGER</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">horitas</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">horitas</text-property>
+                    <text-property name="heading">horitas</text-property>
+                </structure>
             </list-property>
             <list-property name="parameters"/>
             <structure name="cachedMetaData">
@@ -406,6 +426,11 @@ if (params["pais"] != 0){
                         <property name="name">MANAGER</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">horitas</property>
+                        <property name="dataType">integer</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
@@ -413,60 +438,68 @@ if (params["pais"] != 0){
                 <structure>
                     <property name="position">1</property>
                     <property name="name">SN</property>
-                    <property name="nativeName">ID_EMPLOYEE</property>
+                    <property name="nativeName">id_employee</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">ESCLAVO</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="nativeName">name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">NUM_SEMANA</property>
-                    <property name="nativeName">NUM_WEEK</property>
+                    <property name="nativeName">num_week</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
                     <property name="name">END_DATE</property>
-                    <property name="nativeName">END_DATE</property>
+                    <property name="nativeName">end_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
                     <property name="name">PAIS</property>
-                    <property name="nativeName">COUNTRY</property>
+                    <property name="nativeName">country</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">6</property>
                     <property name="name">PROYECTO</property>
-                    <property name="nativeName">PROJECT_NAME</property>
+                    <property name="nativeName">project_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">7</property>
                     <property name="name">MANAGER</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="nativeName">name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">horitas</property>
+                    <property name="nativeName">hours_x_week</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select wk.id_employee as SN, e.name as ESCLAVO, w.num_week as NUM_SEMANA, w.end_date as END_DATE, c.country as PAIS, a.project_name as PROYECTO, m.name as MANAGER
+            <xml-property name="queryText"><![CDATA[select wk.id_employee as SN, e.name as ESCLAVO, w.num_week as NUM_SEMANA, w.end_date as END_DATE, c.country as PAIS, a.project_name as PROYECTO, m.name as MANAGER, wk.hours_x_week as horitas
 from work as wk, employee as e, country as c, assignment as a, manager as m, week as w
 where wk.id_employee = e.id
 and wk.id_week = w.id
 and wk.id_assignment = a.id
-and a.id_manager = m.id
-and c.id = e.id_country]]></xml-property>
+and e.id_manager = m.id
+and c.id = e.id_country
+and e.id='LVGE6H']]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -591,7 +624,6 @@ and c.id = e.id_country]]></xml-property>
                     <property name="columnName">eid</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">eid</text-property>
-                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">eid</text-property>
                 </structure>
                 <structure>
@@ -607,6 +639,12 @@ and c.id = e.id_country]]></xml-property>
                     <text-property name="heading">cname</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">manager</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">manager</text-property>
+                    <text-property name="heading">manager</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">wend</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">wend</text-property>
@@ -616,7 +654,6 @@ and c.id = e.id_country]]></xml-property>
                     <property name="columnName">hours</property>
                     <property name="analysis">measure</property>
                     <text-property name="displayName">hours</text-property>
-                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">hours</text-property>
                 </structure>
                 <structure>
@@ -624,12 +661,6 @@ and c.id = e.id_country]]></xml-property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">project</text-property>
                     <text-property name="heading">project</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">manager</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="displayName">manager</text-property>
-                    <text-property name="heading">manager</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -652,31 +683,29 @@ and c.id = e.id_country]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">manager</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">wend</property>
                         <property name="dataType">date</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">hours</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
-                        <property name="name">project</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
                         <property name="position">7</property>
-                        <property name="name">manager</property>
+                        <property name="name">project</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
             </structure>
             <method name="beforeOpen"><![CDATA[var fromQuery = "";
-var finalQueryAdd = "";
 var operador;
-
-//this.queryText += " GROUP BY wk.id_employee, wk.id_week HAVING SUM(wk.hours_x_week) > 40";
+var whereSet = false;
 
 if(params["horas"] == -1){
 	operador = "<";
@@ -684,123 +713,94 @@ if(params["horas"] == -1){
  	operador = ">";
  }
  
-// query original
-// SELECT e.id as eid, e.name as ename, c.country as cname, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
-// FROM work as wk, week as w, employee as e, country as c, manager as m, assignment as a
- 
 //	para el JOIN mas abajo 
-fromQuery = "SELECT e.id AS a1, w.id AS a2";
-fromQuery += " FROM work wk, employee e, week w";
-fromQuery += " WHERE wk.id_week = w.id";
-fromQuery += " AND wk.id_employee = e.id";
-fromQuery += " GROUP BY wk.id_employee, wk.id_week";
-fromQuery += " HAVING SUM(wk.hours_x_week) " + operador + " 40";
+fromQuery = "SELECT e.id AS a1, w.id AS a2"
++ " FROM work wk, employee e, week w"
++ " WHERE wk.id_week = w.id"
++ " AND wk.id_employee = e.id"
++ " GROUP BY wk.id_employee, wk.id_week"
++ " HAVING SUM(wk.hours_x_week) " + operador + " 40";
 
 
-//finalQueryAdd = "SELECT wk.*";
-finalQueryAdd += /*" FROM work wk*/", (" + fromQuery + ")A";
-finalQueryAdd += " WHERE A.a1 = wk.id_employee";
-finalQueryAdd += " AND A.a2 = wk.id_week";
-finalQueryAdd += " AND wk.id_employee = e.id";	//	**									**
-finalQueryAdd += " AND wk.id_week = w.id";		//	**									**
-finalQueryAdd += " AND c.id = e.id_country";	//	**	Relaciones de las otras tablas	**
-finalQueryAdd += " AND m.id = e.id_manager";	//	**									**
-finalQueryAdd += " AND a.id = wk.id_assignment";//	**									**
-//finalQueryAdd += " ORDER BY 2,3";
+this.queryText += " JOIN ( " + fromQuery + ") as A ON A.a1 = wk.id_employee AND A.a2 = wk.id_week";
 
-this.queryText += finalQueryAdd;
-
-// QUERY VIEJITA
-/*
-SELECT e.id as eid, e.name as ename, w.num_week as wnum, w.end_date as wend, wk.hours_x_week as hours, c.country as cname
-FROM work as wk, week as w, employee as e, country as c
-WHERE wk.id_employee = e.id
-AND wk.id_week = w.id
-AND c.id = e.id_country
-
-*/
-
-
-/*
-//	NO VA
-
-hoursQuery = "SELECT e.id, w.id";
-hoursQuery += " FROM work as wk, week as w, employee as e";
-hoursQuery += " WHERE wk.id_employee = e.id";
-hoursQuery += " AND wk.id_week = w.id";
-hoursQuery += " GROUP BY wk.id_employee, wk.id_week";
-hoursQuery += " HAVING SUM(wk.hours_x_week) > 40";
-
-hoursWeekQuery = "SELECT id_week FROM ( " + hoursQuery +") as hwt";
-hoursEmpQuery = "SELECT id_employee FROM ( " + hoursQuery +") as het";
-
-this.queryText += " AND wk.id_week IN (" + hoursWeekQuery + ")";
-this.queryText += " AND wk.id_employee IN (" + hoursEmpQuery + ")";
-*/
 
 if (params["pais"] != 0){
-	this.queryText += " AND e.id_country = '" + params["pais"] + "'";
+	this.queryText += " WHERE e.id_country = '" + params["pais"] + "'";
+	whereSet = true;
 }
 
 if (params["manager"] != 0){
-	this.queryText += " AND e.id_manager = '" + params["manager"] + "'";
+
+	if(whereSet){
+		this.queryText += " AND";
+	}else{
+		this.queryText += " WHERE";
+	}
+	
+	this.queryText += " e.id_manager = '" + params["manager"] + "'";
 }
 
-this.queryText += " ORDER BY cname, eid, wend";]]></method>
+this.queryText += " ORDER BY cname, ename, eid, wend";]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
                     <property name="name">eid</property>
-                    <property name="nativeName">ID</property>
+                    <property name="nativeName">id</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
                     <property name="name">ename</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="nativeName">name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
                     <property name="name">cname</property>
-                    <property name="nativeName">COUNTRY</property>
+                    <property name="nativeName">country</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
+                    <property name="name">manager</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">wend</property>
-                    <property name="nativeName">END_DATE</property>
+                    <property name="nativeName">end_date</property>
                     <property name="dataType">date</property>
                     <property name="nativeDataType">91</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                     <property name="name">hours</property>
-                    <property name="nativeName">HOURS_X_WEEK</property>
+                    <property name="nativeName">hours_x_week</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
-                    <property name="name">project</property>
-                    <property name="nativeName">PROJECT_NAME</property>
-                    <property name="dataType">string</property>
-                    <property name="nativeDataType">12</property>
-                </structure>
-                <structure>
                     <property name="position">7</property>
-                    <property name="name">manager</property>
-                    <property name="nativeName">NAME</property>
+                    <property name="name">project</property>
+                    <property name="nativeName">project_name</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project, m.name as manager
-FROM work as wk, week as w, employee as e, country as c, manager as m, assignment as a]]></xml-property>
+            <xml-property name="queryText"><![CDATA[SELECT e.id as eid, e.name as ename, c.country as cname, m.name as manager, w.end_date as wend, wk.hours_x_week as hours, a.project_name as project
+FROM `work` as wk
+JOIN `week` as w ON wk.id_week = w.id
+JOIN `employee` as e ON wk.id_employee = e.id
+JOIN `country` as c ON c.id = e.id_country
+JOIN `manager` as m ON m.id = e.id_manager
+JOIN `assignment` as a ON a.id = wk.id_assignment]]></xml-property>
         </oda-data-set>
     </data-sets>
     <styles>
@@ -962,10 +962,8 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
         </simple-master-page>
     </page-setup>
     <body>
-        <table id="223">
-            <property name="pageBreakAfter">auto</property>
-            <property name="pageBreakBefore">auto</property>
-            <property name="pageBreakInside">auto</property>
+        <table id="377">
+            <property name="fontFamily">"Segoe UI"</property>
             <property name="dataSet">forty</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -987,6 +985,12 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
+                    <property name="name">manager</property>
+                    <text-property name="displayName">manager</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["manager"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
                     <property name="name">wend</property>
                     <text-property name="displayName">wend</text-property>
                     <expression name="expression" type="javascript">dataSetRow["wend"]</expression>
@@ -1005,27 +1009,8 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">manager</property>
-                    <text-property name="displayName">manager</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["manager"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">sumh</property>
-                    <text-property name="displayName">tabletotals</text-property>
-                    <property name="dataType">float</property>
-                    <property name="aggregateFunction">SUM</property>
-                    <list-property name="arguments">
-                        <structure>
-                            <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["hours"]</expression>
-                        </structure>
-                    </list-property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">grp_count_w</property>
-                    <text-property name="displayName">group_count_week</text-property>
+                    <property name="name">grp_count_week</property>
+                    <text-property name="displayName">grp_count_week</text-property>
                     <property name="dataType">integer</property>
                     <simple-property-list name="aggregateOn">
                         <value>by_employee</value>
@@ -1040,274 +1025,382 @@ FROM work as wk, week as w, employee as e, country as c, manager as m, assignmen
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
-                    <property name="name">sum_grp_week</property>
-                    <text-property name="displayName">sum_grp_week</text-property>
+                    <property name="name">count_weeks</property>
+                    <text-property name="displayName">count_weeks</text-property>
                     <property name="dataType">float</property>
                     <property name="aggregateFunction">SUM</property>
                     <list-property name="arguments">
                         <structure>
                             <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["grp_count_w"]</expression>
+                            <expression name="value" type="javascript">row["grp_count_week"]</expression>
                         </structure>
                     </list-property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
-                    <property name="name">overflow</property>
-                    <text-property name="displayName">hours_overflow</text-property>
-                    <expression name="expression" type="javascript">row["sumh"] - row["sum_grp_week"]*40</expression>
-                    <property name="dataType">string</property>
+                    <property name="name">totalh</property>
+                    <text-property name="displayName">totalh</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["hours"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">hours_balance</property>
+                    <text-property name="displayName">hours_balance</text-property>
+                    <expression name="expression" type="javascript">row["totalh"] - row["count_weeks"]*40</expression>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">grp_week_hours</property>
+                    <text-property name="displayName">grp_week_hours</text-property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>by_week</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["hours"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">week_grp_count</property>
+                    <text-property name="displayName">week_grp_count</text-property>
+                    <property name="dataType">integer</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>by_employee</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">RUNNINGCOUNT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["grp_week_hours"]</expression>
+                        </structure>
+                    </list-property>
                     <property name="allowExport">true</property>
                 </structure>
             </list-property>
-            <property name="pageBreakInterval">40</property>
-            <column id="262">
-                <property name="suppressDuplicates">true</property>
-            </column>
-            <column id="263">
-                <property name="suppressDuplicates">true</property>
-            </column>
-            <column id="264">
-                <property name="suppressDuplicates">true</property>
-            </column>
-            <column id="265"/>
-            <column id="266"/>
-            <column id="267"/>
-            <column id="268">
-                <property name="suppressDuplicates">true</property>
-            </column>
+            <property name="sortByGroups">false</property>
+            <column id="416"/>
+            <column id="417"/>
+            <column id="418"/>
+            <column id="419"/>
+            <column id="420"/>
+            <column id="421"/>
+            <column id="422"/>
             <header>
-                <row id="224">
+                <row id="378">
                     <property name="backgroundColor">#B4B4B4</property>
-                    <cell id="225">
-                        <property name="textAlign">center</property>
+                    <cell id="379">
                         <label id="226">
+                            <property name="paddingRight">10pt</property>
                             <text-property name="text">Serial Number</text-property>
                         </label>
                     </cell>
-                    <cell id="227">
-                        <property name="textAlign">center</property>
+                    <cell id="381">
                         <label id="228">
                             <text-property name="text">Name</text-property>
                         </label>
                     </cell>
-                    <cell id="229">
-                        <property name="textAlign">center</property>
+                    <cell id="383">
                         <label id="230">
                             <text-property name="text">Country</text-property>
                         </label>
                     </cell>
-                    <cell id="231">
-                        <property name="textAlign">center</property>
+                    <cell id="385">
+                        <label id="369">
+                            <text-property name="text">Manager</text-property>
+                        </label>
+                    </cell>
+                    <cell id="387">
                         <label id="232">
                             <text-property name="text">End Date</text-property>
                         </label>
                     </cell>
-                    <cell id="233">
-                        <property name="textAlign">center</property>
+                    <cell id="389">
                         <label id="234">
                             <text-property name="text">Hours</text-property>
                         </label>
                     </cell>
-                    <cell id="235">
-                        <property name="textAlign">center</property>
+                    <cell id="391">
                         <label id="236">
                             <text-property name="text">Assignment</text-property>
                         </label>
                     </cell>
-                    <cell id="237">
-                        <property name="textAlign">center</property>
-                        <label id="238">
-                            <text-property name="text">Manager</text-property>
-                        </label>
-                    </cell>
                 </row>
             </header>
-            <group id="269">
+            <group id="440">
                 <property name="groupName">by_employee</property>
                 <expression name="keyExpr" type="javascript">row["eid"]</expression>
                 <structure name="toc">
                     <expression name="expressionValue" type="javascript">row["eid"]</expression>
                 </structure>
-                <property name="repeatHeader">false</property>
                 <property name="hideDetail">false</property>
-                <property name="pageBreakAfter">auto</property>
-                <property name="pageBreakBefore">auto</property>
-                <property name="pageBreakInside">avoid</property>
                 <header>
-                    <row id="270">
-                        <property name="pageBreakInside">auto</property>
-                        <cell id="271">
-                            <property name="paddingTop">4pt</property>
+                    <row id="441">
+                        <cell id="442">
+                            <data id="457">
+                                <property name="fontWeight">normal</property>
+                                <property name="paddingTop">4pt</property>
+                                <property name="resultSetColumn">eid</property>
+                            </data>
                         </cell>
-                        <cell id="272"/>
-                        <cell id="273"/>
-                        <cell id="274"/>
-                        <cell id="275"/>
-                        <cell id="276"/>
-                        <cell id="277"/>
+                        <cell id="443">
+                            <data id="397">
+                                <property name="fontWeight">normal</property>
+                                <property name="resultSetColumn">ename</property>
+                            </data>
+                        </cell>
+                        <cell id="444">
+                            <data id="399">
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">cname</property>
+                            </data>
+                        </cell>
+                        <cell id="445">
+                            <data id="401">
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">manager</property>
+                            </data>
+                        </cell>
+                        <cell id="446"/>
+                        <cell id="447"/>
+                        <cell id="448"/>
                     </row>
                 </header>
                 <footer>
-                    <row id="278">
+                    <row id="449">
                         <property name="borderBottomColor">#808080</property>
                         <property name="borderBottomStyle">solid</property>
                         <property name="borderBottomWidth">thin</property>
-                        <property name="pageBreakInside">auto</property>
-                        <cell id="279">
+                        <cell id="450">
                             <property name="paddingBottom">4pt</property>
                         </cell>
-                        <cell id="280"/>
-                        <cell id="281"/>
-                        <cell id="282"/>
-                        <cell id="283"/>
-                        <cell id="284"/>
-                        <cell id="285"/>
+                        <cell id="451"/>
+                        <cell id="452"/>
+                        <cell id="453"/>
+                        <cell id="454"/>
+                        <cell id="455"/>
+                        <cell id="456"/>
+                    </row>
+                </footer>
+            </group>
+            <group id="479">
+                <property name="groupName">by_week</property>
+                <expression name="keyExpr" type="javascript">row["wend"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["wend"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+                <header>
+                    <row id="480">
+                        <cell id="481">
+                            <property name="paddingTop">1pt</property>
+                        </cell>
+                        <cell id="482"/>
+                        <cell id="483"/>
+                        <cell id="484"/>
+                        <cell id="485"/>
+                        <cell id="486"/>
+                        <cell id="487"/>
+                    </row>
+                </header>
+                <footer>
+                    <row id="488">
+                        <property name="backgroundColor">#FAFAFA</property>
+                        <list-property name="highlightRules">
+                            <structure>
+                                <property name="operator">eq</property>
+                                <property name="backgroundColor">#EBEBEB</property>
+                                <expression name="testExpr" type="javascript">row["week_grp_count"] % 2</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">0</value>
+                                </simple-property-list>
+                            </structure>
+                        </list-property>
+                        <cell id="489">
+                            <property name="paddingBottom">1pt</property>
+                        </cell>
+                        <cell id="490"/>
+                        <cell id="491"/>
+                        <cell id="492"/>
+                        <cell id="493">
+                            <data id="403">
+                                <property name="backgroundAttachment">scroll</property>
+                                <property name="backgroundPositionX">0%</property>
+                                <property name="backgroundPositionY">0%</property>
+                                <property name="backgroundRepeat">repeat</property>
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="fontStyle">normal</property>
+                                <property name="fontVariant">normal</property>
+                                <property name="color">black</property>
+                                <property name="textLineThrough">none</property>
+                                <property name="textOverline">none</property>
+                                <property name="textUnderline">none</property>
+                                <property name="borderBottomColor">black</property>
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderBottomWidth">medium</property>
+                                <property name="borderLeftColor">black</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderLeftWidth">medium</property>
+                                <property name="borderRightColor">black</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderRightWidth">medium</property>
+                                <property name="borderTopColor">black</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="borderTopWidth">medium</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="marginLeft">0pt</property>
+                                <property name="marginBottom">0pt</property>
+                                <property name="marginRight">0pt</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">1pt</property>
+                                <property name="paddingBottom">1pt</property>
+                                <property name="paddingRight">1pt</property>
+                                <property name="textAlign">center</property>
+                                <property name="letterSpacing">normal</property>
+                                <property name="lineHeight">normal</property>
+                                <property name="orphans">2</property>
+                                <property name="textTransform">none</property>
+                                <property name="whiteSpace">normal</property>
+                                <property name="widows">2</property>
+                                <property name="wordSpacing">normal</property>
+                                <property name="display">block</property>
+                                <property name="pageBreakAfter">auto</property>
+                                <property name="pageBreakBefore">auto</property>
+                                <property name="pageBreakInside">auto</property>
+                                <property name="showIfBlank">false</property>
+                                <property name="canShrink">false</property>
+                                <property name="overflow">hidden</property>
+                                <property name="resultSetColumn">wend</property>
+                            </data>
+                        </cell>
+                        <cell id="494">
+                            <data id="497">
+                                <property name="backgroundAttachment">scroll</property>
+                                <property name="backgroundPositionX">0%</property>
+                                <property name="backgroundPositionY">0%</property>
+                                <property name="backgroundRepeat">repeat</property>
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="fontStyle">normal</property>
+                                <property name="fontVariant">normal</property>
+                                <property name="color">black</property>
+                                <property name="textLineThrough">none</property>
+                                <property name="textOverline">none</property>
+                                <property name="textUnderline">none</property>
+                                <property name="borderBottomColor">black</property>
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderBottomWidth">medium</property>
+                                <property name="borderLeftColor">black</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderLeftWidth">medium</property>
+                                <property name="borderRightColor">black</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderRightWidth">medium</property>
+                                <property name="borderTopColor">black</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="borderTopWidth">medium</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="marginLeft">0pt</property>
+                                <property name="marginBottom">0pt</property>
+                                <property name="marginRight">0pt</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">1pt</property>
+                                <property name="paddingBottom">1pt</property>
+                                <property name="paddingRight">1pt</property>
+                                <property name="textAlign">center</property>
+                                <property name="letterSpacing">normal</property>
+                                <property name="lineHeight">normal</property>
+                                <property name="orphans">2</property>
+                                <property name="textTransform">none</property>
+                                <property name="whiteSpace">normal</property>
+                                <property name="widows">2</property>
+                                <property name="wordSpacing">normal</property>
+                                <property name="display">block</property>
+                                <property name="pageBreakAfter">auto</property>
+                                <property name="pageBreakBefore">auto</property>
+                                <property name="pageBreakInside">auto</property>
+                                <property name="showIfBlank">false</property>
+                                <property name="canShrink">false</property>
+                                <property name="overflow">hidden</property>
+                                <property name="resultSetColumn">grp_week_hours</property>
+                            </data>
+                        </cell>
+                        <cell id="495"/>
                     </row>
                 </footer>
             </group>
             <detail>
-                <row id="239">
-                    <property name="whiteSpace">nowrap</property>
-                    <property name="pageBreakInside">auto</property>
+                <row id="393">
+                    <property name="backgroundColor">#FAFAFA</property>
+                    <property name="fontFamily">"Segoe UI"</property>
                     <list-property name="highlightRules">
                         <structure>
                             <property name="operator">eq</property>
                             <property name="backgroundColor">#EBEBEB</property>
-                            <expression name="testExpr" type="javascript">row[0] % 2</expression>
+                            <expression name="testExpr" type="javascript">row["week_grp_count"] % 2</expression>
                             <simple-property-list name="value1">
-                                <value type="javascript">0.0</value>
+                                <value type="javascript">0</value>
                             </simple-property-list>
                         </structure>
                     </list-property>
-                    <cell id="240">
-                        <property name="textAlign">center</property>
-                        <data id="287">
-                            <property name="backgroundAttachment">scroll</property>
-                            <property name="backgroundPositionX">0%</property>
-                            <property name="backgroundPositionY">0%</property>
-                            <property name="backgroundRepeat">repeat</property>
-                            <property name="fontFamily">"Courier New"</property>
-                            <property name="fontSize">10pt</property>
-                            <property name="fontWeight">bold</property>
-                            <property name="fontStyle">normal</property>
-                            <property name="fontVariant">normal</property>
-                            <property name="color">black</property>
-                            <property name="textLineThrough">none</property>
-                            <property name="textOverline">none</property>
-                            <property name="textUnderline">none</property>
-                            <property name="borderBottomColor">black</property>
-                            <property name="borderBottomStyle">none</property>
-                            <property name="borderBottomWidth">medium</property>
-                            <property name="borderLeftColor">black</property>
-                            <property name="borderLeftStyle">none</property>
-                            <property name="borderLeftWidth">medium</property>
-                            <property name="borderRightColor">black</property>
-                            <property name="borderRightStyle">none</property>
-                            <property name="borderRightWidth">medium</property>
-                            <property name="borderTopColor">black</property>
-                            <property name="borderTopStyle">none</property>
-                            <property name="borderTopWidth">medium</property>
-                            <property name="marginTop">0pt</property>
-                            <property name="marginLeft">0pt</property>
-                            <property name="marginBottom">0pt</property>
-                            <property name="marginRight">0pt</property>
-                            <property name="paddingTop">1pt</property>
-                            <property name="paddingLeft">1pt</property>
-                            <property name="paddingBottom">1pt</property>
-                            <property name="paddingRight">1pt</property>
-                            <property name="textAlign">left</property>
-                            <property name="letterSpacing">normal</property>
-                            <property name="lineHeight">normal</property>
-                            <property name="orphans">2</property>
-                            <property name="textTransform">none</property>
-                            <property name="whiteSpace">normal</property>
-                            <property name="widows">2</property>
-                            <property name="wordSpacing">normal</property>
-                            <property name="display">block</property>
-                            <property name="pageBreakAfter">auto</property>
-                            <property name="pageBreakBefore">auto</property>
-                            <property name="pageBreakInside">auto</property>
-                            <property name="showIfBlank">false</property>
-                            <property name="canShrink">false</property>
-                            <property name="overflow">hidden</property>
-                            <property name="resultSetColumn">eid</property>
-                        </data>
-                    </cell>
-                    <cell id="242">
-                        <property name="textAlign">center</property>
-                        <data id="243">
-                            <property name="textAlign">left</property>
-                            <property name="resultSetColumn">ename</property>
-                        </data>
-                    </cell>
-                    <cell id="244">
-                        <property name="textAlign">center</property>
-                        <data id="245">
-                            <property name="resultSetColumn">cname</property>
-                        </data>
-                    </cell>
-                    <cell id="246">
-                        <property name="textAlign">center</property>
-                        <data id="247">
-                            <property name="resultSetColumn">wend</property>
-                        </data>
-                    </cell>
-                    <cell id="248">
-                        <property name="textAlign">center</property>
-                        <data id="249">
+                    <cell id="394"/>
+                    <cell id="396"/>
+                    <cell id="398"/>
+                    <cell id="400"/>
+                    <cell id="402"/>
+                    <cell id="404">
+                        <data id="405">
+                            <property name="textAlign">center</property>
                             <property name="resultSetColumn">hours</property>
                         </data>
                     </cell>
-                    <cell id="250">
-                        <property name="textAlign">center</property>
-                        <data id="251">
+                    <cell id="406">
+                        <data id="407">
                             <property name="resultSetColumn">project</property>
-                        </data>
-                    </cell>
-                    <cell id="252">
-                        <property name="textAlign">center</property>
-                        <data id="253">
-                            <property name="textAlign">left</property>
-                            <property name="resultSetColumn">manager</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="254">
-                    <property name="backgroundColor">#C0C0C0</property>
-                    <property name="pageBreakInside">auto</property>
-                    <cell id="255">
-                        <property name="textAlign">center</property>
-                        <text id="338">
+                <row id="408">
+                    <property name="backgroundColor">#B4B4B4</property>
+                    <cell id="409">
+                        <text-data id="459">
+                            <property name="fontFamily">"Segoe UI"</property>
                             <property name="fontWeight">bold</property>
-                            <property name="display">inline</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Horas Excedentes Totales]]></text-property>
-                        </text>
+                            <expression name="valueExpr">"Horas " + (params["horas"].value==1?"Excedentes":"Faltantes") + " Totales:";</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
                     </cell>
-                    <cell id="256">
-                        <property name="textAlign">center</property>
+                    <cell id="410"/>
+                    <cell id="411"/>
+                    <cell id="412"/>
+                    <cell id="413"/>
+                    <cell id="414">
+                        <text-data id="460">
+                            <property name="fontFamily">"Segoe UI"</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">center</property>
+                            <expression name="valueExpr">Math.abs(row["hours_balance"]);</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
                     </cell>
-                    <cell id="257">
-                        <property name="textAlign">center</property>
-                    </cell>
-                    <cell id="258">
-                        <property name="textAlign">center</property>
-                    </cell>
-                    <cell id="259">
-                        <property name="textAlign">center</property>
-                        <data id="358">
-                            <property name="resultSetColumn">overflow</property>
-                        </data>
-                    </cell>
-                    <cell id="260">
-                        <property name="textAlign">center</property>
-                    </cell>
-                    <cell id="261">
-                        <property name="textAlign">center</property>
-                    </cell>
+                    <cell id="415"/>
                 </row>
             </footer>
         </table>

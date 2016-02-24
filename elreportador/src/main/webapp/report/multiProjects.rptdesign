@@ -22,6 +22,7 @@
     <property name="imageDPI">96</property>
     <parameters>
         <cascading-parameter-group name="filtros" id="74">
+            <text-property name="promptText">Seleccione asdosajdisasajdsadsadusadusadsad</text-property>
             <property name="dataSet">queryPais</property>
             <property name="dataSetMode">multiple</property>
             <parameters>
@@ -343,6 +344,12 @@ from country]]></xml-property>
                     <text-property name="heading">wend</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">aid</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">aid</text-property>
+                    <text-property name="heading">aid</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">project</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">project</text-property>
@@ -414,36 +421,41 @@ from country]]></xml-property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
+                        <property name="name">aid</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
                         <property name="name">project</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">cat</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">hours</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">cid</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">countryname</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">mid</property>
                         <property name="dataType">integer</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">manager_name</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -458,7 +470,7 @@ if (params["manager"] != 0)
 	this.queryText += " and B.mid = '" + params["manager"] + "' ";
 }
 
-this.queryText += " order by B.cid, B.eid, B.wend"]]></method>
+this.queryText += " order by B.cid, B.ename, B.eid, B.wend"]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -491,48 +503,55 @@ this.queryText += " order by B.cid, B.eid, B.wend"]]></method>
                 </structure>
                 <structure>
                     <property name="position">5</property>
+                    <property name="name">aid</property>
+                    <property name="nativeName">aid</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
                     <property name="name">project</property>
                     <property name="nativeName">project</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                     <property name="name">cat</property>
                     <property name="nativeName">cat</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                     <property name="name">hours</property>
                     <property name="nativeName">hours</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                     <property name="name">cid</property>
                     <property name="nativeName">cid</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">countryname</property>
                     <property name="nativeName">countryname</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                     <property name="name">mid</property>
                     <property name="nativeName">mid</property>
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">4</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">manager_name</property>
                     <property name="nativeName">manager_name</property>
                     <property name="dataType">string</property>
@@ -541,7 +560,7 @@ this.queryText += " order by B.cid, B.eid, B.wend"]]></method>
             </list-property>
             <xml-property name="queryText"><![CDATA[SELECT B.* FROM
 
-	(SELECT wk.id_employee as eid, e.name as ename, wk.ID_WEEK as wid, w.end_date as wend, a.project_name as project, a.category as cat, wk.hours_x_week as hours, e.id_country as cid, c.country as countryname, m.id as mid, m.name as manager_name
+	(SELECT wk.id_employee as eid, e.name as ename, wk.ID_WEEK as wid, w.end_date as wend, a.id as aid, a.project_name as project, a.category as cat, wk.hours_x_week as hours, e.id_country as cid, c.country as countryname, m.id as mid, m.name as manager_name
 	FROM `work` as wk
 	
 	JOIN `employee` as e ON wk.id_employee = e.id
@@ -562,9 +581,7 @@ JOIN
 	group by 1,2,3
 	having count(*) > 1) AS A
 	ON A.eid = B.eid
-		AND A.wid = B.wid
-		AND A.cat = B.cat
-]]></xml-property>
+		AND A.wid = B.wid]]></xml-property>
         </oda-data-set>
     </data-sets>
     <page-setup>
@@ -781,7 +798,40 @@ JOIN
                     </list-property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">weektotals</property>
+                    <text-property name="displayName">week_totals</text-property>
+                    <property name="dataType">float</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>week</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["hours"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">grpcount</property>
+                    <text-property name="displayName">grp_count</text-property>
+                    <property name="dataType">integer</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>employee</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">RUNNINGCOUNT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["weektotals"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
+            <property name="sortByGroups">false</property>
             <column id="390">
                 <property name="suppressDuplicates">true</property>
                 <property name="textAlign">center</property>
@@ -789,15 +839,18 @@ JOIN
             <column id="391">
                 <property name="suppressDuplicates">true</property>
             </column>
+            <column id="416">
+                <property name="repeat">1</property>
+                <property name="suppressDuplicates">true</property>
+            </column>
             <column id="392">
                 <property name="suppressDuplicates">true</property>
             </column>
             <column id="393"/>
-            <column id="394"/>
-            <column id="395"/>
-            <column id="416">
+            <column id="394">
                 <property name="suppressDuplicates">true</property>
             </column>
+            <column id="395"/>
             <header>
                 <row id="357">
                     <property name="backgroundColor">#B4B4B4</property>
@@ -959,6 +1012,16 @@ JOIN
                             <text-property name="text">NAME</text-property>
                         </label>
                     </cell>
+                    <cell id="413">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="417">
+                            <text-property name="text">MANAGER</text-property>
+                        </label>
+                    </cell>
                     <cell id="362">
                         <property name="borderBottomStyle">none</property>
                         <property name="borderLeftStyle">none</property>
@@ -989,6 +1052,7 @@ JOIN
                         <property name="paddingBottom">1pt</property>
                         <property name="paddingRight">1pt</property>
                         <label id="367">
+                            <property name="fontFamily">serif</property>
                             <text-property name="text">WEEK DATE</text-property>
                         </label>
                     </cell>
@@ -1002,20 +1066,190 @@ JOIN
                             <text-property name="text">HOURS WORKED</text-property>
                         </label>
                     </cell>
-                    <cell id="413">
-                        <property name="borderTopStyle">none</property>
-                        <property name="paddingTop">1pt</property>
-                        <property name="paddingLeft">1pt</property>
-                        <property name="paddingBottom">1pt</property>
-                        <property name="paddingRight">1pt</property>
-                        <label id="417">
-                            <text-property name="text">MANAGER</text-property>
-                        </label>
-                    </cell>
                 </row>
             </header>
+            <group id="425">
+                <property name="groupName">employee</property>
+                <expression name="keyExpr" type="javascript">row["eid"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["eid"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakInside">auto</property>
+                <header>
+                    <row id="426">
+                        <cell id="427">
+                            <property name="paddingTop">4pt</property>
+                            <data id="372">
+                                <property name="backgroundAttachment">scroll</property>
+                                <property name="backgroundPositionX">0%</property>
+                                <property name="backgroundPositionY">0%</property>
+                                <property name="backgroundRepeat">repeat</property>
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="fontStyle">normal</property>
+                                <property name="fontVariant">normal</property>
+                                <property name="color">black</property>
+                                <property name="textLineThrough">none</property>
+                                <property name="textOverline">none</property>
+                                <property name="textUnderline">none</property>
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="marginLeft">0pt</property>
+                                <property name="marginBottom">0pt</property>
+                                <property name="marginRight">0pt</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">1pt</property>
+                                <property name="paddingBottom">1pt</property>
+                                <property name="paddingRight">1pt</property>
+                                <property name="textAlign">left</property>
+                                <property name="letterSpacing">normal</property>
+                                <property name="lineHeight">normal</property>
+                                <property name="orphans">2</property>
+                                <property name="textTransform">none</property>
+                                <property name="whiteSpace">normal</property>
+                                <property name="widows">2</property>
+                                <property name="wordSpacing">normal</property>
+                                <property name="display">block</property>
+                                <property name="pageBreakAfter">auto</property>
+                                <property name="pageBreakBefore">auto</property>
+                                <property name="pageBreakInside">auto</property>
+                                <property name="showIfBlank">false</property>
+                                <property name="canShrink">false</property>
+                                <property name="overflow">hidden</property>
+                                <property name="resultSetColumn">eid</property>
+                            </data>
+                        </cell>
+                        <cell id="428">
+                            <data id="374">
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="textAlign">left</property>
+                                <property name="resultSetColumn">ename</property>
+                            </data>
+                        </cell>
+                        <cell id="433">
+                            <data id="418">
+                                <property name="borderBottomStyle">none</property>
+                                <property name="borderLeftStyle">none</property>
+                                <property name="borderRightStyle">none</property>
+                                <property name="borderTopStyle">none</property>
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">manager_name</property>
+                            </data>
+                        </cell>
+                        <cell id="429">
+                            <data id="396">
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">countryname</property>
+                            </data>
+                        </cell>
+                        <cell id="430"/>
+                        <cell id="431"/>
+                        <cell id="432"/>
+                    </row>
+                </header>
+                <footer>
+                    <row id="434">
+                        <cell id="435">
+                            <property name="paddingBottom">4pt</property>
+                        </cell>
+                        <cell id="436"/>
+                        <cell id="441"/>
+                        <cell id="437"/>
+                        <cell id="438"/>
+                        <cell id="439"/>
+                        <cell id="440">
+                            <property name="fontWeight">normal</property>
+                            <property name="textAlign">center</property>
+                        </cell>
+                    </row>
+                </footer>
+            </group>
+            <group id="463">
+                <property name="groupName">week</property>
+                <expression name="keyExpr" type="javascript">row["wend"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["wend"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakBefore">avoid</property>
+                <property name="pageBreakInside">auto</property>
+                <header>
+                    <row id="464">
+                        <cell id="465"/>
+                        <cell id="466"/>
+                        <cell id="471"/>
+                        <cell id="467"/>
+                        <cell id="468"/>
+                        <cell id="469"/>
+                        <cell id="470"/>
+                    </row>
+                </header>
+                <footer>
+                    <row id="472">
+                        <property name="backgroundColor">#FAFAFA</property>
+                        <list-property name="highlightRules">
+                            <structure>
+                                <property name="operator">eq</property>
+                                <property name="backgroundColor">#F0F0F0</property>
+                                <expression name="testExpr" type="javascript">row["grpcount"] % 2</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">0</value>
+                                </simple-property-list>
+                            </structure>
+                        </list-property>
+                        <cell id="473"/>
+                        <cell id="474"/>
+                        <cell id="479"/>
+                        <cell id="475"/>
+                        <cell id="476">
+                            <label id="485">
+                                <property name="fontStyle">italic</property>
+                                <property name="color">#808080</property>
+                                <property name="textAlign">center</property>
+                                <text-property name="text">Horas totales:</text-property>
+                            </label>
+                        </cell>
+                        <cell id="477"/>
+                        <cell id="478">
+                            <property name="fontWeight">normal</property>
+                            <data id="483">
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#004000</property>
+                                <property name="textAlign">center</property>
+                                <list-property name="highlightRules">
+                                    <structure>
+                                        <property name="operator">ne</property>
+                                        <property name="color">#800000</property>
+                                        <property name="textLineThrough">none</property>
+                                        <expression name="testExpr" type="javascript">row["weektotals"]</expression>
+                                        <simple-property-list name="value1">
+                                            <value type="javascript">40</value>
+                                        </simple-property-list>
+                                    </structure>
+                                </list-property>
+                                <property name="resultSetColumn">weektotals</property>
+                            </data>
+                        </cell>
+                    </row>
+                </footer>
+            </group>
             <detail>
                 <row id="370">
+                    <property name="backgroundColor">#FAFAFA</property>
                     <property name="borderBottomStyle">none</property>
                     <property name="borderLeftStyle">none</property>
                     <property name="borderRightStyle">none</property>
@@ -1024,8 +1258,8 @@ JOIN
                     <list-property name="highlightRules">
                         <structure>
                             <property name="operator">eq</property>
-                            <property name="backgroundColor">#DADEE7</property>
-                            <expression name="testExpr" type="javascript">row[0] % 2</expression>
+                            <property name="backgroundColor">#F0F0F0</property>
+                            <expression name="testExpr" type="javascript">row["grpcount"] % 2</expression>
                             <simple-property-list name="value1">
                                 <value type="javascript">0</value>
                             </simple-property-list>
@@ -1037,49 +1271,6 @@ JOIN
                         <property name="paddingLeft">1pt</property>
                         <property name="paddingBottom">1pt</property>
                         <property name="paddingRight">1pt</property>
-                        <data id="372">
-                            <property name="backgroundAttachment">scroll</property>
-                            <property name="backgroundPositionX">0%</property>
-                            <property name="backgroundPositionY">0%</property>
-                            <property name="backgroundRepeat">repeat</property>
-                            <property name="fontFamily">"Courier New"</property>
-                            <property name="fontSize">10pt</property>
-                            <property name="fontWeight">bold</property>
-                            <property name="fontStyle">normal</property>
-                            <property name="fontVariant">normal</property>
-                            <property name="color">black</property>
-                            <property name="textLineThrough">none</property>
-                            <property name="textOverline">none</property>
-                            <property name="textUnderline">none</property>
-                            <property name="borderBottomStyle">none</property>
-                            <property name="borderLeftStyle">none</property>
-                            <property name="borderRightStyle">none</property>
-                            <property name="borderTopStyle">none</property>
-                            <property name="marginTop">0pt</property>
-                            <property name="marginLeft">0pt</property>
-                            <property name="marginBottom">0pt</property>
-                            <property name="marginRight">0pt</property>
-                            <property name="paddingTop">1pt</property>
-                            <property name="paddingLeft">1pt</property>
-                            <property name="paddingBottom">1pt</property>
-                            <property name="paddingRight">1pt</property>
-                            <property name="textAlign">left</property>
-                            <property name="letterSpacing">normal</property>
-                            <property name="lineHeight">normal</property>
-                            <property name="orphans">2</property>
-                            <property name="textTransform">none</property>
-                            <property name="whiteSpace">normal</property>
-                            <property name="widows">2</property>
-                            <property name="wordSpacing">normal</property>
-                            <property name="display">block</property>
-                            <property name="pageBreakAfter">auto</property>
-                            <property name="pageBreakBefore">auto</property>
-                            <property name="pageBreakInside">auto</property>
-                            <property name="showIfBlank">false</property>
-                            <property name="canShrink">false</property>
-                            <property name="overflow">hidden</property>
-                            <property name="resultSetColumn">eid</property>
-                        </data>
                     </cell>
                     <cell id="373">
                         <property name="borderTopStyle">none</property>
@@ -1087,14 +1278,13 @@ JOIN
                         <property name="paddingLeft">1pt</property>
                         <property name="paddingBottom">1pt</property>
                         <property name="paddingRight">1pt</property>
-                        <data id="374">
-                            <property name="borderBottomStyle">none</property>
-                            <property name="borderLeftStyle">none</property>
-                            <property name="borderRightStyle">none</property>
-                            <property name="borderTopStyle">none</property>
-                            <property name="textAlign">left</property>
-                            <property name="resultSetColumn">ename</property>
-                        </data>
+                    </cell>
+                    <cell id="414">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
                     </cell>
                     <cell id="375">
                         <property name="borderTopStyle">none</property>
@@ -1102,9 +1292,6 @@ JOIN
                         <property name="paddingLeft">1pt</property>
                         <property name="paddingBottom">1pt</property>
                         <property name="paddingRight">1pt</property>
-                        <data id="396">
-                            <property name="resultSetColumn">countryname</property>
-                        </data>
                     </cell>
                     <cell id="377">
                         <property name="borderTopStyle">none</property>
@@ -1144,25 +1331,11 @@ JOIN
                             <property name="resultSetColumn">hours</property>
                         </data>
                     </cell>
-                    <cell id="414">
-                        <property name="borderTopStyle">none</property>
-                        <property name="paddingTop">1pt</property>
-                        <property name="paddingLeft">1pt</property>
-                        <property name="paddingBottom">1pt</property>
-                        <property name="paddingRight">1pt</property>
-                        <data id="418">
-                            <property name="borderBottomStyle">none</property>
-                            <property name="borderLeftStyle">none</property>
-                            <property name="borderRightStyle">none</property>
-                            <property name="borderTopStyle">none</property>
-                            <property name="textAlign">left</property>
-                            <property name="resultSetColumn">manager_name</property>
-                        </data>
-                    </cell>
                 </row>
             </detail>
             <footer>
                 <row id="383">
+                    <property name="backgroundColor">#B4B4B4</property>
                     <property name="borderBottomStyle">none</property>
                     <property name="borderLeftStyle">none</property>
                     <property name="borderRightStyle">none</property>
@@ -1193,6 +1366,16 @@ JOIN
                         <data id="424">
                             <property name="resultSetColumn">total_emp</property>
                         </data>
+                    </cell>
+                    <cell id="415">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
                     </cell>
                     <cell id="386">
                         <property name="borderBottomStyle">none</property>
@@ -1225,16 +1408,6 @@ JOIN
                         <property name="paddingRight">1pt</property>
                     </cell>
                     <cell id="389">
-                        <property name="borderBottomStyle">none</property>
-                        <property name="borderLeftStyle">none</property>
-                        <property name="borderRightStyle">none</property>
-                        <property name="borderTopStyle">none</property>
-                        <property name="paddingTop">1pt</property>
-                        <property name="paddingLeft">1pt</property>
-                        <property name="paddingBottom">1pt</property>
-                        <property name="paddingRight">1pt</property>
-                    </cell>
-                    <cell id="415">
                         <property name="borderBottomStyle">none</property>
                         <property name="borderLeftStyle">none</property>
                         <property name="borderRightStyle">none</property>
