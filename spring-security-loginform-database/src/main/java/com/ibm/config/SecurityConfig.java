@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().csrf()
 				.and().exceptionHandling().accessDeniedPage("/403");
 		http.authorizeRequests().antMatchers("/welcome/**").authenticated();
+		http.csrf().disable(); 
 	}
 	
 }

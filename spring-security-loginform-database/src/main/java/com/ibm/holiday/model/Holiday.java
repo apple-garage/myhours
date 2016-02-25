@@ -24,22 +24,21 @@ import com.ibm.country_has_holiday.model.Country_has_Holiday;
 
 
 @Entity
-@Table(name = "holiday", catalog = "holiday", uniqueConstraints = @UniqueConstraint(columnNames = "HolidayID"))
+@Table(name = "holiday", catalog = "my_hours_report", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
 public class Holiday implements java.io.Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "HolidayID", unique = true, nullable = false)
+	@Column(name = "ID", unique = true, nullable = false)
 	private int id;
-	
-	@Column(name="Holiday", unique = true, nullable = false)
+	@Column(name="holiday", unique = true, nullable = false)
 	private String holiday;
-	@Column(name="Date")
+	@Column(name="date")
 	private Date date;
 	
 	
 	@ManyToMany
-	@JoinTable(name="country_has_holiday", joinColumns=@JoinColumn(name="HolidayID"), inverseJoinColumns = @JoinColumn(name="CountryID"))
+	@JoinTable(name="country_has_holiday", joinColumns=@JoinColumn(name="id_holiday"), inverseJoinColumns = @JoinColumn(name="id_country"))
 	private Set<Country> countries = new HashSet<Country>();
 	
 	public Holiday(){

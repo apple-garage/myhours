@@ -20,6 +20,7 @@ import com.ibm.assignment.bo.AssignmentBo;
 import com.ibm.country.bo.CountryBo;
 import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.fileProcess.Parse;
+import com.ibm.holiday.bo.HolidayBo;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.week.bo.WeekBo;
 import com.ibm.work.bo.WorkBo;
@@ -38,6 +39,8 @@ public class MainController {
 	ManagerBo managerBo;
 	@Autowired
 	CountryBo countryBo;
+	@Autowired
+	HolidayBo holidayBo;
 	
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
@@ -123,5 +126,15 @@ public class MainController {
 		return model;
 
 	}
+	
+	@RequestMapping(value = { "/test" }, method = RequestMethod.POST)
+	public ModelAndView insertHoliday() {
+
+		ModelAndView model = new ModelAndView();
+		model.setViewName("hello");
+		return model;
+
+	}
+	
 
 }

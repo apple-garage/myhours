@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.SQLQuery;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,28 +20,30 @@ import com.ibm.holiday.model.Holiday;
 import com.ibm.util.CustomHibernateDaoSupport;
 
 @Repository("holidayDao")
-public class HolidayDaoImpl extends CustomHibernateDaoSupport implements HolidayDao{
-
+public class HolidayDaoImpl implements HolidayDao{
+	@Autowired
+	private SessionFactory sessionFactory;
+	
 	public void save(Holiday holiday){
-		getHibernateTemplate().save(holiday);
+		sessionFactory.getCurrentSession().save(holiday);
 	}
 	
 	public void update(Holiday holiday){
-		getHibernateTemplate().update(holiday);
+		sessionFactory.getCurrentSession().update(holiday);
 	}
 	
 	public void delete(Holiday holiday){
-		getHibernateTemplate().delete(holiday);
+		sessionFactory.getCurrentSession().delete(holiday);
 	}
 	
 	@Transactional
 	public Holiday findById(int id){
-		return (Holiday) getSessionFactory().getCurrentSession().get(Holiday.class, id);
+		return (Holiday) sessionFactory.getCurrentSession().get(Holiday.class, id);
 	}
 	
 	@Transactional
 	public Holiday findByDate(String date){
-		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select * from holiday where DATE = str_to_date('"+date+"','%d %b %Y')");
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("select * from holiday where DATE = str_to_date('"+date+"','%d %b %Y')");
 		query.addEntity(Holiday.class);
 		Holiday aHoliday = (Holiday) query.uniqueResult();
 		return aHoliday; 
@@ -47,7 +51,7 @@ public class HolidayDaoImpl extends CustomHibernateDaoSupport implements Holiday
 	
 	@Transactional
 	public Set<Holiday> findByCountry(int countryID){
-		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("SELECT h.* FROM Holiday AS h JOIN Country_has_Holiday ON Country_has_Holiday.HolidayID = h.HolidayID WHERE Country_has_Holiday.CountryID = "+countryID);
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("SELECT h.* FROM Holiday AS h JOIN Country_has_Holiday ON Country_has_Holiday.id_holiday = h.ID WHERE Country_has_Holiday.id_country = "+countryID);
 		query.addEntity(Holiday.class);
 		List<Holiday> aHoliday = (List<Holiday>) query.list();
 		Set<Holiday> holidaySet = new HashSet<Holiday>(aHoliday);
@@ -61,7 +65,7 @@ public class HolidayDaoImpl extends CustomHibernateDaoSupport implements Holiday
 		date = cal.getTime();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String d = format.format(date.getTime());
-		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("SELECT DISTINCT country from country, country_has_holiday, holiday where holiday.date = '" + d + "' and Holiday.HolidayID = Country_has_Holiday.HolidayID and Country.CountryID = Country_has_Holiday.CountryID");		
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT country from country, country_has_holiday, holiday where holiday.date = '" + d + "' and Holiday.ID = Country_has_Holiday.id_holiday and Country.ID = Country_has_Holiday.id_country");		
 		List<String> aCountry = query.list();
 			for(Country c : country){
 				if(! aCountry.contains(c.getCountry())){
