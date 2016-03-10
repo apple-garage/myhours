@@ -81,8 +81,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost:3306/my_hours_report</property>
-            <property name="odaUser">root</property>
+            <property name="odaURL">jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/ad_06ffd90d8bcb8be</property>
+            <property name="odaUser">bf3075f6f0305a</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">MTE0MzM4MTE=</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -334,6 +335,7 @@ from country]]></xml-property>
                     <property name="columnName">wid</property>
                     <property name="analysis">measure</property>
                     <text-property name="displayName">wid</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">wid</text-property>
                 </structure>
                 <structure>
@@ -347,6 +349,7 @@ from country]]></xml-property>
                     <property name="columnName">aid</property>
                     <property name="analysis">measure</property>
                     <text-property name="displayName">aid</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">aid</text-property>
                 </structure>
                 <structure>
@@ -360,6 +363,7 @@ from country]]></xml-property>
                     <property name="columnName">cat</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">cat</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">cat</text-property>
                 </structure>
                 <structure>
@@ -373,6 +377,7 @@ from country]]></xml-property>
                     <property name="columnName">cid</property>
                     <property name="analysis">measure</property>
                     <text-property name="displayName">cid</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">cid</text-property>
                 </structure>
                 <structure>
@@ -386,6 +391,7 @@ from country]]></xml-property>
                     <property name="columnName">mid</property>
                     <property name="analysis">measure</property>
                     <text-property name="displayName">mid</text-property>
+                    <property name="onColumnLayout">false</property>
                     <text-property name="heading">mid</text-property>
                 </structure>
                 <structure>
@@ -566,7 +572,7 @@ this.queryText += " order by B.cid, B.ename, B.eid, B.wend"]]></method>
 	JOIN `employee` as e ON wk.id_employee = e.id
 	JOIN `week` as w ON w.ID = wk.ID_WEEK
 	JOIN `country` as c ON c.ID = e.ID_COUNTRY
-	JOIN `assignment` as a ON wk.ID_ASSIGNMENT = a.ID
+	JOIN `assignment` as a ON wk.ID_ASSIGNMENT = a.id
 	JOIN `manager` as m ON e.ID_MANAGER = m.ID) AS B
 	
 JOIN 
@@ -830,6 +836,13 @@ JOIN
                     </list-property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">aid</property>
+                    <text-property name="displayName">aid</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["aid"].toString()</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
             <property name="sortByGroups">false</property>
             <column id="390">
@@ -847,6 +860,7 @@ JOIN
                 <property name="suppressDuplicates">true</property>
             </column>
             <column id="393"/>
+            <column id="493"/>
             <column id="394">
                 <property name="suppressDuplicates">true</property>
             </column>
@@ -1045,6 +1059,16 @@ JOIN
                             <text-property name="text">PROJECT NAME</text-property>
                         </label>
                     </cell>
+                    <cell id="486">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <label id="494">
+                            <text-property name="text">ASSIGNMENT ID</text-property>
+                        </label>
+                    </cell>
                     <cell id="366">
                         <property name="borderTopStyle">none</property>
                         <property name="paddingTop">1pt</property>
@@ -1154,6 +1178,7 @@ JOIN
                             </data>
                         </cell>
                         <cell id="430"/>
+                        <cell id="487"/>
                         <cell id="431"/>
                         <cell id="432"/>
                     </row>
@@ -1167,6 +1192,7 @@ JOIN
                         <cell id="441"/>
                         <cell id="437"/>
                         <cell id="438"/>
+                        <cell id="491"/>
                         <cell id="439"/>
                         <cell id="440">
                             <property name="fontWeight">normal</property>
@@ -1192,6 +1218,7 @@ JOIN
                         <cell id="471"/>
                         <cell id="467"/>
                         <cell id="468"/>
+                        <cell id="488"/>
                         <cell id="469"/>
                         <cell id="470"/>
                     </row>
@@ -1221,6 +1248,7 @@ JOIN
                                 <text-property name="text">Horas totales:</text-property>
                             </label>
                         </cell>
+                        <cell id="490"/>
                         <cell id="477"/>
                         <cell id="478">
                             <property name="fontWeight">normal</property>
@@ -1301,6 +1329,16 @@ JOIN
                         <property name="paddingRight">1pt</property>
                         <data id="378">
                             <property name="resultSetColumn">project</property>
+                        </data>
+                    </cell>
+                    <cell id="489">
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                        <data id="495">
+                            <property name="resultSetColumn">aid</property>
                         </data>
                     </cell>
                     <cell id="379">
@@ -1388,6 +1426,16 @@ JOIN
                         <property name="paddingRight">1pt</property>
                     </cell>
                     <cell id="387">
+                        <property name="borderBottomStyle">none</property>
+                        <property name="borderLeftStyle">none</property>
+                        <property name="borderRightStyle">none</property>
+                        <property name="borderTopStyle">none</property>
+                        <property name="paddingTop">1pt</property>
+                        <property name="paddingLeft">1pt</property>
+                        <property name="paddingBottom">1pt</property>
+                        <property name="paddingRight">1pt</property>
+                    </cell>
+                    <cell id="492">
                         <property name="borderBottomStyle">none</property>
                         <property name="borderLeftStyle">none</property>
                         <property name="borderRightStyle">none</property>

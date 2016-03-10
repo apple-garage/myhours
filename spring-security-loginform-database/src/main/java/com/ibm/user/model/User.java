@@ -42,7 +42,7 @@ public class User implements java.io.Serializable{
 	private String mail;
 	
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", catalog = "my_hours_report", joinColumns = {@JoinColumn(name = "id_user") }, 
+	@JoinTable(name = "users_roles", catalog = "ad_06ffd90d8bcb8be", joinColumns = {@JoinColumn(name = "id_user") }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_roles") })
 	private Set<Role> roles = new HashSet<Role>(0);
 	

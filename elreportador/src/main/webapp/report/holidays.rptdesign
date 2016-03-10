@@ -119,8 +119,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost:3306/my_hours_report</property>
-            <property name="odaUser">root</property>
+            <property name="odaURL">jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/ad_06ffd90d8bcb8be</property>
+            <property name="odaUser">bf3075f6f0305a</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">MTE0MzM4MTE=</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -779,7 +780,7 @@ if (params["manager"] != 0)
 	this.queryText += " hxe.mid = '" + params["manager"] + "' ";
 }
 
-this.queryText += " ORDER BY hxe.cid, hxe.eid";]]></method>
+this.queryText += " ORDER BY hxe.cid, hxe.ename, hxe.eid";]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -947,7 +948,7 @@ FROM
 		WHERE w.num_week BETWEEN ? AND ?
 		GROUP BY h_cid, h_cname, h_wnum, h_wend
 	) AS t2 ON emp.ID_COUNTRY = t2.h_cid
-	ORDER BY cname
+	ORDER BY cname, ename, eid, h_wnum
 ) AS hxe -- holiday_week_number por empleado
 
 -- OBJETIVO:
@@ -1269,7 +1270,14 @@ LEFT JOIN
                     <expression name="expression" type="javascript">dataSetRow["cname"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">weeknumber</property>
+                    <expression name="expression" type="javascript">dataSetRow["h_wnum"]</expression>
+                    <property name="dataType">integer</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
+            <property name="sortByGroups">false</property>
             <column id="515">
                 <property name="suppressDuplicates">true</property>
             </column>
@@ -1472,6 +1480,29 @@ LEFT JOIN
                             <property name="fontWeight">normal</property>
                             <property name="color">#400000</property>
                             <property name="resultSetColumn">h_wend</property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="formatType">html</property>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">detail.rptdesign</property>
+                                    <property name="targetWindow">_blank</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">eid</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">row["eid"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">wnum</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">row["weeknumber"]</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
                         </data>
                     </cell>
                     <cell id="496">
