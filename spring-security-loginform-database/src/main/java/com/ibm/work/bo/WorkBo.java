@@ -13,5 +13,7 @@ public interface WorkBo {
 	void delete(Work work);
 	
 	List<Work> findAll();
+	
+	public void loadWorkHistory(String date);
 
 }

@@ -53,6 +53,11 @@ public class UserDaoImpl implements UserDao{
 		return aUser; 
 	} 
 	
+	@Override
+	public void deleteById(int id) {
+		this.delete(findById(id));
+	}
+	
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}

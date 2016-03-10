@@ -20,4 +20,6 @@ public interface UserDao {
 	public Role findByRoles(String role);
 
 	public User findByUserName(String username);
+
+	public void deleteById(int id);
 }

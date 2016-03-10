@@ -13,5 +13,7 @@ public interface WorkDao {
 	void delete(Work work);
 	
 	List<Work> findAll();
+	
+	void loadWorkHistory(String date);
 
 }

@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ibm.user.bo.UserBo;
 import com.ibm.user.dao.*;
 import com.ibm.user.model.User;
 
 @Service("userBo")
+@Transactional
 	public class UserBoImpl implements UserBo{
 		
 		@Autowired
@@ -20,7 +22,10 @@ import com.ibm.user.model.User;
 		}
 
 		public void save(User user){
-			userDao.save(user);
+			if(user.getId()==0)
+				userDao.save(user);
+			else
+				userDao.update(user);
 		}
 		
 		public void update(User user){
@@ -35,8 +40,14 @@ import com.ibm.user.model.User;
 			return userDao.findAll();
 		}
 		
-//		public Role findByRoles(String roles){
-//			return (Role) getSessionFactory().getCurrentSession().get(Role.class, role);
-//}
+		public User findById(int id){
+			return userDao.findById(id);
+		}
+
+		@Override
+		public void deleteById(int id) {
+			userDao.deleteById(id);
+		}
+		
 }
 

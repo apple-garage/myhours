@@ -15,7 +15,11 @@ public interface UserBo {
 	
 	public void delete(User user);
 	
+	public void deleteById(int id);
+	
 	public List<User> findAll();
+	
+	public User findById(int id);
 	
 //	public Role findByRoles(String role);
 

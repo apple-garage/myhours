@@ -13,15 +13,16 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({ "com.ibm.*" })
+@ComponentScan({ "com.ibm.*" })//,"org.eclipse.birt.spring.core", "org.eclipse.birt.spring.example"
 @EnableTransactionManagement
 @Import({ SecurityConfig.class })
-public class AppConfig {
+public class AppConfig extends WebMvcConfigurerAdapter{
 
 	@Bean
     public SessionFactory sessionFactory() {

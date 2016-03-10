@@ -37,4 +37,8 @@ public class WorkBoImpl implements WorkBo{
 		return workDao.findAll();
 	}
 	
+	public void loadWorkHistory(String date){
+		workDao.loadWorkHistory(date);
+	}
+	
 }

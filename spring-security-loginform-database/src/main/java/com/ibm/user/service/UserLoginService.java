@@ -50,11 +50,4 @@ public class UserLoginService implements UserDetailsService {
 		return Result;
 	}
 
-//	public UserDao getUserDao() {
-//		return userDao;
-//	}
-//
-//	public void setUserDao(UserDao userDao) {
-//		this.userDao = userDao;
-//	}
 }

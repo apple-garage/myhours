@@ -13,12 +13,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+
 import com.ibm.role.model.Role;
 
 @Entity
 @Table(name = "users", catalog = "my_hours_report")
 public class User implements java.io.Serializable{
-
 	@Id
 	@GeneratedValue
 	@Column(name = "id", unique = true, nullable = false)
@@ -39,7 +41,7 @@ public class User implements java.io.Serializable{
 	@Column(name = "mail")
 	private String mail;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", catalog = "my_hours_report", joinColumns = {@JoinColumn(name = "id_user") }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_roles") })
 	private Set<Role> roles = new HashSet<Role>(0);
@@ -54,6 +56,10 @@ public class User implements java.io.Serializable{
 		this.userpassword = password;
 		this.enabled = state;
 		this.mail = mail;
+	}
+	
+	public User(String[] userData) {
+		this(getParameter(userData[4]), getParameter(userData[2])+", "+getParameter(userData[1]), getParameter(userData[5]), (byte)1, getParameter(userData[3]).replaceFirst("%40", "@"));
 	}
 
 	public int getId() {
@@ -118,11 +124,16 @@ public class User implements java.io.Serializable{
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", user=" + user + ", username=" + username + ", userpassword=" + userpassword
-				+ ", enabled=" + enabled + "]";
+				+ ", enabled=" + enabled + ", mail=" + mail + ", roles=" + roles + "]";
+	}
+
+	private static String getParameter(String string) {
+		return string.substring(string.lastIndexOf("=")+1,string.length());
 	}
 
 }

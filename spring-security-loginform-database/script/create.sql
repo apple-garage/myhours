@@ -119,3 +119,22 @@ create table country_has_holiday(
     foreign key (id_country) references country (id),
     foreign key (id_holiday) references holiday (id)    
 ); 
+
+DELIMITER //
+CREATE PROCEDURE `load_work_history`(in fecha date)
+BEGIN
+	SET SQL_SAFE_UPDATES = 0;
+	
+    DELETE from work_history 
+	where work_history.id_week in (SELECT week.id
+	from week
+	where week.end_date >= fecha);
+
+    insert into work_history (id_employee,id_week,id_assignment,hours_x_week)
+    select id_employee,id_week,id_assignment,hours_x_week from work;
+
+    delete from work;
+    
+    SET SQL_SAFE_UPDATES = 1;
+END
+// DELIMITER INSERT INTO `my_hours_report`.`users`
