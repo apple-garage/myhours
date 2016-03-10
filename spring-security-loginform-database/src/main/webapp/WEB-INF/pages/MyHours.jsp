@@ -310,9 +310,8 @@ header{
 		document.getElementById('myP').style.display = "block";
     }
 
-	$(
-		loadUsers(),	
-		function() {$('#crearForm').bootstrapValidator({
+	$(function() {
+			$('#crearForm').bootstrapValidator({
 	        container: '#messages',
 	        feedbackIcons: {
 	            valid: 'glyphicon glyphicon-ok',
@@ -364,6 +363,7 @@ header{
 	            }
 	        }
 	    });
+		loadUsers();
 		
 		$(".modal").on('hidden.bs.modal', function(e) {
 			$(this).find("input,textarea,select").val('').end();
@@ -378,10 +378,10 @@ header{
 
 		})		 		
 			$("#dropdownUsuarios").onClick(function() {
-			$("#dropdownUsuarios").val()
-			{
-				alert(user);
-			}
+				$("#dropdownUsuarios").val()
+				{
+					alert(user);
+				}
 			});
 	});
 	
