@@ -777,7 +777,9 @@ if (params["manager"] != 0)
 	}
 
 	this.queryText += " hxe.mid = '" + params["manager"] + "' ";
-}]]></method>
+}
+
+this.queryText += " ORDER BY hxe.cid, hxe.eid";]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -937,7 +939,7 @@ FROM
 	-- producto cartesiano empleados * semanas_holidays
 	JOIN	
 	(
-		SELECT c.ID AS h_cid, c.country AS h_cname, GROUP_CONCAT(h.holiday) AS h_desc, GROUP_CONCAT(h.date) AS h_dates, w.num_week AS h_wnum, w.END_DATE AS h_wend, COUNT(w.num_week)*8 AS h_hours
+		SELECT c.ID AS h_cid, c.country AS h_cname, GROUP_CONCAT(h.holiday ORDER BY h.date ASC SEPARATOR ' / ') AS h_desc, GROUP_CONCAT(h.date ORDER BY h.date ASC SEPARATOR ' / ') AS h_dates, w.num_week AS h_wnum, w.END_DATE AS h_wend, COUNT(w.num_week)*8 AS h_hours
 		FROM holiday AS h
 		JOIN country_has_holiday AS ch ON h.id = ch.id_holiday
 		JOIN country AS c ON c.id = ch.id_country
@@ -952,7 +954,7 @@ FROM
 -- por cada registro de todo lo anterior, hacer match con la tabla de work y devolver, si existe, lo que hay en esas semanas
 LEFT JOIN
 (
-	SELECT e.id AS wk_eid, e.name AS wk_ename,c.ID AS wk_cid, c.country AS wk_cname, w.end_date AS wk_wend, w.num_week AS wk_wnum, SUM(wk.hours_x_week) AS wk_hours, a.category AS wk_cat, GROUP_CONCAT(a.project_name) AS wk_project
+	SELECT e.id AS wk_eid, e.name AS wk_ename,c.ID AS wk_cid, c.country AS wk_cname, w.end_date AS wk_wend, w.num_week AS wk_wnum, SUM(wk.hours_x_week) AS wk_hours, a.category AS wk_cat, GROUP_CONCAT(a.project_name ORDER BY a.project_name ASC SEPARATOR ' / ') AS wk_project
 	FROM WORK AS wk
 	JOIN employee AS e ON wk.id_employee = e.id
 	JOIN WEEK AS w ON wk.id_week = w.id
@@ -1160,6 +1162,7 @@ LEFT JOIN
     </page-setup>
     <body>
         <table id="471">
+            <property name="fontFamily">"Segoe UI"</property>
             <property name="dataSet">qHolidaysTable</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -1178,8 +1181,9 @@ LEFT JOIN
                 <structure>
                     <property name="name">h_wend</property>
                     <text-property name="displayName">h_wend</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["h_wend"]</expression>
-                    <property name="dataType">date</property>
+                    <expression name="expression" type="javascript">dataSetRow["h_wend"].toString()</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">h_desc</property>
@@ -1225,7 +1229,7 @@ LEFT JOIN
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
-                    <property name="name">debeHoras</property>
+                    <property name="name">balanceHoras</property>
                     <property name="dataType">float</property>
                     <simple-property-list name="aggregateOn">
                         <value>porEmpleado</value>
@@ -1234,7 +1238,7 @@ LEFT JOIN
                     <list-property name="arguments">
                         <structure>
                             <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["h_hours"]-row["wk_hours"]</expression>
+                            <expression name="value" type="javascript">Math.abs(row["wk_hours"] - row["h_hours"])</expression>
                         </structure>
                     </list-property>
                     <property name="allowExport">true</property>
@@ -1243,16 +1247,14 @@ LEFT JOIN
                     <property name="name">gCount</property>
                     <text-property name="displayName">groupCount</text-property>
                     <property name="dataType">integer</property>
-                    <simple-property-list name="aggregateOn">
-                        <value>porEmpleado</value>
-                    </simple-property-list>
                     <property name="aggregateFunction">RUNNINGCOUNT</property>
                     <list-property name="arguments">
                         <structure>
                             <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["balanceHoras"]</expression>
                         </structure>
                     </list-property>
-                    <property name="allowExport">true</property>
+                    <property name="allowExport">false</property>
                 </structure>
                 <structure>
                     <property name="name">manager_name</property>
@@ -1276,9 +1278,11 @@ LEFT JOIN
             </column>
             <column id="566">
                 <property name="suppressDuplicates">true</property>
+                <property name="width">0.5833333333333334in</property>
             </column>
             <column id="552">
                 <property name="suppressDuplicates">true</property>
+                <property name="width">1.1145833333333333in</property>
             </column>
             <column id="517"/>
             <column id="518"/>
@@ -1289,7 +1293,9 @@ LEFT JOIN
             <header>
                 <row id="472">
                     <property name="backgroundColor">#B4B4B4</property>
+                    <property name="borderRightWidth">thin</property>
                     <cell id="473">
+                        <property name="paddingBottom">1pt</property>
                         <label id="474">
                             <text-property name="text">Serial Number</text-property>
                         </label>
@@ -1347,12 +1353,42 @@ LEFT JOIN
                 <property name="hideDetail">false</property>
                 <header>
                     <row id="524">
+                        <list-property name="highlightRules">
+                            <structure>
+                                <property name="operator">ne</property>
+                                <property name="backgroundColor">#EBEBEB</property>
+                                <expression name="testExpr" type="javascript">row["gCount"] % 2</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">0</value>
+                                </simple-property-list>
+                            </structure>
+                        </list-property>
                         <cell id="525">
                             <property name="paddingTop">4pt</property>
+                            <data id="491">
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="textAlign">left</property>
+                                <property name="resultSetColumn">eid</property>
+                            </data>
                         </cell>
-                        <cell id="526"/>
-                        <cell id="562"/>
-                        <cell id="548"/>
+                        <cell id="526">
+                            <data id="559">
+                                <property name="resultSetColumn">ename</property>
+                            </data>
+                        </cell>
+                        <cell id="562">
+                            <data id="568">
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">cname</property>
+                            </data>
+                        </cell>
+                        <cell id="548">
+                            <data id="558">
+                                <property name="textAlign">center</property>
+                                <property name="resultSetColumn">manager_name</property>
+                            </data>
+                        </cell>
                         <cell id="527"/>
                         <cell id="528"/>
                         <cell id="529"/>
@@ -1363,34 +1399,51 @@ LEFT JOIN
                 </header>
                 <footer>
                     <row id="533">
-                        <property name="borderBottomColor">#808080</property>
-                        <property name="borderBottomStyle">solid</property>
-                        <property name="borderBottomWidth">thin</property>
                         <property name="verticalAlign">middle</property>
+                        <list-property name="highlightRules">
+                            <structure>
+                                <property name="operator">ne</property>
+                                <property name="backgroundColor">#EBEBEB</property>
+                                <expression name="testExpr" type="javascript">row["gCount"] % 2</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">0</value>
+                                </simple-property-list>
+                            </structure>
+                        </list-property>
                         <cell id="534">
-                            <property name="borderBottomColor">#808080</property>
-                            <property name="borderBottomStyle">solid</property>
-                            <property name="borderBottomWidth">thin</property>
                             <property name="paddingBottom">4pt</property>
                             <property name="verticalAlign">middle</property>
-                            <text id="546">
-                                <property name="fontStyle">italic</property>
-                                <property name="contentType">auto</property>
-                                <text-property name="content"><![CDATA[Horas Pendientes]]></text-property>
-                            </text>
                         </cell>
                         <cell id="535"/>
                         <cell id="564"/>
                         <cell id="550"/>
                         <cell id="536"/>
                         <cell id="537"/>
-                        <cell id="538"/>
-                        <cell id="539">
-                            <data id="545">
-                                <property name="fontWeight">bold</property>
+                        <cell id="538">
+                            <label id="570">
+                                <property name="color">#464646</property>
                                 <property name="textAlign">center</property>
-                                <property name="resultSetColumn">debeHoras</property>
+                                <text-property name="text">Balance empleado +/- </text-property>
+                            </label>
+                        </cell>
+                        <cell id="539">
+                            <property name="fontFamily">"Segoe UI"</property>
+                            <property name="textAlign">center</property>
+                            <data id="573">
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontWeight">normal</property>
+                                <property name="fontStyle">normal</property>
+                                <property name="color">red</property>
+                                <property name="textAlign">center</property>
+                                <property name="display">inline</property>
+                                <property name="resultSetColumn">balanceHoras</property>
                             </data>
+                            <text-data id="575">
+                                <property name="color">#464646</property>
+                                <property name="display">inline</property>
+                                <expression name="valueExpr">(row["wk_hours"]&lt;row["h_hours"]?"Faltantes":"Excedentes")</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
                         </cell>
                         <cell id="540"/>
                         <cell id="541"/>
@@ -1403,38 +1456,21 @@ LEFT JOIN
                     <list-property name="highlightRules">
                         <structure>
                             <property name="operator">ne</property>
-                            <property name="backgroundColor">#EBECF5</property>
-                            <expression name="testExpr" type="javascript">row[0] % 2</expression>
+                            <property name="backgroundColor">#EBEBEB</property>
+                            <expression name="testExpr" type="javascript">row["gCount"] % 2</expression>
                             <simple-property-list name="value1">
                                 <value type="javascript">0</value>
                             </simple-property-list>
                         </structure>
                     </list-property>
-                    <cell id="490">
-                        <data id="491">
-                            <property name="fontFamily">"Courier New"</property>
-                            <property name="fontWeight">bold</property>
-                            <property name="textAlign">left</property>
-                            <property name="resultSetColumn">eid</property>
-                        </data>
-                    </cell>
-                    <cell id="492">
-                        <data id="559">
-                            <property name="resultSetColumn">ename</property>
-                        </data>
-                    </cell>
-                    <cell id="563">
-                        <data id="568">
-                            <property name="resultSetColumn">cname</property>
-                        </data>
-                    </cell>
-                    <cell id="549">
-                        <data id="558">
-                            <property name="resultSetColumn">manager_name</property>
-                        </data>
-                    </cell>
+                    <cell id="490"/>
+                    <cell id="492"/>
+                    <cell id="563"/>
+                    <cell id="549"/>
                     <cell id="494">
                         <data id="495">
+                            <property name="fontWeight">normal</property>
+                            <property name="color">#400000</property>
                             <property name="resultSetColumn">h_wend</property>
                         </data>
                     </cell>
@@ -1450,23 +1486,19 @@ LEFT JOIN
                     </cell>
                     <cell id="500">
                         <data id="501">
-                            <list-property name="highlightRules">
-                                <structure>
-                                    <property name="operator">is-not-null</property>
-                                    <property name="backgroundColor">#FFFFBB</property>
-                                    <expression name="testExpr" type="javascript">row["wk_hours"]</expression>
-                                </structure>
-                            </list-property>
                             <property name="resultSetColumn">h_hours</property>
                         </data>
                     </cell>
                     <cell id="502">
                         <data id="503">
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#008000</property>
                             <list-property name="highlightRules">
                                 <structure>
-                                    <property name="operator">is-not-null</property>
-                                    <property name="backgroundColor">#FFD2D2</property>
-                                    <expression name="testExpr" type="javascript">row["wk_hours"]</expression>
+                                    <property name="operator">is-true</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="color">#FF0000</property>
+                                    <expression name="testExpr" type="javascript">row["wk_hours"] != row["h_hours"]</expression>
                                 </structure>
                             </list-property>
                             <property name="resultSetColumn">wk_hours</property>
@@ -1481,6 +1513,7 @@ LEFT JOIN
             </detail>
             <footer>
                 <row id="506">
+                    <property name="backgroundColor">#B4B4B4</property>
                     <cell id="507">
                         <text id="544">
                             <property name="fontStyle">italic</property>
