@@ -2,6 +2,7 @@ package com.ibm.role.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ibm.role.dao.RoleDao;
 import com.ibm.role.model.Role;
 
-@Repository("RoleDao")
+@Repository("roleDao")
 public class RoleDaoImpl implements RoleDao{
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -37,4 +38,13 @@ public class RoleDaoImpl implements RoleDao{
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
+	@Override
+	public Role getRolByRole(String parameter) {
+		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select * from roles where roles ='"+parameter+"'");
+		query.addEntity(Role.class);
+		Role aRol = (Role) query.uniqueResult();
+		return aRol; 
+	}
+
 }

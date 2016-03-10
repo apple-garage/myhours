@@ -16,6 +16,7 @@
 	</licenses>
 	<properties>
 		<jdk.version>1.6</jdk.version>
+		<jackson.version>2.6.3</jackson.version>
 <!-- 		<spring.version>4.2.2.RELEASE</spring.version> -->
 <!-- 		<spring.security.version>4.0.3.RELEASE</spring.security.version> -->
 		<spring.version>3.2.8.RELEASE</spring.version>
@@ -33,6 +34,18 @@
 	</properties>
 
 	<dependencies>
+			<!-- Need this for json to/from object -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
@@ -48,6 +61,8 @@
 			<artifactId>jsp-api</artifactId>
 			<version>2.2.1-b03</version>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>

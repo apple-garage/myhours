@@ -2,12 +2,14 @@ package com.ibm.week.bo.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ibm.week.bo.WeekBo;
 import com.ibm.week.dao.WeekDao;
 import com.ibm.week.model.Week;
 
 @Service("weekBo")
+@Transactional
 public class WeekBoImpl implements WeekBo{
 	
 	@Autowired

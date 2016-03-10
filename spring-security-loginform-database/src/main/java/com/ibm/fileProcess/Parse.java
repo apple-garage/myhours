@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ibm.assignment.bo.AssignmentBo;
 import com.ibm.assignment.model.Assignment;
@@ -17,12 +18,28 @@ import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.employee.model.Employee;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.manager.model.Manager;
+import com.ibm.mhpfile.bo.MHPFileBo;
 import com.ibm.week.bo.WeekBo;
 import com.ibm.week.model.Week;
 import com.ibm.work.bo.WorkBo;
 import com.ibm.work.model.Work;
 
 public class Parse {
+	@Autowired
+	static WeekBo weekBo;
+	@Autowired
+	static WorkBo workBo;
+	@Autowired
+	static EmployeeBo employeeBo;
+	@Autowired
+	static AssignmentBo assignmentBo;
+	@Autowired
+	static ManagerBo managerBo;
+	@Autowired
+	static CountryBo countryBo;
+	@Autowired
+	MHPFileBo mhpfileBo;
+	
 	final static int CELL_NAME = 65;
 	final static int CELL_EMPLOYEE_COUNTRY = 7;
 	final static int CELL_SECTOR = 11;
@@ -37,26 +54,11 @@ public class Parse {
 	final static int CELL_MANAGER = 68;
 	final static int CELL_WEEK1 = 109; //first column week
 	
-	static WorkBo workBo;
-	static WeekBo weekBo;
-	static EmployeeBo employeeBo;
-	static AssignmentBo assignmentBo;
-	static ManagerBo managerBo;
-	static CountryBo countryBo;
 	static Week[] weeks = new Week[20];
+	static MHPFileBo fileBo;
+	static Boolean flag;
 	
-	public Parse(WorkBo aWorkBo, WeekBo aWeekBo, EmployeeBo aEmployeeBo, AssignmentBo anAssignmentBo, 
-			ManagerBo aManagerBo, CountryBo aCountryBo){
-		
-		workBo = aWorkBo;
-		weekBo = aWeekBo;
-		employeeBo = aEmployeeBo;
-		assignmentBo = anAssignmentBo;
-		managerBo = aManagerBo;
-		countryBo = aCountryBo;
-	}
-	
-	public static void Prueba(String filePath){
+	public static int processFile(String filePath){
 	try{
         FileInputStream file = new FileInputStream(new File(filePath));
 
@@ -68,18 +70,21 @@ public class Parse {
             Row row = rowIterator.next();
             if(row.getRowNum()==11)
             	processHeader(row);
+            if(flag)
+            	workBo.loadWorkHistory(weeks[0].getEndDate().toString());
             if (row.getRowNum()>11 && !isEmpty(row.getCell(1)))
             	processBody(row);
             else{
         		if (row.getRowNum()>11 && isEmpty(row.getCell(1)))
         		break;
-            	}
+            }
         }
         file.close();
-    }
-    catch (Exception e){
+    }catch (Exception e){
         e.printStackTrace();
+        return 0;
     }
+	return 1;
 	}
 
 	private static void processBody(Row row) {	
@@ -108,6 +113,7 @@ public class Parse {
 			Week aWeek = weekBo.findByDate(row.getCell((CELL_WEEK1+i)).toString());
 			weeks[i] = aWeek;
 		}
+		flag = fileBo.getMHPFile(weeks[0].getEndDate().toString());
 	}
 	
 	private static boolean isEmpty(Cell cell) {

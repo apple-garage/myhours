@@ -11,7 +11,7 @@ import javax.persistence.UniqueConstraint;
 import com.ibm.country.model.Country;
 
 @Entity
-@Table(name = "assignment", catalog = "my_hours_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "assignment", catalog = "ad_06ffd90d8bcb8be", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class Assignment implements java.io.Serializable{
 	@Id
 	@Column(name = "ID", unique = true, nullable = false)

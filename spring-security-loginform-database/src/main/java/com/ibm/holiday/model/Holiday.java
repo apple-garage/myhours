@@ -24,7 +24,7 @@ import com.ibm.country_has_holiday.model.Country_has_Holiday;
 
 
 @Entity
-@Table(name = "holiday", catalog = "my_hours_report", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
+@Table(name = "holiday", catalog = "ad_06ffd90d8bcb8be", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
 public class Holiday implements java.io.Serializable {
 	
 	@Id
