@@ -585,7 +585,7 @@ JOIN
 	and a.CATEGORY <> 'Time Not Worked'
 	and a.CATEGORY <> 'Illness'
 	group by 1,2,3
-	having count(*) > 1) AS A
+	having count(distinct(a.id)) > 1) AS A
 	ON A.eid = B.eid
 		AND A.wid = B.wid]]></xml-property>
         </oda-data-set>
