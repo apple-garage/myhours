@@ -127,6 +127,7 @@ public class MainController {
 	private JSONObject newJsonUser(User aUser) {
 		JSONObject jRol = new JSONObject();
 		JSONObject jUser = new JSONObject();
+		JSONArray jRoles = new JSONArray();
 		
 		jUser.put("id", aUser.getId());
 		jUser.put("user", aUser.getUser());
@@ -138,8 +139,9 @@ public class MainController {
 			jRol = new JSONObject();
 			jRol.put("id",aRol.getId());
 			jRol.put("rol",aRol.getRoles());
+			jRoles.add(jRol);
 		}
-		jUser.put("rol",jRol);
+		jUser.put("rol",jRoles);
 		
 		return jUser;
 	}

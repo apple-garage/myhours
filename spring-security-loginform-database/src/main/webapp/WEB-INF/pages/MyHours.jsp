@@ -93,7 +93,7 @@ header{
 		</c:if>
 		
 		<h1></h1>
-		<ul class="nav nav-tabs nav-justified">
+		<ul class="nav nav-tabs nav-justified" id="myTab">
 			<li class="active"><a data-toggle="tab" href="#home"><h4>Inicio</h4></a></li>
 			<li><a data-toggle="tab" href="#menu1"><h4>Subir Archivo</h4></a></li>
 			<li><a data-toggle="tab" href="#menu2"><h4>Generar Reporte</h4></a></li>
@@ -103,8 +103,7 @@ header{
 		<div class="tab-content">
 
 			<div id="home" class="tab-pane fade">
-				<h3><span class="label label-info" id="info" style="display:center">${info}</span></h3> 
-				<h3><span class="label label-danger" id="error" style="display:center">${error}</span></h3> 
+
 			</div>
 
 			<div id="menu1" class="tab-pane fade">
@@ -114,12 +113,14 @@ header{
                         <div class="form-group">
                          <input type="file" name="file"> 
                          </div>
-                         <input type="submit" id="submit" class="btn btn-primary" value="submit" onClick="showStuff()">
+                         <input type="submit" id="submit" class="btn btn-primary" value="Procesar" onClick="showStuff()">
                          </div>
                     <div class="color1 box" align="center">
                       <span class="loader loader-quart-1"  style="display:none" id="myP">Cargando</span>                 
                     </div>
-				</form>			   	
+				</form>	
+					<h3><span class="label label-info" id="info" style="display:center">${info}</span></h3> 
+					<h3><span class="label label-danger" id="error" style="display:center">${error}</span></h3> 		   	
 			</div>
 			
 			<div id="menu2" class="tab-pane fade" style="height: 500px">
@@ -131,7 +132,7 @@ header{
 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://localhost:8080/elreportador/frameset?__report=holidays.rptdesign'">Empleados sin los feriados cargados</a></li>
 					</ul>
 				</div>
-
+				<h3><span class="label label-danger" id="error" style="display:center">${error}</span></h3> 
 				<iframe id="reportframe" style="border-width: 0px" position="fixed" src="" height="100%" width="100%"> </iframe>
 			</div>
 	
@@ -184,14 +185,10 @@ header{
 											  <input type="checkbox" id="inlineCheckbox1" value="ROLE_USER" name="permisos"> Generar Reportes
 											</label>
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox2" value="ROLE_ADMIN" name="permisos"> Crear Usuarios
-											</label>
-	
-											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox3" value="ROLE_CONFIG" name="permisos"> Administrar Feriados
+											  <input type="checkbox" id="inlineCheckbox2" value="ROLE_CONFIG" name="permisos"> Configurador
 											</label>
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox4" value="ROLE_USER" name="permisos"> Cargar archivos
+											  <input type="checkbox" id="inlineCheckbox3" value="ROLE_ADMIN" name="permisos"> Administrador
 											</label>
 											</div>
 										</div>
@@ -228,8 +225,7 @@ header{
 				  <div class="modal-body">
 					<div class="dropdown">
 						<div class=" form-group has-feedback">
-		     				<select name="dlstate" id="DLState" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown"  data-style="btn-info" style="width:570px" >
-					    		<option value="0" selected="selected">Seleccionar un usuario</option>  
+		     				<select name="dlstate" id="DLState" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown"  data-style="btn-info" style="width:570px" > 
                        		</select>
                         </div>						
 							<form id="crearForm" method="post" class="form-horizontal" action="modifUser.html">
@@ -251,23 +247,26 @@ header{
 							        <label class="col-md-3 control-label">Usuario:</label>
 							        <div class="col-md-6"><input type="text" class="form-control" name="usuario" /></div>
 							    </div>
-							    <input type="hidden" name="password"/>
-								<input type="hidden" name="confirmPassword"/>
+								<div class="form-group">
+									<label class="col-md-3 control-label">Contraseña:</label>
+							        <div class="col-md-6"><input type="password" class="form-control" name="password" /></div>
+							    </div>
+							    <div class="form-group">
+							        <label class="col-md-3 control-label">Confirme contraseña:</label>
+							        <div class="col-md-6"><input type="password" class="form-control" name="confirmPassword" /></div>
+								</div>
 									<div class="radio">
 									<h4>Permisos del Usuario</h4>
 										<div class="control-group">
 											<div>
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox1" value="ROLE_USER" name="permisos"> Generar Reportes
+											  <input type="checkbox" id="ROLE_USER" value="ROLE_USER" name="permisos"> Generar Reportes
 											</label>
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox2" value="ROLE_ADMIN" name="permisos"> Crear Usuarios
+											  <input type="checkbox" id="ROLE_CONFIG" value="ROLE_CONFIG" name="permisos"> Configurador
 											</label>
 											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox3" value="ROLE_CONFIG" name="permisos"> Administrar Feriados
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" id="inlineCheckbox4" value="ROLE_USER" name="permisos"> Cargar archivos
+											  <input type="checkbox" id="ROLE_ADMIN" value="ROLE_ADMIN" name="permisos"> Administrador
 											</label>
 											</div>
 										</div>
@@ -291,6 +290,8 @@ header{
 				  </div>
 				</div>
 			</div>
+				<h3><span class="label label-info" id="info" style="display:center">${info}</span></h3> 
+				<h3><span class="label label-danger" id="error" style="display:center">${error}</span></h3> 
 			</div>
 			</sec:authorize>			
 		</div>
@@ -311,6 +312,7 @@ header{
     }
 
 	$(function() {
+			//validaciones
 			$('#crearForm').bootstrapValidator({
 	        container: '#messages',
 	        feedbackIcons: {
@@ -364,7 +366,20 @@ header{
 	        }
 	    });
 		loadUsers();
-		
+
+		//mantener tab
+	    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	        localStorage.setItem('lastTab', $(this).attr('href'));
+	        $("#info").remove();
+	        $("#error").remove();
+	    });
+
+	    var lastTab = localStorage.getItem('lastTab');
+	    if (lastTab) {
+	        $('[href="' + lastTab + '"]').tab('show');
+	    }
+	    
+		//limpiar pagina
 		$(".modal").on('hidden.bs.modal', function(e) {
 			$(this).find("input,textarea,select").val('').end();
 			$('input:checkbox').removeAttr('checked');
@@ -384,8 +399,9 @@ header{
 				}
 			});
 	});
-	
+
 	function formSubmit() {
+		localStorage.clear();
 		document.getElementById("logoutForm").submit();
 	}
 	
@@ -425,29 +441,26 @@ header{
 		});
 	}
 		
-		$("#DLState").change(function() {
-
-			$('select[name="selectPrueba"]').val();
-			var seleccion = ($('select[name=dlstate]').val());
-
-			if (seleccion == 1) {
-				$(".checkboxT").each(function(index) {
-					$(".checkboxT").prop("checked", true);
-				});
-			}
-			for (i in JsonList) {
-				if (JsonList[i].id == seleccion) {
-					$('input[name="id"]').val(JsonList[i].id);
-					$('input[name="nombre"]').val(JsonList[i].name);
-					$('input[name="apellido"]').val(JsonList[i].lastname);
-					$('input[name="usuario"]').val(JsonList[i].user);
-					$('input[name="mail"]').val(JsonList[i].mail);
-					$('input[name="password"]').val(JsonList[i].userpassword);
-					$('input[name="confirmPassword"]').val(JsonList[i].password);
+	$("#DLState").change(function() {
+		var seleccion = ($('select[name=dlstate]').val());
+		for (i in JsonList) {
+			if (JsonList[i].id == seleccion) {
+				$('input[name="id"]').val(JsonList[i].id);
+				$('input[name="nombre"]').val(JsonList[i].name);
+				$('input[name="apellido"]').val(JsonList[i].lastname);
+				$('input[name="usuario"]').val(JsonList[i].user);
+				$('input[name="mail"]').val(JsonList[i].mail);
+				$('input[name="password"]').val(JsonList[i].password);
+				$('input[name="confirmPassword"]').val(JsonList[i].password);
+				var JrolList = JsonList[i].rol;
+				for (var j in JrolList) {
+					var rol = JrolList[j];
+					document.getElementById(rol.rol).checked = true;
 				}
 			}
+		}
 
-		});
+	});
 	
 </script>
 
