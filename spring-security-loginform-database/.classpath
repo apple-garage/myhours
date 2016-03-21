@@ -33,7 +33,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/apple02/eclipse/springandbirtcore.jar"/>
-	<classpathentry kind="lib" path="/Users/apple02/Downloads/birt-runtime-4_5_0/ReportEngine/lib/org.eclipse.birt.runtime_4.5.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

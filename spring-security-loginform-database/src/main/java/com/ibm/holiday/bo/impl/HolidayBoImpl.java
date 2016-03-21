@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ibm.country.model.Country;
 import com.ibm.holiday.bo.HolidayBo;
@@ -12,6 +13,7 @@ import com.ibm.holiday.dao.HolidayDao;
 import com.ibm.holiday.model.Holiday;
 
 @Service("holidayBo")
+@Transactional
 public class HolidayBoImpl implements HolidayBo {
 	
 	@Autowired
@@ -45,9 +47,16 @@ public class HolidayBoImpl implements HolidayBo {
 		return holidayDao.findByCountry(countryID);
 	}
 	
+	public Set<Holiday> findByYearandCountry(int countryID,int aÒo){
+		return holidayDao.findByYearandCountry(countryID,aÒo);
+	}
+	
 	public void insertHoliday(String holiday, Date date, Set<Country> country){
-		
 		holidayDao.insertHoliday(holiday, date, country);
+	}
+
+	public void deleteById(int id) {
+		holidayDao.deleteById(id);
 	}
 
 }

@@ -2,7 +2,11 @@ package com.ibm.fileProcess;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,7 +42,7 @@ public class Parse {
 	@Autowired
 	static CountryBo countryBo;
 	@Autowired
-	MHPFileBo mhpfileBo;
+	static MHPFileBo mhpfileBo;
 	
 	final static int CELL_NAME = 65;
 	final static int CELL_EMPLOYEE_COUNTRY = 7;
@@ -109,12 +113,45 @@ public class Parse {
 	}
 
 	private static void processHeader(Row row) {
+		flag = mhpfileBo.getMHPFile(row.getCell(CELL_WEEK1).toString());
+		if(weekBo.findByDate(row.getCell(CELL_WEEK1+20).toString()) == null){
+			addWeeks(row.getCell(CELL_WEEK1).toString());
+		}
 		for(int i=0;i<20;i++){
 			Week aWeek = weekBo.findByDate(row.getCell((CELL_WEEK1+i)).toString());
 			weeks[i] = aWeek;
 		}
 		flag = fileBo.getMHPFile(weeks[0].getEndDate().toString());
 	}
+	
+	private static void addWeeks(String start){
+		try {
+            SimpleDateFormat sf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            Calendar startDate = Calendar.getInstance();
+            Calendar endDate = Calendar.getInstance();
+            Date sdate;
+            Date edate;
+            Week aweek = new Week();
+            startDate.setTime(sf.parse(start));
+            startDate.setFirstDayOfWeek(Calendar.SATURDAY);
+            endDate.setTime(startDate.getTime());;
+            endDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+            endDate.add(Calendar.YEAR, +1);       
+            while (startDate.before(endDate)) {
+            	startDate.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+            	sdate = startDate.getTime();
+            	startDate.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            	edate = endDate.getTime();
+                startDate.add(Calendar.WEEK_OF_YEAR, +1);
+                aweek.setEndDate(edate);
+                aweek.setStartDate(sdate);
+                aweek.setNumWeek(startDate.get(Calendar.WEEK_OF_YEAR));
+                weekBo.save(aweek);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
 	private static boolean isEmpty(Cell cell) {
 		if(cell.getCellType()==Cell.CELL_TYPE_BLANK)

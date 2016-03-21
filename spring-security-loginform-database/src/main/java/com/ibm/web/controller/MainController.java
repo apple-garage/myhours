@@ -3,6 +3,10 @@ package com.ibm.web.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +29,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibm.country.bo.CountryBo;
+import com.ibm.country.model.Country;
 import com.ibm.fileProcess.Parse;
+import com.ibm.holiday.bo.HolidayBo;
+import com.ibm.holiday.model.Holiday;
 import com.ibm.role.bo.RoleBo;
 import com.ibm.role.model.Role;
 import com.ibm.user.bo.UserBo;
@@ -37,8 +45,11 @@ public class MainController {
 	UserBo userBo;
 	@Autowired
 	RoleBo roleBo;
-	
-	
+	@Autowired
+	CountryBo countryBo;
+	@Autowired
+	HolidayBo holidayBo;
+
 	@RequestMapping(value ={"/", "/welcome**"}, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -61,12 +72,12 @@ public class MainController {
                 stream.close();
                 Parse.processFile(filePath);
                 
-                return new ModelAndView("MyHours", "info","Cargo correctamente"); 
+                return new ModelAndView("MyHours", "info","myhours.messages.fileerror"); 
             } catch (Exception e) {
             	return model;
             }
         } else {
-        	return new ModelAndView("MyHours", "info","No se pudo cargar el archivo correctamente");
+        	return new ModelAndView("MyHours", "info","myhours.messages.fileok");
         }
     }
 
@@ -103,12 +114,11 @@ public class MainController {
 		}
 		model.setViewName("403");
 		return model;
-
 	}
 	
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "test", method = RequestMethod.POST )
+	@RequestMapping(value = "listUsers", method = RequestMethod.POST )
 	public @ResponseBody String getSearchResultViaAjax() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		List<User> userList = userBo.findAll();
@@ -149,7 +159,7 @@ public class MainController {
 	@RequestMapping(value ={"newUser","modifUser"}, method = RequestMethod.POST )
 	public ModelAndView newUserViaAjax(@RequestBody String user, HttpServletRequest request) {
 		try{
-			String[] userData = user.split("&");
+			String[] userData = (user.replaceAll("[+]"," ")).split("&");
 			Set<Role> roles = new HashSet<Role>();
 			User aUser = new User(userData);
 				
@@ -163,14 +173,86 @@ public class MainController {
 			userBo.save(aUser);
 		}catch(Exception e){
 			e.printStackTrace();
-			return new ModelAndView("MyHours", "info","Se produjo un error al crear el usuario");
+			return new ModelAndView("MyHours", "error","myhours.messages.saveerror");
 		}
-		return new ModelAndView("MyHours", "info","El usuario se genero de manera exitosa");
+		return new ModelAndView("MyHours", "info","myhours.messages.usersavedok");
 	}
 	
 	@RequestMapping(value = "deleteUser", method = RequestMethod.POST )
 	public @ResponseBody String deleteUser(@RequestBody String user) {
-		userBo.deleteById(Integer.valueOf(getParameter(user)));
+		try{
+			userBo.deleteById(Integer.valueOf(getParameter(user)));
+		}catch(Exception e){
+			e.printStackTrace();
+			return "<fmt:message key=\"myhours.messages.userdeleteerror\"/>";
+		}
+		return "<fmt:message key=\"myhours.messages.userdeleteok\"/>";
+	}
+	
+	@RequestMapping(value ="newHoliday", method = RequestMethod.POST)
+	public ModelAndView newHolidayViaAjax(@RequestBody String holiday, HttpServletRequest request) {
+		try{
+			String[] holidayData = (holiday.replaceAll("\\+"," ")).split("&");
+			DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+			Date date = formatter.parse(getParameter(holidayData[0]));
+			Set<Country> countrySet = new HashSet<Country>();
+			for(int i=2;i<holidayData.length;i++){
+				countrySet.add(countryBo.findById(Integer.valueOf(getParameter(holidayData[i]))));
+			}
+			Holiday newHoliday = new Holiday(getParameter(holidayData[1]), date, countrySet);
+			holidayBo.save(newHoliday);
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ModelAndView("MyHours", "error","myhours.messages.saveerror");
+		}
+		return new ModelAndView("MyHours", "info","myhours.messages.holidayok");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "holidays", method = RequestMethod.GET )
+	public @ResponseBody String getSearchResult(int seleccionPais,int year) {
+		//Set<Holiday> holidayList = holidayBo.findByCountry(seleccionPais);
+		Set<Holiday> holidayList = holidayBo.findByYearandCountry(seleccionPais,year);
+		JSONArray array = new JSONArray();
+		JSONObject jHoliday;
+		try {
+			for(Holiday aHoliday :holidayList){
+				jHoliday= new JSONObject();
+				jHoliday.put("id",aHoliday.getId());
+				jHoliday.put("holiday", new String(aHoliday.getHoliday().getBytes(),"ISO-8859-1"));
+			//	jHoliday.put("fecha", aHoliday.getDate());
+				array.add(jHoliday);	
+			}
+			}catch(UnsupportedEncodingException ex ){
+				ex.printStackTrace();
+			}
+
+			return array.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "countries", method = RequestMethod.POST )
+	public @ResponseBody String getSearchResult() {
+		List<Country> countryList = countryBo.findAll();
+		JSONArray array = new JSONArray();
+		JSONObject jCountry;
+		try {
+			for(Country aCountry :countryList){
+				jCountry= new JSONObject();
+				jCountry.put("id",aCountry.getId());;
+				jCountry.put("country", new String(aCountry. getCountry().getBytes(),"ISO-8859-1"));
+				array.add(jCountry);	
+			}
+			}catch(UnsupportedEncodingException ex ){
+				ex.printStackTrace();
+			}
+
+			return array.toString();
+	}
+	
+	@RequestMapping(value = "deleteHoliday", method = RequestMethod.POST )
+	public @ResponseBody String deleteHoliday(@RequestBody String holiday) {
+		holidayBo.deleteById(Integer.valueOf(getParameter(holiday)));
 		return null;
 	}
 

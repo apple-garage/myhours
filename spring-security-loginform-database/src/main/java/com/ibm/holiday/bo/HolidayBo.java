@@ -14,11 +14,15 @@ public interface HolidayBo {
 	
 	void delete(Holiday holiday);
 	
+	void deleteById(int id);
+	
 	Holiday findById(int id);
 	
 	Holiday findByDate(String date);
 	
 	Set<Holiday> findByCountry(int countryID);
+	
+	Set<Holiday> findByYearandCountry(int CountryID, int year);
 	
 	void insertHoliday(String holiday, Date date, Set<Country> country);
 }
