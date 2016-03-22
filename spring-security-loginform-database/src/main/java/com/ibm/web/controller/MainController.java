@@ -125,9 +125,9 @@ public class MainController {
 		JSONArray array = new JSONArray();
 		
 		for(User aUser : userList){
-			if(!aUser.getUsername().equals(auth.getName())){
+//			if(!aUser.getUsername().equals(auth.getName())){
 				array.add(newJsonUser(aUser));
-			}
+//			}
 		}
 		
 		return array.toString();

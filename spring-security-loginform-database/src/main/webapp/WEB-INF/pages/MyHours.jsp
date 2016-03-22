@@ -313,7 +313,7 @@ header{
                         <div class="form-group">
                          <input type="file" name="file"> 
                          </div>
-                         	<input type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showStuff()">
+                         	<button type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showStuff()"><fmt:message key="myhours.menu1.submit"/></button>
                          </div>
                     <div class="color1 box" align="center">
                       <span class="loader loader-quart-1"  style="display:none" id="myP">Loading..</span>                 
@@ -329,7 +329,6 @@ header{
 			
 			<div id="menu2" class="tab-pane fade" style="height: 500px">
 				<div class="dropdown">
-				<img src="/img/logo_ibm.png" class="img-circle" alt="Cinque Terre" width="304" height="236"> 
 					<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown"><fmt:message key="myhours.menu2.filter"/><span class="caret"></span></button>
 					<ul class="dropdown-menu btn-block">
 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=query40.rptdesign'"><fmt:message key="myhours.menu2.40hsreport"/></a></li>
@@ -470,7 +469,7 @@ header{
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 	<script src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
-	<script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script>
+<!-- 	<script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.js "></script>
 
 <script type="text/javascript">
@@ -492,13 +491,23 @@ header{
 	        fields: {
 	            name: {
 	                validators: {
-	                    notEmpty: {message: '<fmt:message key="myhours.menu3.error.name"/>'}
-	                }
+	                    notEmpty: {message: '<fmt:message key="myhours.menu3.error.name"/>'},
+
+
+			            regexp: {
+			                regexp: /^[a-zA-Z]+$/,
+			                message: 'The username can only consist of alphabetical, number, dot and underscore'
+			            }
+	                },
 	            },
 	            lastname: {
 	                validators: {
 	                    notEmpty: {message: '<fmt:message key="myhours.menu3.error.lastname"/>'}
-	                }
+	                },
+		            regexp: {
+		                regexp: /^[a-zA-Z]+$/,
+		                message: 'The username can only consist of alphabetical, number, dot and underscore'
+		            }
 	            },
 	            mail: {
 	                validators: {
@@ -608,6 +617,8 @@ header{
  			$(".modUser").attr('readonly', true); 			
 
  			$("#modifRadio").show();
+ 			$("#deleteUser").show();
+ 			
 			clearForm();
 		});		 		
 
@@ -728,6 +739,7 @@ header{
 	        	listItems+= "<option value='" + data[i].id + "'>" + data[i].lastname +", " + data[i].name + "</option>";
 	        }
 	        $("#DLState").html(listItems);
+	        $("#DLState").find('[value=0]').hide();
 			},
 		});
 	};
@@ -746,6 +758,7 @@ header{
 	});
 
 	$("#modUser").click(function(){
+		
 		$("#DLState").prop('disabled', false);
 		$(".modUser").prop('disabled', true);
 		$(".modUser").removeAttr("readonly");
@@ -753,8 +766,10 @@ header{
 	});
 		
 	$("#DLState").change(function() {
+		
 		clearForm();
 		$(".modUser").prop('disabled', false);
+		
 		var seleccion = ($('select[name=dlstate]').val());
 		for (i in JsonList) {
 			if (JsonList[i].id == seleccion) {
@@ -770,6 +785,7 @@ header{
 					var rol = JrolList[j];
 					document.getElementById(rol.rol).checked = true;
 				}
+				
 			}
 		}
 	});
