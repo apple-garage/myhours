@@ -76,4 +76,17 @@ public class HolidayDaoImpl implements HolidayDao{
 			
 				
 	}
+	
+	public void deleteById(int id) {
+		this.delete(findById(id));
+	}
+
+	@Transactional
+	public Set<Holiday> findByYearandCountry(int countryID, int year){
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("SELECT h.* FROM Holiday AS h JOIN Country_has_Holiday ON Country_has_Holiday.id_holiday = h.ID WHERE Country_has_Holiday.id_country = "+countryID +" AND ("+ year + "=0 or year(h.date)=" + year + ")" );
+		query.addEntity(Holiday.class);
+		List<Holiday> aHoliday = (List<Holiday>) query.list();
+		Set<Holiday> holidaySet = new HashSet<Holiday>(aHoliday);
+		return holidaySet;	
+	}
 }

@@ -51,7 +51,7 @@ public class Holiday implements java.io.Serializable {
 		this.date = date;
 		this.countries = country;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

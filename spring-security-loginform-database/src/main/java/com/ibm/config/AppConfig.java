@@ -19,11 +19,11 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({ "com.ibm.*" })//,"org.eclipse.birt.spring.core", "org.eclipse.birt.spring.example"
+@ComponentScan({ "com.ibm.*" })
 @EnableTransactionManagement
 @Import({ SecurityConfig.class })
 public class AppConfig extends WebMvcConfigurerAdapter{
-
+	
 	@Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
@@ -33,7 +33,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 
         return builder.buildSessionFactory();
     }
-
+	
 	private Properties getHibernateProperties() {
         Properties prop = new Properties();
         prop.put("hibernate.format_sql", "true");
@@ -47,6 +47,9 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 		
 		BasicDataSource ds = new BasicDataSource();
 	    ds.setDriverClassName("com.mysql.jdbc.Driver");
+//		ds.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/ad_06ffd90d8bcb8be");
+//		ds.setUsername("bf3075f6f0305a");
+//		ds.setPassword("11433811");
 		ds.setUrl("jdbc:mysql://localhost:3306/my_hours_report");
 		ds.setUsername("root");
 		ds.setPassword("");
