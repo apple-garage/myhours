@@ -2,12 +2,14 @@ package com.ibm.mhpfile.bo.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ibm.mhpfile.bo.MHPFileBo;
 import com.ibm.mhpfile.dao.MHPFileDao;
 import com.ibm.mhpfile.model.MHPFile;
 
 @Service("MHPFileBo")
+@Transactional
 public class MHPFileBoImpl implements MHPFileBo{
 	@Autowired
 	MHPFileDao MHPFileDao;

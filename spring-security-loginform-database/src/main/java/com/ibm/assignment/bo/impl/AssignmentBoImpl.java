@@ -2,6 +2,7 @@ package com.ibm.assignment.bo.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ibm.assignment.bo.AssignmentBo;
 import com.ibm.assignment.dao.AssignmentDao;
@@ -9,6 +10,7 @@ import com.ibm.assignment.model.Assignment;
 import com.ibm.country.model.Country;
 
 @Service("assignmentBo")
+@Transactional
 public class AssignmentBoImpl implements AssignmentBo{
 
 	@Autowired
