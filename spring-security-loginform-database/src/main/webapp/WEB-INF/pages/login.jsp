@@ -47,31 +47,6 @@
 
 <script type="text/javascript">
 
-$('#loginForm').bootstrapValidator({
-	 message: 'This value is not valid',
-	 feedbackIcons: {
-		 valid: 'glyphicon glyphicon-ok',
-		 invalid: 'glyphicon glyphicon-remove',
-		 validating: 'glyphicon glyphicon-refresh'
-	 },
-	 fields: {
-		 usuario: {
-			 validators: {
-				 notEmpty: {
-					 message: 'User is required'
-				 }
-			 }
-		 },
-		 password: {
-			 validators: {
-				 notEmpty: {
-					 message: 'Password is required'
-				 }
-			 }
-		 }
-	 }
-});
-
 </script>
 
 </body>

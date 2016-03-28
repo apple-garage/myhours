@@ -255,7 +255,7 @@ header{
 							<div class="modal-footer">
 								<div class="col-md-9 col-md-offset-3">
 							        <button type="button" class="btn btn-default" data-dismiss="modal" onClick="clearForm()"><fmt:message key="myhours.menu3.cancel"/></button>
- 									<button id="deleteUser" type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteUser()"><fmt:message key="myhours.menu3.delete"/></button>
+ 									<button id="dUser" type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteUser()"><fmt:message key="myhours.menu3.delete"/></button>
 							        <button type="submit" class="btn btn-primary"><fmt:message key="myhours.menu3.save"/></button>
 								</div>
 							</div>
@@ -265,6 +265,112 @@ header{
 				  </div>
 				</div>
 			</div>
+	
+	
+	<div class="modal fade" id="modalCreate" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title"><fmt:message key="myhours.menu3.createholiday"/></h4>
+							</div>
+							<form id="newHolidayJ" method="post" class="form-horizontal newHolidayJ" action="newHoliday.html">
+							<div class="modal-body">
+									<div class="form-group">
+								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
+								        <div class="col-md-6"><input accept="" id="holidayDate" type="date" class="form-control" name="holidayDate" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
+									</div>
+									<div class="form-group">
+								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.description"/>:</label>
+								        <div class="col-md-6"><input type="text" class="form-control" name="description" /></div>
+									</div>
+									<div class="radio">
+										<h4><fmt:message key="myhours.menu3.countries"/></h4>
+	
+										<div class="control-group">
+											<div>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="1" name="pais[]"> Argentina   
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="2" name="pais[]"> Chile
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="3" name="pais[]">Colombia
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="4" name="pais[]"> Ecuador
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="5" name="pais[]"> Peru
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="6" name="pais[]"> Uruguay
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" value="7" name="pais[]"> Venezuela
+											</label>
+											</div>
+										</div>
+									</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="myhours.menu3.cancel"/></button>
+								<button type="submit" class="btn btn-primary" id="cargarFeriado"><fmt:message key="myhours.menu3.save"/></button>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				
+				
+								<div class="modal fade" id="modalDelete" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title"><fmt:message key="myhours.menu3.deleteholiday"/></h4>
+							</div>
+							<form id="newHoliday" class="form-horizontal" role="form" data-toggle="validator" method="post" >
+							
+							<div class="modal-body">
+								<div class="form-group">			
+							        <label class="col-md-5 control-label"><fmt:message key="myhours.menu3.year"/>:</label>
+							        <div class="col-md-4">
+								      <input type="text" id="datepicker" class="form-control" name="holidayDate" required data-provide="datepicker" />
+									</div>
+								 </div>									
+								<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+							<div class="help-block with-errors"></div>				
+							<div class="dropdown">
+								<select name="dlpais" id="dropdownCountry" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" data-style="btn-info" style="width:570px" >
+								</select>
+							</div>
+							<br>
+							<div class=" form-group has-feedback">
+							
+							<div class="col-md-6">
+								<select name="mHoliday"  id="showHoliday" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" accept-charset="utf-8" data-style="btn-info" style="width:570px; display:none">
+                      				<option value="0" disabled>
+                      				</select>
+                      			</div>
+                   			</div>
+                       
+						</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="myhours.menu3.cancel"/></button>
+								<button type="button" class="btn btn-primary" id=delete onclick="deleteHoliday()"><fmt:message key="myhours.menu3.delete"/></button>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+	
+	
 	
 	<div class="container">
 <!--         <form> -->
@@ -352,106 +458,10 @@ header{
 				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCreate"><fmt:message key="myhours.menu3.createholiday"/></button>
 			<!-- Modificar feriados -->
 			<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalDelete"><fmt:message key="myhours.menu3.deleteholiday"/></button>
-				<div class="modal fade" id="modalCreate" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-								<h4 class="modal-title"><fmt:message key="myhours.menu3.createholiday"/></h4>
-							</div>
-							<form id="newHoliday" method="post" class="form-horizontal" action="newHoliday.html">
-							<div class="modal-body">
-									<div class="form-group">
-								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
-								        <div class="col-md-6"><input accept="" id="holidayDate" type="date" class="form-control" name="holidayDate" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
-									</div>
-									<div class="form-group">
-								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.description"/>:</label>
-								        <div class="col-md-6"><input type="text" class="form-control" name="description" /></div>
-									</div>
-									<div class="radio">
-										<h4><fmt:message key="myhours.menu3.countries"/></h4>
-	
-										<div class="control-group">
-											<div>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="1" name="pais[]"> Argentina   
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="2" name="pais[]"> Chile
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="3" name="pais[]">Colombia
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="4" name="pais[]"> Ecuador
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="5" name="pais[]"> Peru
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="6" name="pais[]"> Uruguay
-											</label>
-											<label class="checkbox-inline">
-											  <input type="checkbox" value="7" name="pais[]"> Venezuela
-											</label>
-											</div>
-										</div>
-									</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="myhours.menu3.cancel"/></button>
-								<button type="submit" class="btn btn-primary" id="cargarFeriado"><fmt:message key="myhours.menu3.save"/></button>
-							</div>
-							</form>
-						</div>
-					</div>
-				</div>
+				
 	
 				
-				<div class="modal fade" id="modalDelete" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<h4 class="modal-title"><fmt:message key="myhours.menu3.deleteholiday"/></h4>
-							</div>
-							<form id="newHoliday" class="form-horizontal" role="form" data-toggle="validator" method="post" >
-							
-							<div class="modal-body">
-								<div class="form-group">			
-							        <label class="col-md-5 control-label"><fmt:message key="myhours.menu3.year"/>:</label>
-							        <div class="col-md-4">
-								      <input type="text" id="datepicker" class="form-control" name="holidayDate" required data-provide="datepicker" />
-									</div>
-								 </div>									
-								<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-							<div class="help-block with-errors"></div>				
-							<div class="dropdown">
-								<select name="dlpais" id="dropdownCountry" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" data-style="btn-info" style="width:570px" >
-								</select>
-							</div>
-							<br>
-							<div class=" form-group has-feedback">
-							
-							<div class="col-md-6">
-								<select multiple name="mHoliday"  id="showHoliday" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" accept-charset="utf-8" data-style="btn-info" style="width:570px; display:none">
-                      				<option value="0" disabled>
-                      				</select>
-                      			</div>
-                   			</div>
-                       
-						</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="myhours.menu3.cancel"/></button>
-								<button type="button" class="btn btn-primary" id=delete onclick="deleteHoliday()"><fmt:message key="myhours.menu3.delete"/></button>
-							</div>
-							</form>
-						</div>
-					</div>
-				</div>
+
 			
 			<div id="userinfo"></div>
 			<c:if test="${info != null}">
@@ -480,7 +490,7 @@ header{
     }
 
 	$(function() {
-			//validaciones
+			//validacionestton
 			$('.crearForm').bootstrapValidator({
 			container: '.messages',
 	        feedbackIcons: {
@@ -507,6 +517,8 @@ header{
 		            regexp: {
 		                regexp: /^[a-zA-Z]+$/,
 		                message: 'The username can only consist of alphabetical, number, dot and underscore'
+		                
+		                
 		            }
 	            },
 	            mail: {
@@ -568,63 +580,85 @@ header{
 	 		}
 		});
 						
-		//validaciones
-		$('#newHoliday').bootstrapValidator({
-        container: '#messages',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-       	holidayDate: {
-               validators: {
-                   notEmpty: {message: '<fmt:message key="myhours.menu3.error.holidayrequired "/>'}
-               }
-           },
-		});
-		  
-		//mantener tab
-	    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	        localStorage.setItem('lastTab', $(this).attr('href'));
-	        $("#info").remove();
-	        $("#error").remove();
-	    });
 
 	    var lastTab = localStorage.getItem('lastTab');
 	    if (lastTab) {
 	        $('[href="' + lastTab + '"]').tab('show');
 	    };
 	    
-		//limpiar pagina
-		$(".modal").on('hidden.bs.modal', function(e) {
-			$(document).find("input,textarea,select").val('').end();
-			$('input:checkbox').removeAttr('checked');
-			$(".form-group").removeClass('has-success');
-			$(".form-group").removeClass('has-error');
-			$(".glyphicon").removeClass('glyphicon-ok');
-			$(".glyphicon").removeClass('glyphicon-remove');
-			$("#DLState").val("0");
-			$("#dropdownCountry").val("0");
-			$("#showHoliday").val("0");
-			
-	        $('.messages').find('small.help-block').hide();
-	        $('.messages').find('i.form-control-feedback').hide(); 
-	        
- 			$("#delUser").prop('disabled', false);
-			$("#DLState").prop('disabled', false);
- 			$(".modUser").prop('disabled', false);
- 			
- 			$(".modUser").attr('readonly', true); 			
-
- 			$("#modifRadio").show();
- 			$("#deleteUser").show();
- 			
-			clearForm();
-		});		 		
+	 		
 
 		loadUsers();
 		loadCountry();
 	});
+	
+	//limpiar pagina
+	$(".modal").on('hidden.bs.modal', function(e) {
+		$(document).find("input,textarea,select").val('').end();
+		$('input:checkbox').removeAttr('checked');
+		$(".form-group").removeClass('has-success');
+		$(".form-group").removeClass('has-error');
+		$(".glyphicon").removeClass('glyphicon-ok');
+		$(".glyphicon").removeClass('glyphicon-remove');
+		$("#DLState").val("0");
+		$("#dropdownCountry").val("0");
+		$("#showHoliday").val("0");
+		
+        $('.messages').find('small.help-block').hide();
+        $('.messages').find('i.form-control-feedback').hide(); 
+        
+		$("#delUser").prop('disabled', false);
+		$("#DLState").prop('disabled', false);
+		$(".modUser").prop('disabled', false);
+		
+		
+		$(".modUser").attr('readonly', true); 			
+
+		
+		
+		$("#modifRadio").show();
+		$("#deleteUser").show();
+			
+		clearForm();
+		loadUsers();
+
+	});	
+	
+	
+	//validaciones
+	$('#newHolidayJ').bootstrapValidator({
+    container: '#messages',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields:{
+   		holidayDate: {
+           validators: {
+               notEmpty: {message: '<fmt:message key="myhours.menu3.error.holidayrequired "/>'}
+           }
+       	},
+        description: {
+       	   validators:{
+       				 regexp:{
+     					regexp: /^[A-Z0-9 a-z ñ]*$/,
+		        		message: 'The username can consist of alphabetical and numbers'
+      		 		 }  
+     	   }
+        }
+   	}
+       
+	});
+	  
+	//mantener tab
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('lastTab', $(this).attr('href'));
+        $("#info").remove();
+        $("#error").remove();
+    });
+	
+	
 	
     function deleteHoliday(){
         var seleccion = ($('select[name=mHoliday]').val());
@@ -637,7 +671,8 @@ header{
 			alert("Se elimino correctamente!");
 				findHoliday();
 				$("#showHoliday").empty();
- 				document.getElementById('showHoliday').style.display = "none";
+ 				//document.getElementById('showHoliday').style.display = "none";
+ 				$("#showHoliday").hide();
  			},
  		});
     };
@@ -689,6 +724,7 @@ header{
 		document.getElementById("crearForm").reset();
 		document.getElementById("modifyForm").reset();
 		$('input:checkbox').removeAttr('checked');
+		$("#showHoliday").hide();
 	};
 	
 	function deleteUser(){
@@ -715,11 +751,12 @@ header{
 			success : function(data) {	
 				console.log("SUCCESS: ", data);	
 				JsonCountry = data;
-				var listItemsC= "<option value='0'disabled>Seleccionar un pais</option>";
+				var listItemsC= "<option value='0'>Seleccionar un pais</option>";
 	        for (var i in data){
 	        	listItemsC+= "<option value='" + data[i].id + "'>" + data[i].country + "</option>";
 	        }
 	        $("#dropdownCountry").html(listItemsC);
+	        $("#dropdownCountry").find('[value=0]').hide();
 			},
 		});
 	};
