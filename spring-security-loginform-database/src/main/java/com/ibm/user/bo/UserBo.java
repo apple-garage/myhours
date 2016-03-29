@@ -2,6 +2,8 @@ package com.ibm.user.bo;
 
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import com.ibm.user.dao.UserDao;
 import com.ibm.user.model.User;
 
@@ -21,6 +23,6 @@ public interface UserBo {
 	
 	public User findById(int id);
 	
-//	public Role findByRoles(String role);
+	public JSONObject newJsonUser(User aUser);
 
 }

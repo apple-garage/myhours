@@ -1,7 +1,6 @@
 package com.ibm.work.dao;
 
 import java.util.List;
-
 import com.ibm.work.model.Work;
 
 public interface WorkDao {
@@ -15,5 +14,9 @@ public interface WorkDao {
 	List<Work> findAll();
 	
 	void loadWorkHistory(String date);
+
+	List<Work> findByManager(int idManager);
+
+	List<Work> findMoreThanForty(Integer idManager, Integer idCountry, String startDate, String endDate);
 
 }

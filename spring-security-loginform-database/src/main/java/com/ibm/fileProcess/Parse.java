@@ -95,7 +95,7 @@ public class Parse {
 		Country country = countryBo.getCountry(row.getCell(CELL_EMPLOYEE_COUNTRY).toString());
 		
 		String[] manager = row.getCell(CELL_MANAGER).toString().split("/");
-		Manager newManager = managerBo.getManager(manager[0]);
+		Manager newManager = managerBo.getManager(manager[0],country);
 		
 		String[] employee =  row.getCell(CELL_NAME).toString().split("/");
 		Employee newEmployee = employeeBo.getEmployee(row.getCell(CELL_EMPLOYEE_ID).toString(), employee[0], country, row.getCell(CELL_SECTOR).toString(), 

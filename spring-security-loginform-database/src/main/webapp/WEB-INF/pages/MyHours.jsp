@@ -15,12 +15,28 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">
 <link rel="stylesheet"href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.min.css">
+<link rel="stylesheet"href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
+<link rel="stylesheet"href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+
+
 <style>
+
+.p{
+	font-size: 2px;
+	font-family:"HelvLightIBM";
+}
+.navbar-brand {
+	padding: 0px;
+}
+.navbar-brand>img {
+	height: 100%;
+	padding: 15px;
+	width: auto;
+}
 
 header{
     background-color: #16a085;
@@ -37,9 +53,9 @@ header{
     box-shadow: 0px 21px 46px #000000;
 }
 
-.box:last-child{
-    -webkit-box-shadow: 0 0 0 #000;
-    box-shadow: 0 0 0 #000;
+.box:last-child {
+	-webkit-box-shadow: 0 0 0 #000;
+	box-shadow: 0 0 0 #000;
 }
 
 .loader{
@@ -68,6 +84,15 @@ header{
     animation: rotation 1s linear infinite;
 }
 
+td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+}
+
 @-webkit-keyframes rotation{
     0% { -webkit-transform: rotate(0deg); -ms-transform: rotate(0deg); transform: rotate(0deg); }
     100%{ -webkit-transform: rotate(360deg); -ms-transform: rotate(360deg); transform: rotate(360deg); }
@@ -78,12 +103,26 @@ header{
     100%{ -webkit-transform: rotate(360deg); -ms-transform: rotate(360deg); transform: rotate(360deg); }
 }
  
+.datepicker{z-index:1200 !important;}
+ 
+#myTab li a { border-color: blue;background-color:#adbdcc; }
+ 
+#myTab li.active a {border-bottom-color: transparent;background-color:#f2f2f2; }
+ 
+.tab-pane {
+ 	background-color:#f2f2f2;
+ 	border-style: solid;
+ 	border-color: blue;
+ 	border-width: 0 1px 1px 1px;
+ 	border-radius: 0 0 5px 5px;
+}
+ 
 </style>
 </head>
 
-<body style="background-color: #c4c4fc">
+<body style="background-color: #325c80">
 
-	<div class="modal fade" id="modalreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal fade" id="modalCreateU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -175,29 +214,29 @@ header{
 								<input type="hidden" name="id"/>
 							    <div class="form-group">
 							        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.name"/>:</label>
-							        <div class="col-md-6"><input type="text" class="form-control" name="name" readonly="readonly"/></div>
+							        <div class="col-md-6"><input type="text" class="form-control modUser" name="name" readonly="readonly"/></div>
 							    </div>
 							    <div class="form-group">
 							        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.lastname"/>:</label>
-							        <div class="col-md-6"><input type="text" class="form-control" name="lastname" readonly="readonly"/></div>
+							        <div class="col-md-6"><input type="text" class="form-control modUser" name="lastname" readonly="readonly"/></div>
 							    </div>
 							    <div class="form-group">
 							        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.mail"/>:</label>
-							        <div class="col-md-6"><input type="email" class="form-control" name="mail" readonly="readonly"/></div>
+							        <div class="col-md-6"><input type="email" class="form-control changeUser modUser" name="mail" readonly="readonly"/></div>
 							    </div>
 							    <div class="form-group">
 							        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.user"/>:</label>
-							        <div class="col-md-6"><input type="text" class="form-control" name="user" readonly="readonly"/></div>
+							        <div class="col-md-6"><input type="text" class="form-control changeUser modUser" name="user" readonly="readonly"/></div>
 							    </div>
 								<div class="form-group">
 									<label class="col-md-3 control-label"><fmt:message key="myhours.menu3.password"/>:</label>
-							        <div class="col-md-6"><input type="password" class="form-control" name="password" readonly="readonly"/></div>
+							        <div class="col-md-6"><input type="password" class="form-control changeUser modUser" name="password" readonly="readonly"/></div>
 							    </div>
 							    <div class="form-group">
 							        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.confirmPassword"/>:</label>
-							        <div class="col-md-6"><input type="password" class="form-control" name="confirmPassword" readonly="readonly"/></div>
+							        <div class="col-md-6"><input type="password" class="form-control changeUser modUser" name="confirmPassword" readonly="readonly"/></div>
 								</div>
-									<div class="radio">
+									<div id="modifRadio" class="radio">
 									<h4><fmt:message key="myhours.menu3.useractions"/></h4>
 										<div class="control-group">
 											<div>
@@ -222,7 +261,7 @@ header{
 							<div class="modal-footer">
 								<div class="col-md-9 col-md-offset-3">
 							        <button type="button" class="btn btn-default" data-dismiss="modal" onClick="clearForm()"><fmt:message key="myhours.menu3.cancel"/></button>
-							        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteUser()"><fmt:message key="myhours.menu3.delete"/></button>
+ 									<button id="delUser" type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteUser()"><fmt:message key="myhours.menu3.delete"/></button>
 							        <button type="submit" class="btn btn-primary"><fmt:message key="myhours.menu3.save"/></button>
 								</div>
 							</div>
@@ -233,96 +272,17 @@ header{
 				</div>
 			</div>
 	
-	<div class="container">
-<!--         <form> -->
-<!--           <select id="language" name="language" onchange="submit()"> -->
-<%--               <option value="en" ${language == 'en' ? 'selected' : ''}>English</option> --%>
-<%--               <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option> --%>
-<!--           </select> -->
-<!--         </form> -->
-		<h1 class="text-center"><fmt:message key="myhours.title"/></h1>
-		
-		<h3 class="text-right" style="position: absolute; top: -5px; right: 80px; font-size:15px;"><fmt:message key="myhours.user"/>: ${pageContext.request.userPrincipal.name}        |</h3>
-		
-		<!-- For login user -->
-		<c:url value="/login" var="logoutUrl" />
-		<form action="${logoutUrl}" method="post" id="logoutForm">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		</form>
-
-		<c:if test="${pageContext.request.userPrincipal.name != null}">
-			<h3 style="position: absolute; top: -5px; right: 30px; font-size:15px">
-				<a href="javascript:formSubmit()"><fmt:message key="myhours.logout"/></a>
-			</h3>
-		</c:if>
-		
-		<h1></h1>
-		<ul class="nav nav-tabs nav-justified" id="myTab">
-			<li class="active"><a data-toggle="tab" href="#home"><h4><fmt:message key="myhours.home"/></h4></a></li>
-			<li><a data-toggle="tab" href="#menu1"><h4><fmt:message key="myhours.menu1"/></h4></a></li>
-			<li><a data-toggle="tab" href="#menu2"><h4><fmt:message key="myhours.menu2"/></h4></a></li>
-			<sec:authorize access="hasRole('ROLE_ADMIN')"><li><a data-toggle="tab" href="#menu3"><h4><fmt:message key="myhours.menu3"/></h4></a></li></sec:authorize>
-		</ul>
-
-		<div class="tab-content">
-
-			<div id="home" class="tab-pane fade">
-			</div>
-
-			<div id="menu1" class="tab-pane fade">
-                <form action="uploadFile?${_csrf.parameterName}=${_csrf.token}"  method="post" enctype="multipart/form-data" id="form" role="form" style="text-align:center">
-                        <div class="form-inline" id="hid" >
-                        <h4><fmt:message key="myhours.menu1.option"/></h4>
-                        <div class="form-group">
-                         <input type="file" name="file"> 
-                         </div>
-                         	<input type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showStuff()">
-                         </div>
-                    <div class="color1 box" align="center">
-                      <span class="loader loader-quart-1"  style="display:none" id="myP">Loading..</span>                 
-                    </div>
-				</form>	
-				<c:if test="${info != null}">
-					<h3><span class="label label-info" id="info" style="display:center"><fmt:message key="${info}"/></span></h3> 
-				</c:if>
-				<c:if test="${info != null}">
-					<h3><span class="label label-danger" id="error" style="display:center"><fmt:message key="${error}"/></span></h3> 	
-				</c:if>	   	
-			</div>
-			
-			<div id="menu2" class="tab-pane fade" style="height: 500px">
-				<div class="dropdown">
-					<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown"><fmt:message key="myhours.menu2.filter"/><span class="caret"></span></button>
-					<ul class="dropdown-menu btn-block">
-						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=query40.rptdesign'"><fmt:message key="myhours.menu2.40hsreport"/></a></li>
-						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=multiProjects.rptdesign'"><fmt:message key="myhours.menu2.proyectreport"/></a></li>
-						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=holidays.rptdesign'"><fmt:message key="myhours.menu2.holidaysreport"/></a></li>
-					</ul>
-				</div>
-				<c:if test="${info != null}">
-					<h3><span class="label label-danger" id="error" style="display:center"><fmt:message key="${error}"/></span></h3> 
-				</c:if>
-				<iframe id="reportframe" style="border-width: 0px" position="fixed" src="" height="100%" width="100%"> </iframe>
-			</div>
 	
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<div id="menu3" class="tab-pane fade">
-			<!-- Crear Usuario -->
-				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCreate"><fmt:message key="myhours.menu3.createnewuser"/></button>
-				
-			<!-- Modificar Usuario -->
-				<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalMUser"><fmt:message key="myhours.menu3.modifyuser"/></button>
-			
-			<!-- Crear feriados -->
-				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCreate"><fmt:message key="myhours.menu3.createholiday"/></button>
-				<div class="modal fade" id="modalCreate" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal fade" id="modalCreate" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title"><fmt:message key="myhours.menu3.createholiday"/></h4>
 							</div>
-							<form id="newHoliday" method="post" class="form-horizontal" action="newHoliday.html">
+							<form id="newHolidayJ" method="post" class="form-horizontal newHolidayJ" action="newHoliday.html">
 							<div class="modal-body">
 									<div class="form-group">
 								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
@@ -370,10 +330,9 @@ header{
 						</div>
 					</div>
 				</div>
-		
-			<!-- Modificar feriados -->
-			<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalDelete"><fmt:message key="myhours.menu3.deleteholiday"/></button>
-				<div class="modal fade" id="modalDelete" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
+				
+				
+		<div class="modal fade" id="modalDelete" tabindex="-1"	role="dialog" aria-labelledby="exampleModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -401,7 +360,8 @@ header{
 							<div class=" form-group has-feedback">
 							
 							<div class="col-md-6">
-								<select multiple name="mHoliday"  id="showHoliday" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" accept-charset="utf-8" data-style="btn-info" style="width:570px; display:none">
+								<select name="mHoliday"  id="showHoliday" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" accept-charset="utf-8" data-style="btn-info" style="width:570px; display:none">
+                      				<option value="0" disabled>
                       				</select>
                       			</div>
                    			</div>
@@ -415,7 +375,156 @@ header{
 						</div>
 					</div>
 				</div>
+
+	<div class="container">
+<!--         <form> -->
+<!--           <select id="language" name="language" onchange="submit()"> -->
+<%--               <option value="en" ${language == 'en' ? 'selected' : ''}>English</option> --%>
+<%--               <option value="es" ${language == 'es' ? 'selected' : ''}>Español</option> --%>
+<!--           </select> -->
+<!--         </form> -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+		 <a class="navbar-brand" href="http://www.ibm.com/ar-es/"><img src="http://brocon-it.com/images/partner/ibm_logo.png"></a>
+		 <a>|<fmt:message key="myhours.title"/></a>
+		<a id="linkUser" class="text-right" style="position: absolute; top:12px ; right: 75px; font-size:15px;" data-toggle="modal" data-target="#modalMUser"><fmt:message key="myhours.user"/>: ${pageContext.request.userPrincipal.name}        |</a>
+		<label id="username" style="visibility:hidden"> ${pageContext.request.userPrincipal.name}</label>
+		
+		<!-- For login user -->
+		<c:url value="/login" var="logoutUrl" />
+		<form action="${logoutUrl}" method="post" id="logoutForm">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
+
+		<c:if test="${pageContext.request.userPrincipal.name != null}">
+			<h3 style="position: absolute; top: -5px; right: 30px; font-size:15px">
+				<a href="javascript:formSubmit()"><fmt:message key="myhours.logout"/></a>
+			</h3>
+		</c:if>
+		</nav>
+		
+		<h1></h1>
+		<br>
+		<br>
+		<ul class="nav nav-tabs nav-justified" id="myTab">
+			<li class="active"><a data-toggle="tab" href="#home"><h4><fmt:message key="myhours.home"/></h4></a></li>
+			<li><a data-toggle="tab" href="#menu1"><h4><fmt:message key="myhours.menu1"/></h4></a></li>
+			<li><a data-toggle="tab" href="#menu2"><h4><fmt:message key="myhours.menu2"/></h4></a></li>
+			<sec:authorize access="hasRole('ROLE_ADMIN')"><li><a data-toggle="tab" href="#menu3"><h4><fmt:message key="myhours.menu3"/></h4></a></li></sec:authorize>
+		</ul>
+
+		<div class="tab-content">
+			<div id="home" class="tab-pane fade">
+			</div>
 			
+			<div id="menu1" class="tab-pane fade">
+                <form action="uploadFile?${_csrf.parameterName}=${_csrf.token}"  method="post" enctype="multipart/form-data" id="form" role="form" style="text-align:center">
+                        <div class="form-inline" id="hid" >
+                        <h4><fmt:message key="myhours.menu1.option"/></h4>
+                        <div class="form-group">
+                         <input type="file" name="file"> 
+                         </div>
+                         	<button type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showStuff()"><fmt:message key="myhours.menu1.submit"/></button>
+                         </div>
+                    <div class="color1 box" align="center">
+                      <span class="loader loader-quart-1"  style="display:none" id="myP">Loading..</span>                 
+                    </div>
+				</form>	
+				<c:if test="${info != null}">
+					<h3><span class="label label-info" id="info" style="display:center"><fmt:message key="${info}"/></span></h3> 
+				</c:if>
+				<c:if test="${info != null}">
+					<h3><span class="label label-danger" id="error" style="display:center"><fmt:message key="${error}"/></span></h3> 	
+				</c:if>	   	
+			</div>
+			
+			<div id="menu2" class="tab-pane fade" style="height: 500px">
+<!-- 				<div class="dropdown"> -->
+<%-- 					<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown"><fmt:message key="myhours.menu2.filter"/><span class="caret"></span></button> --%>
+<!-- 					<ul class="dropdown-menu btn-block"> -->
+<%-- 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=query40.rptdesign'"><fmt:message key="myhours.menu2.40hsreport"/></a></li> --%>
+<%-- 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=multiProjects.rptdesign'"><fmt:message key="myhours.menu2.proyectreport"/></a></li> --%>
+<%-- 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=holidays.rptdesign'"><fmt:message key="myhours.menu2.holidaysreport"/></a></li> --%>
+<%-- 						<li><a href="#"	onClick="myHours()"><fmt:message key="myhours.menu2.cuarto"/></a></li> --%>
+<!-- 					</ul> -->
+<!-- 				</div> -->
+				
+				<div class="col-md-12" style="background-color: white; border-style:solid;">
+					<div class="form-group" style="margin-top: 10px;margin-bottom:50px;">
+		               	<div class="col-md-3"><select name="reports" class="selectpicker" data-style="btn-primary" multiple data-max-options="1" title="<fmt:message key="myhours.menu3.selectReport"/>">
+		                     <option value=0>Mas de 40</option>
+		                     <option value=1>Menos de 40</option>
+		                     <option value=2>Vacaciones</option>
+	                    </select>
+	                    </div>									
+				        <label class="col-md-1 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
+				        <div class="col-md-2"><input accept="" id="startDate" type="date" class="form-control" name="dateStart" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
+				        <label class="col-md-1 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
+				        <div class="col-md-2"><input accept="" id="endDate" type="date" class="form-control" name="dateEnd" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
+						<button class="btn btn-primary pull-right col-md-2" type="submit" onclick="searchReport()"><fmt:message key="myhours.menu3.search"/></button>
+					</div>
+					<div class="form-group" style="margin-top: 10px;">
+						<div class="col-md-6">	                     
+							<select name="manager" id="managerList" data-live-search="true" class="selectpicker col-md-5" multiple data-max-options="1" data-style="btn-primary" title="<fmt:message key="myhours.menu3.selectManager"/>"> 
+							</select>
+							<select name="country" id="countryList" class="selectpicker col-md-5" data-style="btn-primary" multiple data-max-options="1" title="<fmt:message key="myhours.menu3.countries"/>"> 
+							</select>
+						</div>
+<!-- 						<select class="selectpicker" id="countryList"></select> -->
+						<div class="btn-group btn-sm col-md-6">	
+							<button id="btnHide" class="btn btn-primary" type="submit"><fmt:message key="myhours.menu3.hideColumns" /></button>
+							<button id="btnShow" class="btn btn-primary" type="submit"><fmt:message key="myhours.menu3.showColumns" /></button>
+						</div>	
+					</div>
+					
+				</div>
+				<div style="background-color: white; border-style:solid;">
+<!-- 				<label><input type="checkbox" value="1" name="name" checked="checked"><span>Name</span></label> -->
+				<table id="moreForty" class="table display " cellspacing="0" width="100%">
+				<thead>
+		        	<tr>
+		                <th></th>
+		                <th><fmt:message key="myhours.menu3.idUsuario"/></th>
+		                <th><fmt:message key="myhours.menu3.name"/></th>
+		                <th><fmt:message key="myhours.menu3.country"/></th>
+		                <th><fmt:message key="myhours.menu3.manager"/></th>
+		                <th><fmt:message key="myhours.menu3.date"/></th>
+		                <th><fmt:message key="myhours.menu3.totalHours"/></th>
+            		</tr>
+        		</thead>
+				</table>
+				
+				<table id="myWork" class="table display " cellspacing="0" width="100%">
+				<thead>
+		        	<tr>
+		                <th><fmt:message key="myhours.menu3.idUsuario"/></th>
+		                <th><fmt:message key="myhours.menu3.name"/></th>
+		                <th><fmt:message key="myhours.menu3.country"/></th>
+		                <th><fmt:message key="myhours.menu3.manager"/></th>
+		                <th><fmt:message key="myhours.menu3.date"/></th>
+		                <th><fmt:message key="myhours.menu3.proyect"/></th>
+		                <th><fmt:message key="myhours.menu3.hours"/></th>
+            		</tr>
+        		</thead>
+				</table>
+				</div>
+				<c:if test="${info != null}">
+					<h3><span class="label label-danger" id="error" style="display:center"><fmt:message key="${error}"/></span></h3> 
+				</c:if>
+				<iframe id="reportframe" style="border-width: 0px" position="fixed" src="" height="100%" width="100%"> </iframe>
+			</div>
+			
+	
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<div id="menu3" class="tab-pane fade">
+			<!-- Crear Usuario -->
+				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCreateU"><fmt:message key="myhours.menu3.createnewuser"/></button>
+			<!-- Modificar Usuario -->
+				<button type="button" id="modUser" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalMUser"><fmt:message key="myhours.menu3.modifyuser"/></button>
+			<!-- Crear feriados -->
+				<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalCreate"><fmt:message key="myhours.menu3.createholiday"/></button>
+			<!-- Modificar feriados -->
+				<button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalDelete"><fmt:message key="myhours.menu3.deleteholiday"/></button>
+				
 			<div id="userinfo"></div>
 			<c:if test="${info != null}">
 				<h3><span class="label label-info" id="info" style="display:center"><fmt:message key="${info}"/></span></h3>
@@ -426,15 +535,15 @@ header{
 			</div>
 			</sec:authorize>			
 		</div>
-	
 	</div>
+	
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 	<script src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
-	<script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/g/jquery.transition@1.7.2,jquery.collapse@1.1.1,bootstrap.datepicker-fork@1.3.0(js/bootstrap-datepicker.js)"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.js "></script>
 <script type="text/javascript">
 
 	function showStuff() {
@@ -454,13 +563,25 @@ header{
 	        fields: {
 	            name: {
 	                validators: {
-	                    notEmpty: {message: '<fmt:message key="myhours.menu3.error.name"/>'}
-	                }
+	                    notEmpty: {message: '<fmt:message key="myhours.menu3.error.name"/>'},
+
+
+			            regexp: {
+			                regexp: /^[a-zA-Z]+$/,
+			                message: 'The username can only consist of alphabetical, number, dot and underscore'
+			            }
+	                },
 	            },
 	            lastname: {
 	                validators: {
 	                    notEmpty: {message: '<fmt:message key="myhours.menu3.error.lastname"/>'}
-	                }
+	                },
+		            regexp: {
+		                regexp: /^[a-zA-Z]+$/,
+		                message: 'The username can only consist of alphabetical, number, dot and underscore'
+		                
+		                
+		            }
 	            },
 	            mail: {
 	                validators: {
@@ -494,11 +615,12 @@ header{
 	                    }
 	                }
 	            },
+	            
 	            permissions:{
 	            	validators: {
 	            		choice: {
 	            			min:1,
-	            			max:1,
+	            			max:3,
 	            			message: '<fmt:message key="myhours.menu3.error.rol"/>'
 	            			
 	            		}
@@ -509,7 +631,7 @@ header{
 	    });
 			
 		$("#datepicker").datepicker( {
-		    format: "yyyy",
+		 	format: "yyyy",
 		    viewMode: "years", 
 		    minViewMode: "years"
 		}).on('changeDate', function(e){
@@ -519,62 +641,75 @@ header{
 	    		findHoliday();
 	 		}
 		});
-						
-		//validaciones
-		$('#newHoliday').bootstrapValidator({
-        container: '#messages',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-       	holidayDate: {
-               validators: {
-                   notEmpty: {message: '<fmt:message key="myhours.menu3.error.holidayrequired "/>'}
-               }
-           },
-		});
-		  
-		//mantener tab
-	    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	        localStorage.setItem('lastTab', $(this).attr('href'));
-	        $("#info").remove();
-	        $("#error").remove();
-	    });
 
 	    var lastTab = localStorage.getItem('lastTab');
 	    if (lastTab) {
 	        $('[href="' + lastTab + '"]').tab('show');
 	    };
 	    
-		//limpiar pagina
-		$(".modal").on('hidden.bs.modal', function(e) {
-			$(this).find("input,textarea,select").val('').end();
-			$('input:checkbox').removeAttr('checked');
-			$(".form-group").removeClass('has-success');
-			$(".form-group").removeClass('has-error');
-			$(".glyphicon").removeClass('glyphicon-ok');
-			$(".glyphicon").removeClass('glyphicon-remove');
-			$("#DLState").val("0");
-			$("#dropdownCountry").val("0");
-			$("#showHoliday").val("0");
-			
-	        $('.messages').find('small.help-block').hide();
-	        $('.messages').find('i.form-control-feedback').hide(); 
-	        
- 			$("#delUser").prop('disabled', false);
-			$("#DLState").prop('disabled', false);
- 			$(".modUser").prop('disabled', false);
- 			
- 			$(".modUser").attr('readonly', true); 			
-
- 			$("#modifRadio").show();
-			clearForm();
-		});		 		
-
+		loadManagers();
 		loadUsers();
 		loadCountry();
+		myHours();
 	});
+	
+	//limpiar pagina
+	$(".modal").on('hidden.bs.modal', function(e) {
+		$(document).find("input,textarea,select").val('').end();
+		$('input:checkbox').removeAttr('checked');
+		$(".form-group").removeClass('has-success');
+		$(".form-group").removeClass('has-error');
+		$(".glyphicon").removeClass('glyphicon-ok');
+		$(".glyphicon").removeClass('glyphicon-remove');
+		$("#DLState").val("0");
+		$("#dropdownCountry").val("0");
+		$("#showHoliday").val("0");
+		
+        $('.messages').find('small.help-block').hide();
+        $('.messages').find('i.form-control-feedback').hide(); 
+        
+			$("#delUser").prop('disabled', false);
+		$("#DLState").prop('disabled', false);
+			$(".modUser").prop('disabled', false);
+			$(".modUser").attr('readonly', true); 			
+			$("#modifRadio").show();
+			$("#deleteUser").show();
+		clearForm();
+		loadUsers();
+	});
+	
+	//validaciones
+	$('#newHolidayJ').bootstrapValidator({
+    container: '#messages',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields:{
+   		holidayDate: {
+           validators: {
+               notEmpty: {message: '<fmt:message key="myhours.menu3.error.holidayrequired "/>'}
+           }
+       	},
+        description: {
+       	   validators:{
+       				 regexp:{
+     					regexp: /^[A-Z0-9 a-z ñ]*$/,
+		        		message: 'The username can consist of alphabetical and numbers'
+      		 		 }  
+     	   }
+        }
+   	}
+       
+	});
+	  
+	//mantener tab
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        localStorage.setItem('lastTab', $(this).attr('href'));
+        $("#info").remove();
+        $("#error").remove();
+    });
 	
     function deleteHoliday(){
         var seleccion = ($('select[name=mHoliday]').val());
@@ -599,6 +734,14 @@ header{
 			findHoliday ();
  		}
 	});
+	
+	function searchReport(){
+		var selectReport = ($('select[name=reports]').val());
+		if(selectReport=="0")moreThanForty();
+		if(selectReport=="1");
+		if(selectReport=="2");
+		if(selectReport=="3")myHours();
+	}
 	
 	function findHoliday (){
 		var seleccionPais = ($('select[name=dlpais]').val());
@@ -639,6 +782,7 @@ header{
 		document.getElementById("crearForm").reset();
 		document.getElementById("modifyForm").reset();
 		$('input:checkbox').removeAttr('checked');
+		$("#showHoliday").hide();
 	};
 	
 	function deleteUser(){
@@ -665,21 +809,117 @@ header{
 			success : function(data) {	
 				console.log("SUCCESS: ", data);	
 				JsonCountry = data;
-				var listItemsC= "<option value='0'>Seleccionar un pais</option>";
+				var listItemsC;
 	        for (var i in data){
 	        	listItemsC+= "<option value='" + data[i].id + "'>" + data[i].country + "</option>";
 	        }
 	        $("#dropdownCountry").html(listItemsC);
+	        $("#countryList").html(listItemsC);
+	        $('.selectpicker').selectpicker('refresh');
 			},
 		});
 	};
+	
+	function loadManagers(){
+	    $.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : "managers.html",
+			dataType : 'json',
+			timeout : 100000,
+			success : function(data) {	
+				console.log("SUCCESS: ", data);	
+				JsonCountry = data;
+				var listItemsC;
+	        for (var i in data){
+	        	listItemsC+= "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+	        }
+	        $("#managerList").html(listItemsC);
+	        $('.selectpicker').selectpicker('refresh');
+			},
+		});
+	};
+	
+	function moreThanForty(){
+		var selectDateStart = $("#startDate").val();
+		var selectDateEnd = $("#endDate").val();
+		var selectManager = ($('select[name=manager]').val());
+		var selectCountry = ($('select[name=country]').val());
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			dataType : 'json',
+			data: {'manager':selectManager, 'country':selectCountry, 'dateStar':selectDateStart, 'dateEnd':selectDateEnd},
+			url : "moreTanForty.html",
+			success : function(data) {
+				console.log("SUCCESS: ", data);	
+				var jsonData = data;
+				var table = $('#moreForty').DataTable({data: jsonData, columns:[{"className":'details-control',"orderable":false,"data":null,"defaultContent":'',},
+				           {"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},{"data":"week"},{"data":"totalHours"}], "order": [[1, 'asc']]});
+			    
+				$('#details tbody').on('click', 'td.details-control', function () {
+			        var tr = $(this).closest('tr');
+			        var row = table.row(tr);
+			 
+			        if ( row.child.isShown() ) {
+			            row.child.hide();
+			            tr.removeClass('shown');
+			        }
+			        else {
+			            row.child(format(row.data())).show();
+			            tr.addClass('shown');
+			        }
+		    	});
+	            $('td:nth-child(5),th:nth-child(5)').hide();
+	            $('td:nth-child(4),th:nth-child(4)').hide(); 
+			},
+ 		});
+	};
+	
+	function format(d) {
+		var details = d.detail;
+		var child = '<table cellpadding="5" cellspacing="0" border="0" style="font-size: 12px; width:100%; text-indent:75%;">';
+		for (var j in details){
+			child+='<tr><td>'+details[j].assignment+': '+details[j].hours+'</td></tr>';
+		}
+	    return child+'</table>';
+	};
+	
+	function myHours(){
+		$('#moreForty').hide();
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			dataType : 'json',
+			url : "mywork.html",
+			success : function(data) {
+				console.log("SUCCESS: ", data);	
+				var jsonData = data;
+				var table = $('#myWork').DataTable({data: jsonData, columns:[{"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},
+				                                                          {"data":"week"},{"data":"proyect"},{"data":"hours"}], "order": [[1, 'asc']]});
+	            $('td:nth-child(4),th:nth-child(4)').hide();
+	            $('td:nth-child(3),th:nth-child(3)').hide(); 
+			},
+ 		});
+	};
+	
+	$('#btnShow').click(function() {
+        $('td:nth-child(5),th:nth-child(5)').show();
+        $('td:nth-child(4),th:nth-child(4)').show(); 
+    });
+	$('#btnHide').click(function() {
+        $('td:nth-child(5),th:nth-child(5)').hide();
+        $('td:nth-child(4),th:nth-child(4)').hide(); 
+    });
+	
+
 	
 	function loadUsers(){
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
-			url : "listUsers.html",
 			dataType : 'json',
+			url : "listUsers.html",
 			timeout : 100000,
 			success : function(data) {
 				console.log("SUCCESS: ", data);	
@@ -689,14 +929,15 @@ header{
 	        	listItems+= "<option value='" + data[i].id + "'>" + data[i].lastname +", " + data[i].name + "</option>";
 	        }
 	        $("#DLState").html(listItems);
+	        $("#DLState").find('[value=0]').hide();	
 			},
 		});
 	};
 	
 	$("#linkUser").click(function(){
 		var username = $.trim($("#username").text());
-
 		$("#modifRadio").hide();
+		$("#deleteUser").hide();
 		$("#delUser").prop('disabled', true);
 		$("#DLState").prop('disabled', true);
 		$(".modUser").prop('disabled', false);
@@ -712,6 +953,8 @@ header{
 	});
 		
 	$("#DLState").change(function() {
+		clearForm();
+		$(".modUser").prop('disabled', false);
 		var seleccion = ($('select[name=dlstate]').val());
 		for (i in JsonList) {
 			if (JsonList[i].id == seleccion) {
@@ -741,7 +984,6 @@ header{
 			url : "deleteUser.html",
 			success : function(data) {
 				loadUsers();
-				
 			},
 		});
 	};

@@ -20,13 +20,11 @@ public class MHPFileDaoImpl extends CustomHibernateDaoSupport implements MHPFile
 
 	@Override
 	public void update(MHPFile MHPFile) {
-		// TODO Auto-generated method stub
 		getHibernateTemplate().update(MHPFile);
 	}
 
 	@Override
 	public void delete(MHPFile MHPFile) {
-		// TODO Auto-generated method stub
 		getHibernateTemplate().delete(MHPFile);
 	}
 

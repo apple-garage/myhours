@@ -1,13 +1,18 @@
 package com.ibm.manager.bo.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ibm.country.model.Country;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.manager.dao.ManagerDao;
 import com.ibm.manager.model.Manager;
 
 @Service("managerBo")
+@Transactional
 public class ManagerBoImpl implements ManagerBo{
 	
 	@Autowired
@@ -30,10 +35,10 @@ public class ManagerBoImpl implements ManagerBo{
 	}
 
 	@Override
-	public Manager getManager(String name) {
+	public Manager getManager(String name, Country country) {
 		Manager manager = findManagerByName(name);
 		if(manager==null){
-			manager = new Manager(name);
+			manager = new Manager(name,country);
 			managerDao.save(manager);
 		}
 		return manager;
@@ -41,6 +46,11 @@ public class ManagerBoImpl implements ManagerBo{
 
 	public Manager findManagerByName(String name){
 		return managerDao.findManagerByName(name);
+	}
+
+	@Override
+	public List<Manager> findAll() {
+		return managerDao.findAll();
 	}
 
 }

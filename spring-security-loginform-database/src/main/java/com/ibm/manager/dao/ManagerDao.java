@@ -1,5 +1,7 @@
 package com.ibm.manager.dao;
 
+import java.util.List;
+
 import com.ibm.manager.model.Manager;
 
 public interface ManagerDao {
@@ -11,5 +13,7 @@ public interface ManagerDao {
 	void delete(Manager manager);
 
 	Manager findManagerByName(String name);
+
+	List<Manager> findAll();
 
 }

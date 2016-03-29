@@ -16,10 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +32,14 @@ import com.ibm.country.model.Country;
 import com.ibm.fileProcess.Parse;
 import com.ibm.holiday.bo.HolidayBo;
 import com.ibm.holiday.model.Holiday;
+import com.ibm.manager.bo.ManagerBo;
+import com.ibm.manager.model.Manager;
 import com.ibm.role.bo.RoleBo;
 import com.ibm.role.model.Role;
 import com.ibm.user.bo.UserBo;
 import com.ibm.user.model.User;
+import com.ibm.work.bo.WorkBo;
+import com.ibm.work.model.Work;
 
 @Controller
 public class MainController {
@@ -49,7 +51,12 @@ public class MainController {
 	CountryBo countryBo;
 	@Autowired
 	HolidayBo holidayBo;
+	@Autowired
+	ManagerBo managerBo;
+	@Autowired
+	WorkBo workBo;
 
+	//Views
 	@RequestMapping(value ={"/", "/welcome**"}, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -82,80 +89,88 @@ public class MainController {
     }
 
 	@RequestMapping(value ="/login",  method = RequestMethod.GET)
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
-
+	public ModelAndView login(@RequestParam(value = "error", required = false) String error,@RequestParam(value = "logout", required = false) String logout) {
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
 		}
-
 		if (logout != null) {
 			model.addObject("msg", "You've been logged out successfully.");
 		}
 		model.setViewName("login");
 
 		return model;
-
 	}
 	
-	//for 403 access denied page
-	@RequestMapping(value = "/403", method = RequestMethod.GET)
-	public ModelAndView accesssDenied() {
-		ModelAndView model = new ModelAndView();
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			UserDetails userDetail = (UserDetails) auth.getPrincipal();
-			System.out.println(userDetail);
-		
-			model.addObject("username", userDetail.getUsername());
-			
-		}
-		model.setViewName("403");
-		return model;
-	}
-	
-	
+	//Parameters
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "listUsers", method = RequestMethod.POST )
-	public @ResponseBody String getSearchResultViaAjax() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		List<User> userList = userBo.findAll();
+	@RequestMapping(value = "countries", method = RequestMethod.POST )
+	public @ResponseBody String getCountries() {
+		List<Country> countryList = countryBo.findAll();
 		JSONArray array = new JSONArray();
-		
-		for(User aUser : userList){
-			if(!aUser.getUsername().equals(auth.getName())){
-				array.add(newJsonUser(aUser));
+		JSONObject jCountry;
+		try {
+			for(Country aCountry :countryList){
+				jCountry= new JSONObject();
+				jCountry.put("id",aCountry.getId());;
+				jCountry.put("country", new String(aCountry. getCountry().getBytes(),"ISO-8859-1"));
+				array.add(jCountry);	
 			}
+		}catch(UnsupportedEncodingException ex ){
+			ex.printStackTrace();
 		}
-		
+
 		return array.toString();
 	}
 	
 	@SuppressWarnings("unchecked")
-	private JSONObject newJsonUser(User aUser) {
-		JSONObject jRol = new JSONObject();
-		JSONObject jUser = new JSONObject();
-		JSONArray jRoles = new JSONArray();
-		
-		jUser.put("id", aUser.getId());
-		jUser.put("user", aUser.getUser());
-		jUser.put("name", aUser.getUsername().substring(aUser.getUsername().lastIndexOf(",")+2,aUser.getUsername().length()));
-		jUser.put("lastname", aUser.getUsername().substring(0, aUser.getUsername().lastIndexOf(",")));
-		jUser.put("mail", aUser.getMail());
-		jUser.put("password", aUser.getUserpassword());
-		for(Role aRol : aUser.getRoles()){
-			jRol = new JSONObject();
-			jRol.put("id",aRol.getId());
-			jRol.put("rol",aRol.getRoles());
-			jRoles.add(jRol);
+	@RequestMapping(value = "managers", method = RequestMethod.POST )
+	public @ResponseBody String getManagers() {
+		List<Manager> managerList = managerBo.findAll();
+		JSONArray jaManager = new JSONArray(); 
+		for(Manager aManager:managerList){
+			JSONObject manager = new JSONObject();
+			manager.put("id",aManager.getId());
+			manager.put("name",aManager.getName());
+			jaManager.add(manager);
 		}
-		jUser.put("rol",jRoles);
-		
-		return jUser;
+		return jaManager.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "listUsers", method = RequestMethod.POST )
+	public @ResponseBody String getSearchResultViaAjax() {
+		List<User> userList = userBo.findAll();
+		JSONArray array = new JSONArray();
+		
+		for(User aUser : userList){
+				array.add(userBo.newJsonUser(aUser));
+		}
+//		exportCsv(array);
+		return array.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "holidays", method = RequestMethod.GET )
+	public @ResponseBody String getSearchResult(int seleccionPais,int year) {
+		Set<Holiday> holidayList = holidayBo.findByYearandCountry(seleccionPais,year);
+		JSONArray array = new JSONArray();
+		JSONObject jHoliday;
+		try {
+			for(Holiday aHoliday :holidayList){
+				jHoliday= new JSONObject();
+				jHoliday.put("id",aHoliday.getId());
+				jHoliday.put("holiday", new String(aHoliday.getHoliday().getBytes(),"ISO-8859-1"));
+				array.add(jHoliday);	
+			}
+			}catch(UnsupportedEncodingException ex ){
+				ex.printStackTrace();
+			}
+
+			return array.toString();
+	}
+
+	//Ajax calls
 	@RequestMapping(value ={"newUser","modifUser"}, method = RequestMethod.POST )
 	public ModelAndView newUserViaAjax(@RequestBody String user, HttpServletRequest request) {
 		try{
@@ -207,53 +222,36 @@ public class MainController {
 		}
 		return new ModelAndView("MyHours", "info","myhours.messages.holidayok");
 	}
-	
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "holidays", method = RequestMethod.GET )
-	public @ResponseBody String getSearchResult(int seleccionPais,int year) {
-		//Set<Holiday> holidayList = holidayBo.findByCountry(seleccionPais);
-		Set<Holiday> holidayList = holidayBo.findByYearandCountry(seleccionPais,year);
-		JSONArray array = new JSONArray();
-		JSONObject jHoliday;
-		try {
-			for(Holiday aHoliday :holidayList){
-				jHoliday= new JSONObject();
-				jHoliday.put("id",aHoliday.getId());
-				jHoliday.put("holiday", new String(aHoliday.getHoliday().getBytes(),"ISO-8859-1"));
-			//	jHoliday.put("fecha", aHoliday.getDate());
-				array.add(jHoliday);	
-			}
-			}catch(UnsupportedEncodingException ex ){
-				ex.printStackTrace();
-			}
-
-			return array.toString();
+		
+	@RequestMapping(value = "mywork", method = RequestMethod.POST )
+	public @ResponseBody String getMyWork() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Manager aManager = managerBo.findManagerByName(auth.getName());
+		int manager=5;
+		if(aManager!=null)
+			manager=aManager.getId();
+ 		List<Work> workList = workBo.findByManager(manager);
+ 		return workBo.getJsonWork(workList).toString();
 	}
 	
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "countries", method = RequestMethod.POST )
-	public @ResponseBody String getSearchResult() {
-		List<Country> countryList = countryBo.findAll();
-		JSONArray array = new JSONArray();
-		JSONObject jCountry;
-		try {
-			for(Country aCountry :countryList){
-				jCountry= new JSONObject();
-				jCountry.put("id",aCountry.getId());;
-				jCountry.put("country", new String(aCountry. getCountry().getBytes(),"ISO-8859-1"));
-				array.add(jCountry);	
-			}
-			}catch(UnsupportedEncodingException ex ){
-				ex.printStackTrace();
-			}
-
-			return array.toString();
+	@RequestMapping(value = "moreTanForty", method = RequestMethod.POST )
+	public @ResponseBody String getMoreThanForty(@RequestBody String params) {
+		int idManager = 5;
+		String[] parameters = params.split("&");
+		List<Work> workList = workBo.findMoreThanForty(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
+		return workBo.getMoreThanFortyJson(workList).toString();
 	}
 	
 	@RequestMapping(value = "deleteHoliday", method = RequestMethod.POST )
 	public @ResponseBody String deleteHoliday(@RequestBody String holiday) {
 		holidayBo.deleteById(Integer.valueOf(getParameter(holiday)));
 		return null;
+	}
+	
+	public void exportCsv(JSONArray array){
+		for(int i = 0;i<=array.size();i++){
+			System.out.println(array.get(i).toString());
+		}
 	}
 
 	private static String getParameter(String string) {

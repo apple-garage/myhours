@@ -1,5 +1,8 @@
 package com.ibm.manager.bo;
 
+import java.util.List;
+
+import com.ibm.country.model.Country;
 import com.ibm.manager.model.Manager;
 
 public interface ManagerBo {
@@ -10,8 +13,10 @@ public interface ManagerBo {
 	
 	void delete(Manager manager);
 
-	Manager getManager(String string);
+	Manager getManager(String string, Country country);
 	
 	Manager findManagerByName(String name);
+
+	List<Manager> findAll();
 
 }

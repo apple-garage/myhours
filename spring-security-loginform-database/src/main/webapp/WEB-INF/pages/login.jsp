@@ -12,9 +12,8 @@
 <title>Login Page</title>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
 
 </head>
 <body style="background-color: #c4c4fc">
@@ -42,35 +41,11 @@
 </div>
 </div>
 
-<script src="http://code.jquery.com/jquery-latest.js"></script>		
+<script src="http://code.jquery.com/jquery-latest.js"></script>	
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
 
-$('#loginForm').bootstrapValidator({
-	 message: 'This value is not valid',
-	 feedbackIcons: {
-		 valid: 'glyphicon glyphicon-ok',
-		 invalid: 'glyphicon glyphicon-remove',
-		 validating: 'glyphicon glyphicon-refresh'
-	 },
-	 fields: {
-		 usuario: {
-			 validators: {
-				 notEmpty: {
-					 message: 'User is required'
-				 }
-			 }
-		 },
-		 password: {
-			 validators: {
-				 notEmpty: {
-					 message: 'Password is required'
-				 }
-			 }
-		 }
-	 }
-});
 
 </script>
 

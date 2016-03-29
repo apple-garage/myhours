@@ -1,11 +1,14 @@
 package com.ibm.manager.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ibm.country.model.Country;
 import com.ibm.manager.dao.ManagerDao;
 import com.ibm.manager.model.Manager;
 
@@ -42,6 +45,13 @@ public class ManagerDaoImpl implements ManagerDao{
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+
+	@Override
+	public List<Manager> findAll() {
+		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select * from manager order by name");
+		query.addEntity(Manager.class);
+		return query.list();
 	}
 
 }

@@ -1,9 +1,9 @@
 package com.ibm.user.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,8 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
+import com.ibm.manager.model.Manager;
 import com.ibm.role.model.Role;
 
 @Entity
@@ -41,13 +40,20 @@ public class User implements java.io.Serializable{
 	@Column(name = "mail")
 	private String mail;
 	
+	@Column(name = "last_update")
+	private Date lastUpdate;
+	
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", catalog = "my_hours_report", joinColumns = {@JoinColumn(name = "id_user") }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_roles") })
 	private Set<Role> roles = new HashSet<Role>(0);
 	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_manager", catalog = "my_hours_report", joinColumns = {@JoinColumn(name = "id_user") }, 
+			inverseJoinColumns = { @JoinColumn(name = "id_manager") })
+	private Set<Manager> managers = new HashSet<Manager>(0);
+	
 	public User(){
-		
 	}
 	
 	public User(String user, String username, String password, byte state, String mail){
@@ -125,7 +131,14 @@ public class User implements java.io.Serializable{
 		this.roles = roles;
 	}
 	
-	
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", user=" + user + ", username=" + username + ", userpassword=" + userpassword
