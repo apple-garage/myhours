@@ -285,7 +285,7 @@ tr.shown td.details-control {
 							<div class="modal-body">
 									<div class="form-group">
 								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
-								        <div class="col-md-6"><input accept="" id="holidayDate" type="date" class="form-control" name="holidayDate" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
+								        <div class="col-md-6"><input accept="" id="hDate" type="date" class="form-control" name="holidayDate" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
 									</div>
 									<div class="form-group">
 								        <label class="col-md-3 control-label"><fmt:message key="myhours.menu3.description"/>:</label>
@@ -340,7 +340,7 @@ tr.shown td.details-control {
 								</button>
 								<h4 class="modal-title"><fmt:message key="myhours.menu3.deleteholiday"/></h4>
 							</div>
-							<form id="newHoliday" class="form-horizontal" role="form" data-toggle="validator" method="post" >
+							<form id="dHoliday" class="form-horizontal" role="form" data-toggle="validator" method="post" >
 							
 							<div class="modal-body">
 								<div class="form-group">			
@@ -425,7 +425,7 @@ tr.shown td.details-control {
                          	<button type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showStuff()"><fmt:message key="myhours.menu1.submit"/></button>
                          </div>
                     <div class="color1 box" align="center">
-                      <span class="loader loader-quart-1"  style="display:none" id="myP">Loading..</span>                 
+                      <span class="loader loader-quart-1"  style="display:none" id="myP"><fmt:message key="myhours.menu1.loading"/></span>                 
                     </div>
 				</form>	
 				<c:if test="${info != null}">
