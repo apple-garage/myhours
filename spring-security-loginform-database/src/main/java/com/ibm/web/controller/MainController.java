@@ -208,7 +208,7 @@ public class MainController {
 	public ModelAndView newHolidayViaAjax(@RequestBody String holiday, HttpServletRequest request) {
 		try{
 			String[] holidayData = (holiday.replaceAll("\\+"," ")).split("&");
-			DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = formatter.parse(getParameter(holidayData[0]));
 			Set<Country> countrySet = new HashSet<Country>();
 			for(int i=2;i<holidayData.length;i++){
