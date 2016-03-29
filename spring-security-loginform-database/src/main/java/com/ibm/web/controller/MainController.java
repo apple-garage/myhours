@@ -66,7 +66,7 @@ public class MainController {
             try {
                 byte[] bytes = file.getBytes();
 //                String filePath = "C://Users/IBM_ADMIN/Desktop/reportes/" + file.getOriginalFilename();
-                String filePath = "/Users/apple02/Desktop/reportes/" + file.getOriginalFilename();
+                String filePath = "C:\Users\IBM_ADMIN\Desktop\reportes/" + file.getOriginalFilename();
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath))); 
                 stream.write(bytes);
                 stream.close();
