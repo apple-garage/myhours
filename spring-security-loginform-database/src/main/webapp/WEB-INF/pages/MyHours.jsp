@@ -10,113 +10,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Bienvenido</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">
-<link rel="stylesheet"href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.min.css">
-<link rel="stylesheet"href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
-<link rel="stylesheet"href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Bienvenido</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">
+	<link rel="stylesheet"href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.min.css">
+	<link rel="stylesheet"href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
+	<link rel="stylesheet"href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
 
-<style>
+	<style>
+		
+		.p{
+			font-size: 2px;
+			font-family:"HelvLightIBM";
+		}
+		.navbar-brand {
+			padding: 0px;
+		}
+		.navbar-brand>img {
+			height: 100%;
+			padding: 15px;
+			width: auto;
+		}
+		
+		header{
+		    background-color: #16a085;
+		    height: 150px;
+		    line-height: 150px;
+		}
+		
+		.box{
+		    width: 100%;
+		    height: 250px;
+		    padding-top: 100px;
+		    line-height: 100px;
+		    -webkit-box-shadow: 0px 21px 46px #000000;
+		    box-shadow: 0px 21px 46px #000000;
+		}
+		
+		.box:last-child {
+			-webkit-box-shadow: 0 0 0 #000;
+			box-shadow: 0 0 0 #000;
+		}
+		
+		.loader{
+		    width: 40px;
+		    height: 40px;
+		    display: inline-block;
+		    vertical-align: middle;
+		    position: relative;
+		}
+		
+		.loader-quart-1{
+		    border-radius: 40px;
+		    border: 5px solid rgba(255,255,255,0.5);
+		       
+		}
+		
+		.loader-quart-1:after{
+		    content: '';
+		    position: absolute;
+		    top: -5px; left: -5px; right: -5px; bottom: -5px;
+		    border: 5px solid transparent;
+		    border-top-color: #fff;
+		    border-radius: 40px;
+		    
+		    -webkit-animation: rotation 1s linear infinite;
+		    animation: rotation 1s linear infinite;
+		}
+		
+		td.details-control {
+		    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+		    cursor: pointer;
+		}
+		
+		tr.shown td.details-control {
+		    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+		}
+		
+		@-webkit-keyframes rotation{
+		    0% { -webkit-transform: rotate(0deg); -ms-transform: rotate(0deg); transform: rotate(0deg); }
+		    100%{ -webkit-transform: rotate(360deg); -ms-transform: rotate(360deg); transform: rotate(360deg); }
+		}
+		
+		@keyframes rotation{
+		    0% { -webkit-transform: rotate(0deg); -ms-transform: rotate(0deg); transform: rotate(0deg); }
+		    100%{ -webkit-transform: rotate(360deg); -ms-transform: rotate(360deg); transform: rotate(360deg); }
+		}
+		 
+		.datepicker{z-index:1200 !important;}
+		 
+		#myTab li a { border-color: blue;background-color:#adbdcc; }
+		 
+		#myTab li.active a {border-bottom-color: transparent;background-color:#f2f2f2; }
+		 
+		.tab-pane {
+		 	background-color:#f2f2f2;
+		 	border-style: solid;
+		 	border-color: blue;
+		 	border-width: 0 1px 1px 1px;
+		 	border-radius: 0 0 5px 5px;
+		}
+		 
+	</style>
 
-.p{
-	font-size: 2px;
-	font-family:"HelvLightIBM";
-}
-.navbar-brand {
-	padding: 0px;
-}
-.navbar-brand>img {
-	height: 100%;
-	padding: 15px;
-	width: auto;
-}
-
-header{
-    background-color: #16a085;
-    height: 150px;
-    line-height: 150px;
-}
-
-.box{
-    width: 100%;
-    height: 250px;
-    padding-top: 100px;
-    line-height: 100px;
-    -webkit-box-shadow: 0px 21px 46px #000000;
-    box-shadow: 0px 21px 46px #000000;
-}
-
-.box:last-child {
-	-webkit-box-shadow: 0 0 0 #000;
-	box-shadow: 0 0 0 #000;
-}
-
-.loader{
-    width: 40px;
-    height: 40px;
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-}
-
-.loader-quart-1{
-    border-radius: 40px;
-    border: 5px solid rgba(255,255,255,0.5);
-       
-}
-
-.loader-quart-1:after{
-    content: '';
-    position: absolute;
-    top: -5px; left: -5px; right: -5px; bottom: -5px;
-    border: 5px solid transparent;
-    border-top-color: #fff;
-    border-radius: 40px;
-    
-    -webkit-animation: rotation 1s linear infinite;
-    animation: rotation 1s linear infinite;
-}
-
-td.details-control {
-    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
-    cursor: pointer;
-}
-
-tr.shown td.details-control {
-    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
-}
-
-@-webkit-keyframes rotation{
-    0% { -webkit-transform: rotate(0deg); -ms-transform: rotate(0deg); transform: rotate(0deg); }
-    100%{ -webkit-transform: rotate(360deg); -ms-transform: rotate(360deg); transform: rotate(360deg); }
-}
-
-@keyframes rotation{
-    0% { -webkit-transform: rotate(0deg); -ms-transform: rotate(0deg); transform: rotate(0deg); }
-    100%{ -webkit-transform: rotate(360deg); -ms-transform: rotate(360deg); transform: rotate(360deg); }
-}
- 
-.datepicker{z-index:1200 !important;}
- 
-#myTab li a { border-color: blue;background-color:#adbdcc; }
- 
-#myTab li.active a {border-bottom-color: transparent;background-color:#f2f2f2; }
- 
-.tab-pane {
- 	background-color:#f2f2f2;
- 	border-style: solid;
- 	border-color: blue;
- 	border-width: 0 1px 1px 1px;
- 	border-radius: 0 0 5px 5px;
-}
- 
-</style>
 </head>
 
 <body style="background-color: #325c80">
@@ -413,6 +414,7 @@ tr.shown td.details-control {
 
 		<div class="tab-content">
 			<div id="home" class="tab-pane fade">
+				
 			</div>
 			
 			<div id="menu1" class="tab-pane fade">
@@ -543,13 +545,16 @@ tr.shown td.details-control {
 	<script src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.js "></script>
+	
+	
 <script type="text/javascript">
 
 	function showStuff() {
 		document.getElementById("hid").style.visibility = "hidden";
 		document.getElementById('myP').style.display = "block";
     }
-
+    
+//	begin jQuery initialization script
 	$(function() {
 			//validaciones
 			$('.crearForm').bootstrapValidator({
@@ -651,6 +656,7 @@ tr.shown td.details-control {
 		loadCountry();
 		myHours();
 	});
+//	end jQuery initialization script
 	
 	//limpiar pagina
 	$(".modal").on('hidden.bs.modal', function(e) {
@@ -986,7 +992,6 @@ tr.shown td.details-control {
 			},
 		});
 	};
-	
 </script>
 
 </body>

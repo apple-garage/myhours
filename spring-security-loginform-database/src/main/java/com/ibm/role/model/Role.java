@@ -13,7 +13,7 @@ import com.ibm.user.model.User;
 
 
 @Entity
-@Table(name = "roles", catalog = "my_hours_report")
+@Table(name = "roles")
 public class Role implements java.io.Serializable{
 	@Id @GeneratedValue
 	@Column(name = "id")

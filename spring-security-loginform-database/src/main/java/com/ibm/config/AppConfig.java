@@ -4,10 +4,13 @@ import java.util.Properties;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,6 +27,21 @@ import org.springframework.web.servlet.view.JstlView;
 @Import({ SecurityConfig.class })
 public class AppConfig extends WebMvcConfigurerAdapter{
 	
+	@Value( "${jdbc.url}" ) private String dbUrl;
+    @Value( "${jdbc.driverClassName}" ) private String dbDriverClassName;
+    @Value( "${jdbc.username}" ) private String dbUsername;
+    @Value( "${jdbc.password}" ) private String dbPassword;
+	
+    @Bean
+    public static PropertyPlaceholderConfigurer properties(){
+      PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+      ClassPathResource[] resources = new ClassPathResource[ ]
+        { new ClassPathResource( "com/ibm/config/db.properties" ) };
+      ppc.setLocations( resources );
+      ppc.setIgnoreUnresolvablePlaceholders( true );
+      return ppc;
+    }
+    
 	@Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
@@ -46,13 +64,12 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	public BasicDataSource dataSource() {
 		
 		BasicDataSource ds = new BasicDataSource();
-	    ds.setDriverClassName("com.mysql.jdbc.Driver");
-//		ds.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/ad_06ffd90d8bcb8be");
-//		ds.setUsername("bf3075f6f0305a");
-//		ds.setPassword("11433811");
-		ds.setUrl("jdbc:mysql://localhost:3306/my_hours_report");
-		ds.setUsername("root");
-		ds.setPassword("");
+		
+	    ds.setDriverClassName(dbDriverClassName);
+		ds.setUrl(dbUrl);
+		ds.setUsername(dbUsername);
+		ds.setPassword(dbPassword);
+		
 		return ds;
 	}
 	

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "mhpfile", catalog = "my_hours_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "mhpfile", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class MHPFile {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

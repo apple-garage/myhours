@@ -18,7 +18,7 @@ import com.ibm.country.model.Country;
 import com.ibm.user.model.User;
 
 @Entity
-@Table(name = "manager", catalog = "my_hours_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "manager", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class Manager implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

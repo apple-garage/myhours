@@ -10,7 +10,7 @@ import com.ibm.country.model.Country;
 import com.ibm.holiday.model.Holiday;
 
 @Entity
-@Table(name = "Country_has_Holiday", catalog = "my_hours_report")
+@Table(name = "Country_has_Holiday")
 public class Country_has_Holiday implements java.io.Serializable{
 	@Id
 	@ManyToOne

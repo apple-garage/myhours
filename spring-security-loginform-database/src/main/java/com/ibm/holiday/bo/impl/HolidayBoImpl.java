@@ -47,8 +47,8 @@ public class HolidayBoImpl implements HolidayBo {
 		return holidayDao.findByCountry(countryID);
 	}
 	
-	public Set<Holiday> findByYearandCountry(int countryID,int aÒo){
-		return holidayDao.findByYearandCountry(countryID,aÒo);
+	public Set<Holiday> findByYearandCountry(int countryID,int year){
+		return holidayDao.findByYearandCountry(countryID,year);
 	}
 	
 	public void insertHoliday(String holiday, Date date, Set<Country> country){

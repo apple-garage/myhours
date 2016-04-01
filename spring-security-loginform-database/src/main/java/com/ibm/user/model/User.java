@@ -18,7 +18,7 @@ import com.ibm.manager.model.Manager;
 import com.ibm.role.model.Role;
 
 @Entity
-@Table(name = "users", catalog = "my_hours_report")
+@Table(name = "users")
 public class User implements java.io.Serializable{
 	@Id
 	@GeneratedValue
@@ -44,12 +44,12 @@ public class User implements java.io.Serializable{
 	private Date lastUpdate;
 	
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", catalog = "my_hours_report", joinColumns = {@JoinColumn(name = "id_user") }, 
+	@JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "id_user") }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_roles") })
 	private Set<Role> roles = new HashSet<Role>(0);
 	
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_manager", catalog = "my_hours_report", joinColumns = {@JoinColumn(name = "id_user") }, 
+	@JoinTable(name = "user_manager", joinColumns = {@JoinColumn(name = "id_user") }, 
 			inverseJoinColumns = { @JoinColumn(name = "id_manager") })
 	private Set<Manager> managers = new HashSet<Manager>(0);
 	

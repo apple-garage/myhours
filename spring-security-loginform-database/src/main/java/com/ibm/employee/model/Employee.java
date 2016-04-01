@@ -13,7 +13,7 @@ import com.ibm.country.model.Country;
 import com.ibm.manager.model.Manager;
 
 @Entity
-@Table(name = "employee", catalog = "my_hours_report", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "employee", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
 public class Employee implements java.io.Serializable{
 	@Id
 	@Column(name = "ID", unique = true, nullable = false)
