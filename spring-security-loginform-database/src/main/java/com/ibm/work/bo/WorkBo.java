@@ -22,8 +22,16 @@ public interface WorkBo {
 
 	public JSONArray getJsonWork(List<Work> workList);
 
-	public JSONArray getMoreThanFortyJson(List<Work> workList);
+	public JSONArray getWeekSummaryJson(List<Work> workList);
 
-	List<Work> findMoreThanForty(Integer idManager, Integer idCountry, String startDate, String endDate);
+	public JSONArray getNoHolidaysJson(List<Work> workList);
+	
+	public JSONArray getMultipleProjectsJson(List<Work> workList);
+	
+	List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt);
+
+	List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate);
+	
+	List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate);
 
 }

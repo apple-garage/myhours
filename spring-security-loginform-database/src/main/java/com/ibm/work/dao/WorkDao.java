@@ -17,6 +17,10 @@ public interface WorkDao {
 
 	List<Work> findByManager(int idManager);
 
-	List<Work> findMoreThanForty(Integer idManager, Integer idCountry, String startDate, String endDate);
+	List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt);
+
+	List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate);
+
+	List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate);
 
 }

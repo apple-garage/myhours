@@ -356,7 +356,7 @@
 								<select name="dlpais" id="dropdownCountry" class="btn btn-primary dropdown-toggle input-sm" data-toggle="dropdown" data-style="btn-info" style="width:570px" >
 								</select>
 							</div>
-							<br>
+							<br />
 							<div class=" form-group has-feedback">
 							
 							<div class="col-md-6">
@@ -403,8 +403,8 @@
 		</nav>
 		
 		<h1></h1>
-		<br>
-		<br>
+		<br />
+		<br />
 		<ul class="nav nav-tabs nav-justified" id="myTab">
 			<li class="active"><a data-toggle="tab" href="#home"><h4><fmt:message key="myhours.home"/></h4></a></li>
 			<li><a data-toggle="tab" href="#menu1"><h4><fmt:message key="myhours.menu1"/></h4></a></li>
@@ -419,15 +419,16 @@
 			
 			<div id="menu1" class="tab-pane fade">
                 <form action="uploadFile?${_csrf.parameterName}=${_csrf.token}"  method="post" enctype="multipart/form-data" id="form" role="form" style="text-align:center">
-                        <div class="form-inline" id="hid" >
+                        <div class="form-inline" id="uploadForm_div" >
                         <h4><fmt:message key="myhours.menu1.option"/></h4>
                         <div class="form-group">
                          <input type="file" name="file"> 
                          </div>
-                         	<button type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showStuff()"><fmt:message key="myhours.menu1.submit"/></button>
+                         	<button type="submit" id="submit" class="btn btn-primary" value="<fmt:message key="myhours.menu1.submit"/>" onClick="showLoadingAnimation('uploadForm_div')"><fmt:message key="myhours.menu1.submit"/></button>
+                         <p></p>
                          </div>
-                    <div class="color1 box" align="center">
-                      <span class="loader loader-quart-1"  style="display:none" id="myP"><fmt:message key="myhours.menu1.loading"/></span>                 
+                    <div id="uploadForm_div_wait" class="color1 box" align="center" style="display:none; ">
+                      <span class="loader loader-quart-1 " align="center"></span><br /><fmt:message key="myhours.menu1.loading"/>                 
                     </div>
 				</form>	
 				<c:if test="${info != null}">
@@ -439,29 +440,22 @@
 			</div>
 			
 			<div id="menu2" class="tab-pane fade" style="height: 500px">
-<!-- 				<div class="dropdown"> -->
-<%-- 					<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown"><fmt:message key="myhours.menu2.filter"/><span class="caret"></span></button> --%>
-<!-- 					<ul class="dropdown-menu btn-block"> -->
-<%-- 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=query40.rptdesign'"><fmt:message key="myhours.menu2.40hsreport"/></a></li> --%>
-<%-- 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=multiProjects.rptdesign'"><fmt:message key="myhours.menu2.proyectreport"/></a></li> --%>
-<%-- 						<li><a href="#"	onClick="document.getElementById('reportframe').src='http://birt-reporter.mybluemix.net/frameset?__report=holidays.rptdesign'"><fmt:message key="myhours.menu2.holidaysreport"/></a></li> --%>
-<%-- 						<li><a href="#"	onClick="myHours()"><fmt:message key="myhours.menu2.cuarto"/></a></li> --%>
-<!-- 					</ul> -->
-<!-- 				</div> -->
 				
 				<div class="col-md-12" style="background-color: white; border-style:solid;">
 					<div class="form-group" style="margin-top: 10px;margin-bottom:50px;">
 		               	<div class="col-md-3"><select name="reports" class="selectpicker" data-style="btn-primary" multiple data-max-options="1" title="<fmt:message key="myhours.menu3.selectReport"/>">
 		                     <option value=0>Mas de 40</option>
 		                     <option value=1>Menos de 40</option>
-		                     <option value=2>Vacaciones</option>
+		                     <option value=2>Holidays mal cargados</option>
+		                     <option value=3>Mas de un proyecto</option>
+		                     <option value=4>Default</option>
 	                    </select>
 	                    </div>									
 				        <label class="col-md-1 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
 				        <div class="col-md-2"><input accept="" id="startDate" type="date" class="form-control" name="dateStart" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
 				        <label class="col-md-1 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
 				        <div class="col-md-2"><input accept="" id="endDate" type="date" class="form-control" name="dateEnd" data-provide="datepicker" data-date-format="yyyy-mm-dd" autocomplete="off"/></div>
-						<button class="btn btn-primary pull-right col-md-2" type="submit" onclick="searchReport()"><fmt:message key="myhours.menu3.search"/></button>
+						<button class="btn btn-primary pull-right col-md-2" type="submit" onclick="prepareReport()"><fmt:message key="myhours.menu3.search"/></button>
 					</div>
 					<div class="form-group" style="margin-top: 10px;">
 						<div class="col-md-6">	                     
@@ -478,36 +472,17 @@
 					</div>
 					
 				</div>
-				<div style="background-color: white; border-style:solid;">
-<!-- 				<label><input type="checkbox" value="1" name="name" checked="checked"><span>Name</span></label> -->
-				<table id="moreForty" class="table display " cellspacing="0" width="100%">
-				<thead>
-		        	<tr>
-		                <th></th>
-		                <th><fmt:message key="myhours.menu3.idUsuario"/></th>
-		                <th><fmt:message key="myhours.menu3.name"/></th>
-		                <th><fmt:message key="myhours.menu3.country"/></th>
-		                <th><fmt:message key="myhours.menu3.manager"/></th>
-		                <th><fmt:message key="myhours.menu3.date"/></th>
-		                <th><fmt:message key="myhours.menu3.totalHours"/></th>
-            		</tr>
-        		</thead>
-				</table>
 				
-				<table id="myWork" class="table display " cellspacing="0" width="100%">
-				<thead>
-		        	<tr>
-		                <th><fmt:message key="myhours.menu3.idUsuario"/></th>
-		                <th><fmt:message key="myhours.menu3.name"/></th>
-		                <th><fmt:message key="myhours.menu3.country"/></th>
-		                <th><fmt:message key="myhours.menu3.manager"/></th>
-		                <th><fmt:message key="myhours.menu3.date"/></th>
-		                <th><fmt:message key="myhours.menu3.proyect"/></th>
-		                <th><fmt:message key="myhours.menu3.hours"/></th>
-            		</tr>
-        		</thead>
-				</table>
+				<div id="reportTable_container" style="background-color: white; border-style:solid;">
+<!-- 				<label><input type="checkbox" value="1" name="name" checked="checked"><span>Name</span></label> -->
+				
+<!-- 				Placeholders for the default or selected report -->
+					<table id="reportTable" class="table display " style="width: 100%; "></table>
 				</div>
+				<div align="center" id="reportTable_container_wait" style="display:none; width: 100%; ">
+                      <p></p><span align="center" class="loader loader-quart-1"></span><br /><fmt:message key="myhours.menu1.loading"/>                
+                </div>
+                
 				<c:if test="${info != null}">
 					<h3><span class="label label-danger" id="error" style="display:center"><fmt:message key="${error}"/></span></h3> 
 				</c:if>
@@ -549,13 +524,24 @@
 	
 <script type="text/javascript">
 
-	function showStuff() {
-		document.getElementById("hid").style.visibility = "hidden";
-		document.getElementById('myP').style.display = "block";
+	function showLoadingAnimation(element) {
+		if(this.state){
+			document.getElementById(element).style.display = "block";
+			document.getElementById(element+'_wait').style.display = "none";
+			this.state = 0;
+		}else{
+			document.getElementById(element).style.display = "none";
+			document.getElementById(element+'_wait').style.display = "block";
+			this.state = 1;
+		}
     }
     
 //	begin jQuery initialization script
 	$(function() {
+			
+// 			showLoadingAnimation() static property initialization
+			showLoadingAnimation.state = 0;
+			
 			//validaciones
 			$('.crearForm').bootstrapValidator({
 			container: '.messages',
@@ -654,7 +640,7 @@
 		loadManagers();
 		loadUsers();
 		loadCountry();
-		myHours();
+		prepareReport();
 	});
 //	end jQuery initialization script
 	
@@ -740,14 +726,38 @@
  		}
 	});
 	
-	function searchReport(){
-		var selectReport = ($('select[name=reports]').val());
-		if(selectReport=="0")moreThanForty();
-		if(selectReport=="1");
-		if(selectReport=="2");
-		if(selectReport=="3")myHours();
-	}
+	function prepareReport(){
+		
+		showLoadingAnimation('reportTable_container');
+		
+// 		destroy any previously loaded DataTable
+		if($.fn.DataTable.isDataTable("#reportTable")){
+			$('#reportTable').DataTable().clear().destroy();
+		};
+		
+//		sets to 0 if null
+		selectedDateStart = (!$("#startDate").val()?0:$("#startDate").val());
+		selectedDateEnd = (!$("#endDate").val()?0:$("#endDate").val());
+		selectedManager = (!$('select[name=manager]').val()?0:$('select[name=manager]').val());
+		selectedCountry = (!$('select[name=country]').val()?0:$('select[name=country]').val());
+		
+		var selectedReport = $('select[name=reports]').val();
+		
+		searchReport((null!=selectedReport?selectedReport[0]:false));
+	};
 	
+	function searchReport(opt){
+		
+		switch(opt){
+			case "0": weekSummaryView("morethanforty"); break;
+			case "1": weekSummaryView("lessthanforty"); break;
+// 			case "2": noHolidaysView("noholidays"); break;
+			case "3": weekSummaryView("multipleprojects"); break;
+			default: weekSummaryView("mywork");
+		
+		};
+	};
+
 	function findHoliday (){
 		var seleccionPais = ($('select[name=dlpais]').val());
 		var year= $("#datepicker").val();	
@@ -759,13 +769,13 @@
 				data : {"seleccionPais":seleccionPais, "year":year},
 				dataType : 'json',
 				success : function(data) {
-					console.log("SUCCESS: ", data);
+// 					console.log("SUCCESS: ", data);
 					JsonListF = data;
 					var listItemsF = "";					
 					for ( var i in data) {
 						listItemsF += "<option value='" + data[i].id + "'>"+ data[i].holiday + "</option>";
 					}
-					console.log(listItemsF);
+// 					console.log(listItemsF);
 					$("#showHoliday").append(listItemsF);
 					 if(listItemsF != "")
 							document.getElementById('showHoliday').style.display = "inline";
@@ -773,7 +783,7 @@
 							 document.getElementById('showHoliday').style.display = "none";
 				},
 	              error:function(request,status,error){
-	              console.log(request.responseText);
+// 	              console.log(request.responseText);
 	              }
 			});
     }; 
@@ -812,7 +822,7 @@
 			dataType : 'json',
 			timeout : 100000,
 			success : function(data) {	
-				console.log("SUCCESS: ", data);	
+// 				console.log("SUCCESS: ", data);	
 				JsonCountry = data;
 				var listItemsC;
 	        for (var i in data){
@@ -833,36 +843,36 @@
 			dataType : 'json',
 			timeout : 100000,
 			success : function(data) {	
-				console.log("SUCCESS: ", data);	
+// 				console.log("SUCCESS ", this);	
 				JsonCountry = data;
-				var listItemsC;
+				var listItemsM;
 	        for (var i in data){
-	        	listItemsC+= "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+	        	listItemsM+= "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
 	        }
-	        $("#managerList").html(listItemsC);
+	        $("#managerList").html(listItemsM);
 	        $('.selectpicker').selectpicker('refresh');
 			},
 		});
 	};
 	
-	function moreThanForty(){
-		var selectDateStart = $("#startDate").val();
-		var selectDateEnd = $("#endDate").val();
-		var selectManager = ($('select[name=manager]').val());
-		var selectCountry = ($('select[name=country]').val());
+	function weekSummaryView(report){
+		
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
 			dataType : 'json',
-			data: {'manager':selectManager, 'country':selectCountry, 'dateStar':selectDateStart, 'dateEnd':selectDateEnd},
-			url : "moreTanForty.html",
+			data: {'manager':selectedManager, 'country':selectedCountry, 'dateStart':selectedDateStart, 'dateEnd':selectedDateEnd},
+			url : report+".html",
 			success : function(data) {
-				console.log("SUCCESS: ", data);	
+			
+				showLoadingAnimation('reportTable_container');
 				var jsonData = data;
-				var table = $('#moreForty').DataTable({data: jsonData, columns:[{"className":'details-control',"orderable":false,"data":null,"defaultContent":'',},
-				           {"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},{"data":"week"},{"data":"totalHours"}], "order": [[1, 'asc']]});
+				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"className":'details-control',"orderable":false,"data":null,"defaultContent":''},
+				           {"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},{"data":"week"},{"data":"totalHours"}], "order": [[3, 'asc'],[2, 'asc'],[1, 'asc'],[5, 'asc']]});
 			    
-				$('#details tbody').on('click', 'td.details-control', function () {
+// 			    event handler
+				$('#reportTable tbody').off();
+				$('#reportTable tbody').on('click', 'td.details-control', function () {
 			        var tr = $(this).closest('tr');
 			        var row = table.row(tr);
 			 
@@ -875,8 +885,9 @@
 			            tr.addClass('shown');
 			        }
 		    	});
-	            $('td:nth-child(5),th:nth-child(5)').hide();
-	            $('td:nth-child(4),th:nth-child(4)').hide(); 
+				
+// 	            $('td:nth-child(5),th:nth-child(5)').hide();
+// 	            $('td:nth-child(4),th:nth-child(4)').hide(); 
 			},
  		});
 	};
@@ -890,33 +901,62 @@
 	    return child+'</table>';
 	};
 	
+	function noHolidaysView(){
+		
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			dataType : 'json',
+			data: {'manager':selectedManager, 'country':selectedCountry, 'dateStart':selectedDateStart, 'dateEnd':selectedDateEnd},
+			url : "noholidays.html",
+			success : function(data) {
+				showLoadingAnimation('reportTable_container');
+				var jsonData = data;
+				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},
+				                                                          {"data":"week"},{"data":"project"},{"data":"hours"}], "order": [[1, 'asc']]});
+// 	            $('td:nth-child(4),th:nth-child(4)').hide();
+// 	            $('td:nth-child(3),th:nth-child(3)').hide(); 
+			},
+ 		});
+		
+	};
+	
+	/*
+	
 	function myHours(){
-		$('#moreForty').hide();
+		
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
 			dataType : 'json',
 			url : "mywork.html",
 			success : function(data) {
-				console.log("SUCCESS: ", data);	
+				showLoadingAnimation('reportTable_container');
+// 				console.log("SUCCESS: ", data);	
 				var jsonData = data;
-				var table = $('#myWork').DataTable({data: jsonData, columns:[{"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},
-				                                                          {"data":"week"},{"data":"proyect"},{"data":"hours"}], "order": [[1, 'asc']]});
-	            $('td:nth-child(4),th:nth-child(4)').hide();
-	            $('td:nth-child(3),th:nth-child(3)').hide(); 
+				
+// 				obtain table headers text from language-specific properties file.
+// 				var getHeadersArray( _reportName_ ); -> create this method once all js functions are taken off to a separate file.
+
+				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"data":"id","title":'id'},{"data":"name","title":'name'},{"data":"country"},{"data":"manager"},
+							{"data":"week"},{"data":"project"},{"data":"hours"}], "order": [[1, 'asc']]});
+
+// 	            $('td:nth-child(4),th:nth-child(4)').hide();
+// 	            $('td:nth-child(3),th:nth-child(3)').hide(); 
 			},
  		});
 	};
 	
-	$('#btnShow').click(function() {
-        $('td:nth-child(5),th:nth-child(5)').show();
-        $('td:nth-child(4),th:nth-child(4)').show(); 
-    });
-	$('#btnHide').click(function() {
-        $('td:nth-child(5),th:nth-child(5)').hide();
-        $('td:nth-child(4),th:nth-child(4)').hide(); 
-    });
-	
+	*/
+
+// 	$('#btnShow').click(function() {
+//         $('td:nth-child(5),th:nth-child(5)').show();
+//         $('td:nth-child(4),th:nth-child(4)').show(); 
+//     });
+// 	$('#btnHide').click(function() {
+//         $('td:nth-child(5),th:nth-child(5)').hide();
+//         $('td:nth-child(4),th:nth-child(4)').hide(); 
+//     });
 
 	
 	function loadUsers(){
@@ -927,7 +967,7 @@
 			url : "listUsers.html",
 			timeout : 100000,
 			success : function(data) {
-				console.log("SUCCESS: ", data);	
+// 				console.log("SUCCESS: ", data);	
 				JsonList = data;
 				var listItems = "<option value=' '>Select user</option>";
 	        for (var i in data){
@@ -992,6 +1032,7 @@
 			},
 		});
 	};
+	
 </script>
 
 </body>

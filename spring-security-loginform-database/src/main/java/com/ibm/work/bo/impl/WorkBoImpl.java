@@ -1,5 +1,6 @@
 package com.ibm.work.bo.impl;
 
+import java.io.Console;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -47,9 +48,20 @@ public class WorkBoImpl implements WorkBo{
 	}
 	
 	@Override
-	public List<Work> findMoreThanForty(Integer idManager, Integer idCountry, String startDate, String endDate) {
-		return workDao.findMoreThanForty(idManager, idCountry, startDate, endDate);
+	public List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt) {
+		return workDao.findDiffThanForty(idManager, idCountry, startDate, endDate, gt);
 	}
+	
+	@Override
+	public List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate) {
+		return workDao.findNoHolidays(idManager, idCountry, startDate, endDate);
+	}
+	
+	@Override
+	public List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate) {
+		return workDao.findMultipleProjects(idManager, idCountry, startDate, endDate);
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -63,7 +75,7 @@ public class WorkBoImpl implements WorkBo{
 			jWork.put("country", aWork.getEmployee().getCountry().getCountry());
 			jWork.put("manager", aWork.getEmployee().getManager().getName());
 			jWork.put("week", aWork.getWeek().getEndDate().toString().substring(0, 10));
-			jWork.put("proyect", aWork.getAssignment().getProjectName());
+			jWork.put("project", aWork.getAssignment().getProjectName());
 			jWork.put("hours", aWork.getHoursByWeek());
 			jaWork.add(jWork);
 		}
@@ -72,7 +84,7 @@ public class WorkBoImpl implements WorkBo{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONArray getMoreThanFortyJson(List<Work> workList) {
+	public JSONArray getWeekSummaryJson(List<Work> workList) {
 		JSONArray jaWork = new JSONArray();
 		JSONArray jaDetail = new JSONArray();
 		JSONObject jDetail = new JSONObject();
@@ -81,7 +93,10 @@ public class WorkBoImpl implements WorkBo{
 		int week = 0;
 		int totalHours = 0;
 		for(Work aWork:workList){
+			
 			jDetail = new JSONObject();
+			
+//			Assumes data is ordered by employee and then week. Only loads generic data at first occurrence.
 			if(!employee.equals(aWork.getEmployee().getId()) || aWork.getWeek().getId() != week){
 				if(employee != ""){
 					jWork.put("detail", jaDetail);
@@ -98,13 +113,37 @@ public class WorkBoImpl implements WorkBo{
 				jWork.put("country", aWork.getEmployee().getCountry().getCountry());
 				jWork.put("manager", aWork.getEmployee().getManager().getName());
 				jWork.put("week", aWork.getWeek().getEndDate().toString().substring(0, 10));
+				
 			 }
 			jDetail.put("assignment", aWork.getAssignment().getProjectName());
 			jDetail.put("hours", aWork.getHoursByWeek());
 			totalHours+=aWork.getHoursByWeek();
 			jaDetail.add(jDetail);
+			
 		}
+		
+		jWork.put("detail", jaDetail);
+		jWork.put("totalHours",totalHours);
+		jaWork.add(jWork);
+		
 		return jaWork;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JSONArray getNoHolidaysJson(List<Work> workList) {
+		JSONArray jaWork = new JSONArray();
+		JSONObject jWork = new JSONObject();
+		
+		return jaWork;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JSONArray getMultipleProjectsJson(List<Work> workList) {
+		JSONArray jaWork = new JSONArray();
+		JSONObject jWork = new JSONObject();
+		
+		return jaWork;
+	}
 }

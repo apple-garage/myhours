@@ -61,8 +61,10 @@ public class MainController {
 	public ModelAndView defaultPage() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if("anonymousUser".equals(auth.getName()))
+			
 			return new ModelAndView("login");
 		else
+			
 			return new ModelAndView("MyHours");
 	}
 
@@ -81,9 +83,11 @@ public class MainController {
                 
                 return new ModelAndView("MyHours", "info","myhours.messages.fileerror"); 
             } catch (Exception e) {
+            	
             	return model;
             }
         } else {
+        	
         	return new ModelAndView("MyHours", "info","myhours.messages.fileok");
         }
     }
@@ -98,7 +102,7 @@ public class MainController {
 			model.addObject("msg", "You've been logged out successfully.");
 		}
 		model.setViewName("login");
-
+		
 		return model;
 	}
 	
@@ -119,7 +123,7 @@ public class MainController {
 		}catch(UnsupportedEncodingException ex ){
 			ex.printStackTrace();
 		}
-
+		
 		return array.toString();
 	}
 	
@@ -134,6 +138,7 @@ public class MainController {
 			manager.put("name",aManager.getName());
 			jaManager.add(manager);
 		}
+		
 		return jaManager.toString();
 	}
 
@@ -146,6 +151,7 @@ public class MainController {
 		for(User aUser : userList){
 				array.add(userBo.newJsonUser(aUser));
 		}
+
 //		exportCsv(array);
 		return array.toString();
 	}
@@ -166,8 +172,8 @@ public class MainController {
 			}catch(UnsupportedEncodingException ex ){
 				ex.printStackTrace();
 			}
-
-			return array.toString();
+		
+		return array.toString();
 	}
 
 	//Ajax calls
@@ -188,8 +194,10 @@ public class MainController {
 			userBo.save(aUser);
 		}catch(Exception e){
 			e.printStackTrace();
+			
 			return new ModelAndView("MyHours", "error","myhours.messages.saveerror");
 		}
+		
 		return new ModelAndView("MyHours", "info","myhours.messages.usersavedok");
 	}
 	
@@ -199,8 +207,10 @@ public class MainController {
 			userBo.deleteById(Integer.valueOf(getParameter(user)));
 		}catch(Exception e){
 			e.printStackTrace();
+			
 			return "<fmt:message key=\"myhours.messages.userdeleteerror\"/>";
 		}
+		
 		return "<fmt:message key=\"myhours.messages.userdeleteok\"/>";
 	}
 	
@@ -218,33 +228,62 @@ public class MainController {
 			holidayBo.save(newHoliday);
 		}catch(Exception e){
 			e.printStackTrace();
+			
 			return new ModelAndView("MyHours", "error","myhours.messages.saveerror");
 		}
+		
 		return new ModelAndView("MyHours", "info","myhours.messages.holidayok");
 	}
 		
 	@RequestMapping(value = "mywork", method = RequestMethod.POST )
-	public @ResponseBody String getMyWork() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Manager aManager = managerBo.findManagerByName(auth.getName());
-		int manager=5;
-		if(aManager!=null)
-			manager=aManager.getId();
+	public @ResponseBody String getMyWork(@RequestBody String params) {
+		int manager = Integer.parseInt(params.split("&")[0].split("=")[1]);
+		
+		if(manager==0){
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			Manager aManager = managerBo.findManagerByName(auth.getName());
+			manager = (aManager!=null?aManager.getId():19);
+		}
+		
  		List<Work> workList = workBo.findByManager(manager);
- 		return workBo.getJsonWork(workList).toString();
+ 		
+ 		return workBo.getWeekSummaryJson(workList).toString();
+ 		//return workBo.getJsonWork(workList).toString();
 	}
 	
-	@RequestMapping(value = "moreTanForty", method = RequestMethod.POST )
-	public @ResponseBody String getMoreThanForty(@RequestBody String params) {
-		int idManager = 5;
+	@RequestMapping(value = "noholidays", method = RequestMethod.POST )
+	public @ResponseBody String getNoHolidays(@RequestBody String params) {
 		String[] parameters = params.split("&");
-		List<Work> workList = workBo.findMoreThanForty(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
-		return workBo.getMoreThanFortyJson(workList).toString();
+ 		List<Work> workList = workBo.findNoHolidays(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
+ 		
+ 		return workBo.getNoHolidaysJson(workList).toString();
+	}
+	
+	@RequestMapping(value = "multipleprojects", method = RequestMethod.POST )
+	public @ResponseBody String getMultipleProjects(@RequestBody String params) {
+		String[] parameters = params.split("&");
+ 		List<Work> workList = workBo.findMultipleProjects(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
+ 		
+ 		return workBo.getWeekSummaryJson(workList).toString();
+ 		//return workBo.getMultipleProjectsJson(workList).toString();
+	}
+	
+	@RequestMapping(value = {"morethanforty","lessthanforty"}, method = RequestMethod.POST )
+	public @ResponseBody String getDiffThanForty(@RequestBody String params, HttpServletRequest request) {
+		String[] parameters = params.split("&");
+		boolean gt = false;
+		if(request.getRequestURI().contains("morethanforty")){
+			gt = true;
+		}
+		List<Work> workList = workBo.findDiffThanForty(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]), gt);
+		
+		return workBo.getWeekSummaryJson(workList).toString();
 	}
 	
 	@RequestMapping(value = "deleteHoliday", method = RequestMethod.POST )
 	public @ResponseBody String deleteHoliday(@RequestBody String holiday) {
 		holidayBo.deleteById(Integer.valueOf(getParameter(holiday)));
+		
 		return null;
 	}
 	
@@ -255,6 +294,7 @@ public class MainController {
 	}
 
 	private static String getParameter(String string) {
+		
 		return string.substring(string.lastIndexOf("=")+1,string.length());
 	}
 }
