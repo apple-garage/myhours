@@ -11,6 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
+//import org.springframework.orm.hibernate3.HibernateTemplate;
+//import org.springframework.orm.hibernate5.HibernateTemplate;
+//import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+
 
 @EnableWebMvc
 @Configuration
@@ -32,6 +36,9 @@ public class AppConfig extends WebMvcConfigurerAdapter{
     @Value( "${jdbc.username}" ) private String dbUsername;
     @Value( "${jdbc.password}" ) private String dbPassword;
 	
+    
+    
+    
     @Bean
     public static PropertyPlaceholderConfigurer properties(){
       PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
@@ -75,6 +82,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
     public HibernateTransactionManager txManager() {
+//        return new HibernateTemplate(sessionFactory());
         return new HibernateTransactionManager(sessionFactory());
     }
 		

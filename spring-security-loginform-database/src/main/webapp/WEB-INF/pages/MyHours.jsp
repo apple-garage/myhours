@@ -444,11 +444,11 @@
 				<div class="col-md-12" style="background-color: white; border-style:solid;">
 					<div class="form-group" style="margin-top: 10px;margin-bottom:50px;">
 		               	<div class="col-md-3"><select name="reports" class="selectpicker" data-style="btn-primary" multiple data-max-options="1" title="<fmt:message key="myhours.menu3.selectReport"/>">
-		                     <option value=0>Mas de 40</option>
-		                     <option value=1>Menos de 40</option>
-		                     <option value=2>Holidays mal cargados</option>
-		                     <option value=3>Mas de un proyecto</option>
-		                     <option value=4>Default</option>
+		                     <option value=0>Default</option>
+		                     <option value=1>Mas de 40</option>
+		                     <option value=2>Menos de 40</option>
+		                     <option value=3>Holidays mal cargados</option>
+		                     <option value=4>Mas de un proyecto</option>
 	                    </select>
 	                    </div>									
 				        <label class="col-md-1 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
@@ -523,7 +523,10 @@
 	
 	
 <script type="text/javascript">
-
+	
+	jsonData = [];
+	report = {};
+	
 	function showLoadingAnimation(element) {
 		if(this.state){
 			document.getElementById(element).style.display = "block";
@@ -747,13 +750,22 @@
 	};
 	
 	function searchReport(opt){
-		
+	
+// 	reportmap = {
+// 		'0' : 'mywork',
+// 		'1' : 'morethanforty',
+// 		'2' : 'lessthanforty',
+// 		'3' : 'noholidays',
+// 		'4' : 'multipleprojects'
+// 	};
+	
 		switch(opt){
-			case "0": weekSummaryView("morethanforty"); break;
-			case "1": weekSummaryView("lessthanforty"); break;
-// 			case "2": noHolidaysView("noholidays"); break;
-			case "3": weekSummaryView("multipleprojects"); break;
-			default: weekSummaryView("mywork");
+		
+			case "1": report = "morethanforty"; weekSummaryView(1); break;
+			case "2": report = "lessthanforty"; weekSummaryView(2); break;
+ 			case "3": report = "noholidays"; noHolidaysView(3); break;
+			case "4": report = "multipleprojects"; weekSummaryView(4); break;
+			default: report = "mywork"; weekSummaryView(0);
 		
 		};
 	};
@@ -855,72 +867,197 @@
 		});
 	};
 	
-	function weekSummaryView(report){
-		
-		$.ajax({
-			type : "POST",
-			contentType : "application/json",
-			dataType : 'json',
-			data: {'manager':selectedManager, 'country':selectedCountry, 'dateStart':selectedDateStart, 'dateEnd':selectedDateEnd},
-			url : report+".html",
-			success : function(data) {
-			
-				showLoadingAnimation('reportTable_container');
-				var jsonData = data;
-				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"className":'details-control',"orderable":false,"data":null,"defaultContent":''},
-				           {"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},{"data":"week"},{"data":"totalHours"}], "order": [[3, 'asc'],[2, 'asc'],[1, 'asc'],[5, 'asc']]});
-			    
-// 			    event handler
-				$('#reportTable tbody').off();
-				$('#reportTable tbody').on('click', 'td.details-control', function () {
-			        var tr = $(this).closest('tr');
-			        var row = table.row(tr);
-			 
-			        if ( row.child.isShown() ) {
-			            row.child.hide();
-			            tr.removeClass('shown');
-			        }
-			        else {
-			            row.child(format(row.data())).show();
-			            tr.addClass('shown');
-			        }
-		    	});
-				
-// 	            $('td:nth-child(5),th:nth-child(5)').hide();
-// 	            $('td:nth-child(4),th:nth-child(4)').hide(); 
-			},
- 		});
-	};
 	
+	function buildTable(index){
+	
+
+	var headers = {
+			'eid' : "Employee ID",
+			'ename' : "Name",
+			'country' : "Country",
+			'manager' : "Manager",
+			'week' : "Week",
+			'holiday' : "Description",
+			'h_dates' : "Dates",
+			'h_hours' : "Required Hours",
+			'ahours' : "Actual Hours",
+			'thours' : "Total Hours"
+		};
+		
+		switch (index) {
+
+		case 3: {
+			var table = $('#reportTable').DataTable(
+					{
+						data : jsonData[index],
+						columns : [ {
+							"className" : 'details-control',
+							"orderable" : false,
+							"data" : null,
+							"defaultContent" : ''
+						}, {
+							"data" : "id",
+							"title" : headers['eid']
+						}, {
+							"data" : "name",
+							"title" : headers['ename']
+						}, {
+							"data" : "country",
+							"title" : headers['country']
+						}, {
+							"data" : "manager",
+							"title" : headers['manager']
+						}, {
+							"data" : "week",
+							"title" : headers['week']
+						}, {
+							"data" : "holiday",
+							"title" : headers['holiday']
+						}, {
+							"data" : "h_dates",
+							"title" : headers['h_dates']
+						}, {
+							"data" : "h_hours",
+							"title" : headers['h_hours']
+						}, {
+							"data" : "hours",
+							"title" : headers['ahours']
+						} ],
+						"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
+								[ 5, 'asc' ] ]
+					});
+		}
+			;
+			break;
+
+		default: {
+
+			var table = $('#reportTable').DataTable(
+					{
+						data : jsonData[index],
+						columns : [ {
+							"className" : 'details-control',
+							"orderable" : false,
+							"data" : null,
+							"defaultContent" : ''
+						}, {
+							"data" : "id",
+							"title" : headers['eid']
+						}, {
+							"data" : "name",
+							"title" : headers['ename']
+						}, {
+							"data" : "country",
+							"title" : headers['country']
+						}, {
+							"data" : "manager",
+							"title" : headers['manager']
+						}, {
+							"data" : "week",
+							"title" : headers['week']
+						}, {
+							"data" : "totalHours",
+							"title" : headers['thours']
+						} ],
+						"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
+								[ 5, 'asc' ] ]
+					});
+
+			// 			    event handler
+			$('#reportTable tbody').off();
+			$('#reportTable tbody').on('click', 'td.details-control',
+					function() {
+						var tr = $(this).closest('tr');
+						var row = table.row(tr);
+
+						if (row.child.isShown()) {
+							row.child.hide();
+							tr.removeClass('shown');
+						} else {
+							row.child(format(row.data())).show();
+							tr.addClass('shown');
+						}
+					});
+			// 		    	end event handler
+
+		}
+		}
+	};
+
 	function format(d) {
 		var details = d.detail;
 		var child = '<table cellpadding="5" cellspacing="0" border="0" style="font-size: 12px; width:100%; text-indent:75%;">';
-		for (var j in details){
-			child+='<tr><td>'+details[j].assignment+': '+details[j].hours+'</td></tr>';
+		for ( var j in details) {
+			child += '<tr><td>' + details[j].assignment + ': '
+					+ details[j].hours + '</td></tr>';
 		}
-	    return child+'</table>';
+		return child + '</table>';
 	};
-	
-	function noHolidaysView(){
-		
-		$.ajax({
-			type : "POST",
-			contentType : "application/json",
-			dataType : 'json',
-			data: {'manager':selectedManager, 'country':selectedCountry, 'dateStart':selectedDateStart, 'dateEnd':selectedDateEnd},
-			url : "noholidays.html",
-			success : function(data) {
-				showLoadingAnimation('reportTable_container');
-				var jsonData = data;
-				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"data":"id"},{"data":"name"},{"data":"country"},{"data":"manager"},
-				                                                          {"data":"week"},{"data":"project"},{"data":"hours"}], "order": [[1, 'asc']]});
-// 	            $('td:nth-child(4),th:nth-child(4)').hide();
-// 	            $('td:nth-child(3),th:nth-child(3)').hide(); 
-			},
- 		});
-		
+
+	function noHolidaysView(index) {
+
+		// 		report data already fetched
+		if (jsonData[index] != null) {
+			showLoadingAnimation('reportTable_container');
+			buildTable(index);
+		} else {
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				dataType : 'json',
+				data : {
+					'manager' : selectedManager,
+					'country' : selectedCountry,
+					'dateStart' : selectedDateStart,
+					'dateEnd' : selectedDateEnd
+				},
+				url : "noholidays.html",
+				success : function(data) {
+
+					showLoadingAnimation('reportTable_container');
+					jsonData[index] = data;
+					buildTable(index);
+				},
+			});
+		}
+
 	};
-	
+
+	function weekSummaryView(index) {
+
+		// 		report data already fetched
+		if (jsonData[index] != null) {
+
+			showLoadingAnimation('reportTable_container');
+			buildTable(index);
+
+		} else {
+
+			$.ajax({
+				type : "POST",
+				contentType : "application/json",
+				dataType : 'json',
+				data : {
+					'manager' : selectedManager,
+					'country' : selectedCountry,
+					'dateStart' : selectedDateStart,
+					'dateEnd' : selectedDateEnd
+				},
+				url : report + ".html",
+				success : function(data) {
+
+					showLoadingAnimation('reportTable_container');
+
+					jsonData[index] = data;
+					buildTable(index);
+				}
+			});
+
+		}
+		;
+
+	};
+
 	/*
 	
 	function myHours(){
@@ -932,34 +1069,33 @@
 			url : "mywork.html",
 			success : function(data) {
 				showLoadingAnimation('reportTable_container');
-// 				console.log("SUCCESS: ", data);	
+	// 				console.log("SUCCESS: ", data);	
 				var jsonData = data;
 				
-// 				obtain table headers text from language-specific properties file.
-// 				var getHeadersArray( _reportName_ ); -> create this method once all js functions are taken off to a separate file.
+	// 				obtain table headers text from language-specific properties file.
+	// 				var getHeadersArray( _reportName_ ); -> create this method once all js functions are taken off to a separate file.
 
 				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"data":"id","title":'id'},{"data":"name","title":'name'},{"data":"country"},{"data":"manager"},
 							{"data":"week"},{"data":"project"},{"data":"hours"}], "order": [[1, 'asc']]});
 
-// 	            $('td:nth-child(4),th:nth-child(4)').hide();
-// 	            $('td:nth-child(3),th:nth-child(3)').hide(); 
+	// 	            $('td:nth-child(4),th:nth-child(4)').hide();
+	// 	            $('td:nth-child(3),th:nth-child(3)').hide(); 
 			},
- 		});
+		});
 	};
 	
-	*/
+	 */
 
-// 	$('#btnShow').click(function() {
-//         $('td:nth-child(5),th:nth-child(5)').show();
-//         $('td:nth-child(4),th:nth-child(4)').show(); 
-//     });
-// 	$('#btnHide').click(function() {
-//         $('td:nth-child(5),th:nth-child(5)').hide();
-//         $('td:nth-child(4),th:nth-child(4)').hide(); 
-//     });
+	// 	$('#btnShow').click(function() {
+	//         $('td:nth-child(5),th:nth-child(5)').show();
+	//         $('td:nth-child(4),th:nth-child(4)').show(); 
+	//     });
+	// 	$('#btnHide').click(function() {
+	//         $('td:nth-child(5),th:nth-child(5)').hide();
+	//         $('td:nth-child(4),th:nth-child(4)').hide(); 
+	//     });
 
-	
-	function loadUsers(){
+	function loadUsers() {
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
@@ -967,36 +1103,44 @@
 			url : "listUsers.html",
 			timeout : 100000,
 			success : function(data) {
-// 				console.log("SUCCESS: ", data);	
+				// 				console.log("SUCCESS: ", data);	
 				JsonList = data;
 				var listItems = "<option value=' '>Select user</option>";
-	        for (var i in data){
-	        	listItems+= "<option value='" + data[i].id + "'>" + data[i].lastname +", " + data[i].name + "</option>";
-	        }
-	        $("#DLState").html(listItems);
-	        $("#DLState").find('[value=0]').hide();	
+				for ( var i in data) {
+					listItems += "<option value='" + data[i].id + "'>"
+							+ data[i].lastname + ", " + data[i].name
+							+ "</option>";
+				}
+				$("#DLState").html(listItems);
+				$("#DLState").find('[value=0]').hide();
 			},
 		});
 	};
-	
-	$("#linkUser").click(function(){
-		var username = $.trim($("#username").text());
-		$("#modifRadio").hide();
-		$("#deleteUser").hide();
-		$("#delUser").prop('disabled', true);
-		$("#DLState").prop('disabled', true);
-		$(".modUser").prop('disabled', false);
-		$(".changeUser").removeAttr("readonly");
-		$('select[name=dlstate]').find('option:contains('+ username +')').attr("selected", true).change();
-	});
 
-	$("#modUser").click(function(){
-		$("#DLState").prop('disabled', false);
-		$(".modUser").prop('disabled', true);
-		$(".modUser").removeAttr("readonly");
-		$('select[name=dlstate]').find('option:contains('+ username +')').attr("selected", true).change();
-	});
-		
+	$("#linkUser").click(
+			function() {
+				var username = $.trim($("#username").text());
+				$("#modifRadio").hide();
+				$("#deleteUser").hide();
+				$("#delUser").prop('disabled', true);
+				$("#DLState").prop('disabled', true);
+				$(".modUser").prop('disabled', false);
+				$(".changeUser").removeAttr("readonly");
+				$('select[name=dlstate]').find(
+						'option:contains(' + username + ')').attr("selected",
+						true).change();
+			});
+
+	$("#modUser").click(
+			function() {
+				$("#DLState").prop('disabled', false);
+				$(".modUser").prop('disabled', true);
+				$(".modUser").removeAttr("readonly");
+				$('select[name=dlstate]').find(
+						'option:contains(' + username + ')').attr("selected",
+						true).change();
+			});
+
 	$("#DLState").change(function() {
 		clearForm();
 		$(".modUser").prop('disabled', false);
@@ -1011,28 +1155,28 @@
 				$('input[name="password"]').val(JsonList[i].password);
 				$('input[name="confirmPassword"]').val(JsonList[i].password);
 				var JrolList = JsonList[i].rol;
-				for (var j in JrolList) {
+				for ( var j in JrolList) {
 					var rol = JrolList[j];
 					document.getElementById(rol.rol).checked = true;
 				}
 			}
 		}
 	});
-	
-	
-	function deleteUser(){
+
+	function deleteUser() {
 		var seleccion = ($('select[name=dlstate]').val());
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
-			data: {'user':seleccion},
+			data : {
+				'user' : seleccion
+			},
 			url : "deleteUser.html",
 			success : function(data) {
 				loadUsers();
 			},
 		});
 	};
-	
 </script>
 
 </body>

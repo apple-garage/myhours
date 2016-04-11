@@ -18,6 +18,7 @@ import com.ibm.week.model.Week;
 
 @Entity
 @Table(name = "work", uniqueConstraints = @UniqueConstraint(columnNames = "ID"))
+
 public class Work implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -34,7 +35,6 @@ public class Work implements java.io.Serializable{
 	private Assignment assignment;
 	@Column(name = "HOURS_X_WEEK")
 	private int hoursByWeek;
-	
 	
 	public Work(){
 	}
@@ -91,5 +91,9 @@ public class Work implements java.io.Serializable{
 	public String toString() {
 		return "Work [ID=" + id + ", EMPLOYEE=" + employee + ", WEEK= " + week + ", ASIGMENT= " + assignment.getProjectName() + ", HOURS_X_WEEK= " + hoursByWeek +"]";
 	}
+	
+
+	
+
 
 }

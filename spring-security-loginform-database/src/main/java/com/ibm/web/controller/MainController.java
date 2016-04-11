@@ -32,6 +32,7 @@ import com.ibm.country.model.Country;
 import com.ibm.fileProcess.Parse;
 import com.ibm.holiday.bo.HolidayBo;
 import com.ibm.holiday.model.Holiday;
+import com.ibm.holidaycompare.model.HolidayCompare;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.manager.model.Manager;
 import com.ibm.role.bo.RoleBo;
@@ -254,9 +255,9 @@ public class MainController {
 	@RequestMapping(value = "noholidays", method = RequestMethod.POST )
 	public @ResponseBody String getNoHolidays(@RequestBody String params) {
 		String[] parameters = params.split("&");
- 		List<Work> workList = workBo.findNoHolidays(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
+ 		List<HolidayCompare> hcList = workBo.findNoHolidays(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
  		
- 		return workBo.getNoHolidaysJson(workList).toString();
+ 		return workBo.getNoHolidaysJson(hcList).toString();
 	}
 	
 	@RequestMapping(value = "multipleprojects", method = RequestMethod.POST )

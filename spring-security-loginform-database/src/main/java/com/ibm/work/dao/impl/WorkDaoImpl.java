@@ -1,22 +1,33 @@
 
 package com.ibm.work.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ibm.holidayvalidation.model.HolidayValidation;
+import com.ibm.employee.model.Employee;
+import com.ibm.holidaycompare.model.HolidayCompare;
 import com.ibm.work.dao.WorkDao;
 import com.ibm.work.model.Work;
+
+
 
 @Repository("workDao")
 public class WorkDaoImpl implements WorkDao{
 	
+//	private EntityManagerFactory em;
+	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
 	
 	public void save(Work work){
 		sessionFactory.getCurrentSession().save(work);
@@ -103,30 +114,12 @@ public class WorkDaoImpl implements WorkDao{
 		
 		query.addEntity(Work.class);
 		
+		
+		
 		return query.list();
 	}
 	
-	@Override
-	public List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate) { 
-		
-		String qtext = ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ "";
-		
-		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(qtext);
-		
-		query.addEntity(HolidayValidation.class);
-		
-		return query.list();
-	}
-
+	
 	@Override
 	public List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate) { 
 		
@@ -170,4 +163,66 @@ public class WorkDaoImpl implements WorkDao{
 		
 		return query.list();
 	}
+	
+	@Override
+	public List<HolidayCompare> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate) {
+		
+		String qtext = ""
+		+"SELECT hxe.eid AS ID_EMPLOYEE, hxe.h_wid AS ID_WEEK, hxe.h_desc AS H_DESC, hxe.h_dates AS H_DATES, hxe.H_HOURS AS H_HOURS, IFNULL(t1.wk_hours,0) AS HOURS "
+		+"FROM "
+		
+		+"	(	SELECT distinct(emp.id) as eid, emp.ID_COUNTRY AS cid, t2.wid AS h_wid, t2.h_hours AS h_hours, t2.h_desc AS h_desc, t2.h_dates AS h_dates "
+		+"	FROM work AS wk "
+		+"	JOIN employee AS emp ON emp.id = wk.id_employee "
+		+"	JOIN country AS c ON emp.id_country = c.id "
+		+"	JOIN manager AS m ON m.id = emp.id_manager "
+			
+//			 producto empleados * semanas_holidays
+			+"JOIN	"
+				+"(	SELECT c.ID AS h_cid, c.country AS h_cname, GROUP_CONCAT(h.holiday ORDER BY h.date ASC SEPARATOR ' / ') AS h_desc, GROUP_CONCAT(h.date ORDER BY h.date ASC SEPARATOR ' / ') AS h_dates, w.id as wid, COUNT(w.num_week)*8 AS h_hours "
+					+"FROM holiday AS h "
+					+"JOIN country_has_holiday AS ch ON h.id = ch.id_holiday "
+					+"JOIN country AS c ON c.id = ch.id_country "
+					+"JOIN WEEK AS w ON h.date BETWEEN w.start_date AND w.end_date ";
+					
+					if(!startDate.equals("0") && endDate.equals("0")){
+						qtext+= "WHERE w.num_week BETWEEN startDate AND endDate ";
+					}
+			qtext+="GROUP BY h_cid, h_cname, wid "
+					+") AS t2 ON emp.ID_COUNTRY = t2.h_cid "
+			+"ORDER BY cid, eid, wid "
+		+") AS hxe "
+		
+		+"LEFT OUTER JOIN "
+		
+		+"(	SELECT wk.id_employee as eid, w.id as wid, e.id_country as cid, sum(wk.hours_x_week) as wk_hours "
+			+"FROM WORK AS wk "
+			+"JOIN employee AS e ON wk.id_employee = e.id "
+			+"JOIN WEEK AS w ON wk.id_week = w.id "
+			+"JOIN assignment AS a ON a.id = wk.id_assignment "
+			+"JOIN country AS c ON c.id = e.id_country "
+			+"WHERE a.category LIKE 'Holiday' "
+			+"GROUP BY wk.id_employee, wk.id_week "
+		+") AS t1 ON hxe.eid = t1.eid AND hxe.cid = t1.cid AND hxe.h_wid = t1.wid "
+		
+		+"WHERE hxe.h_hours <> t1.wk_hours "
+			+"OR t1.wk_hours is null ";
+
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(qtext);
+//		query.addEntity(HolidayCompare.class.getName());
+		
+		List list = query.list();
+		Iterator it = list.iterator();
+		List<HolidayCompare> retlist = new ArrayList<HolidayCompare>();
+		while(it.hasNext()){
+			
+			Object item[] = (Object[]) it.next();
+			HolidayCompare hcItem = new HolidayCompare((String)item[0], (String) item[1].toString(), (String)item[2], (String)item[3], (Object) item[4], (Object)item[5]);
+			retlist.add( hcItem );
+			
+		}
+		
+		return retlist;
+	};
+	
 }

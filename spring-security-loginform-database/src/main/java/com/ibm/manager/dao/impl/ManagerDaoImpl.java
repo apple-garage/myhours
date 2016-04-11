@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ibm.country.model.Country;
 import com.ibm.manager.dao.ManagerDao;
 import com.ibm.manager.model.Manager;
 

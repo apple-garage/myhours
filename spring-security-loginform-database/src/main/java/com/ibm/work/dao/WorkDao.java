@@ -1,6 +1,8 @@
 package com.ibm.work.dao;
 
 import java.util.List;
+
+import com.ibm.holidaycompare.model.HolidayCompare;
 import com.ibm.work.model.Work;
 
 public interface WorkDao {
@@ -21,6 +23,6 @@ public interface WorkDao {
 
 	List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate);
 
-	List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate);
+	List<HolidayCompare> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate);
 
 }

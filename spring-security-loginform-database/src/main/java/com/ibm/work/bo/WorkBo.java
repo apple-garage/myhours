@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 
+import com.ibm.holidaycompare.model.HolidayCompare;
 import com.ibm.work.model.Work;
 
 public interface WorkBo {
@@ -19,19 +20,16 @@ public interface WorkBo {
 	public void loadWorkHistory(String date);
 
 	List<Work> findByManager(int idManager);
+	
+	List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt);
+	
+	List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate);
+	
+	List<HolidayCompare> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate);
 
 	public JSONArray getJsonWork(List<Work> workList);
 
 	public JSONArray getWeekSummaryJson(List<Work> workList);
-
-	public JSONArray getNoHolidaysJson(List<Work> workList);
 	
-	public JSONArray getMultipleProjectsJson(List<Work> workList);
-	
-	List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt);
-
-	List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate);
-	
-	List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate);
-
+	public JSONArray getNoHolidaysJson(List<HolidayCompare> hcList);
 }

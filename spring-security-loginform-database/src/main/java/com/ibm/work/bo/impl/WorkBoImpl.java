@@ -1,6 +1,5 @@
 package com.ibm.work.bo.impl;
 
-import java.io.Console;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -8,6 +7,12 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ibm.employee.dao.EmployeeDao;
+import com.ibm.employee.model.Employee;
+import com.ibm.holidaycompare.model.HolidayCompare;
+import com.ibm.week.dao.WeekDao;
+import com.ibm.week.model.Week;
 import com.ibm.work.bo.WorkBo;
 import com.ibm.work.dao.WorkDao;
 import com.ibm.work.model.Work;
@@ -18,6 +23,11 @@ public class WorkBoImpl implements WorkBo{
 	
 	@Autowired
 	WorkDao workDao;
+	@Autowired
+	EmployeeDao employeeDao;
+	@Autowired
+	WeekDao weekDao;
+	
 	
 	public void setWorkDao(WorkDao workDao) {
 		this.workDao = workDao;
@@ -53,16 +63,15 @@ public class WorkBoImpl implements WorkBo{
 	}
 	
 	@Override
-	public List<Work> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate) {
-		return workDao.findNoHolidays(idManager, idCountry, startDate, endDate);
-	}
-	
-	@Override
 	public List<Work> findMultipleProjects(Integer idManager, Integer idCountry, String startDate, String endDate) {
 		return workDao.findMultipleProjects(idManager, idCountry, startDate, endDate);
 	}
 	
-
+	@Override
+	public List<HolidayCompare> findNoHolidays(Integer idManager, Integer idCountry, String startDate, String endDate) {
+		return workDao.findNoHolidays(idManager, idCountry, startDate, endDate);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public JSONArray getJsonWork(List<Work> workList) {
@@ -128,22 +137,42 @@ public class WorkBoImpl implements WorkBo{
 		
 		return jaWork;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONArray getNoHolidaysJson(List<Work> workList) {
-		JSONArray jaWork = new JSONArray();
-		JSONObject jWork = new JSONObject();
+	public JSONArray getNoHolidaysJson(List<HolidayCompare> hcList) {
 		
-		return jaWork;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public JSONArray getMultipleProjectsJson(List<Work> workList) {
-		JSONArray jaWork = new JSONArray();
-		JSONObject jWork = new JSONObject();
+		JSONObject j;
+		JSONArray ja = new JSONArray();
 		
-		return jaWork;
+		Employee emp = null;
+		String empid = ""; //previous employee id
+		
+		for (HolidayCompare hc : hcList){
+			
+			j = new JSONObject();
+			
+			if(empid != hc.getEmployee() ){
+				empid = hc.getEmployee();
+				emp = employeeDao.findById(empid);
+			}
+			
+			j.put("id", empid);
+			j.put("name", emp.getName() );
+			j.put("country", emp.getCountry().getCountry());
+			j.put("manager", emp.getManager().getName());
+			j.put("week", weekDao.findById(Integer.parseInt(hc.getWeek())).getEndDate().toString().substring(0, 10));
+			j.put("holiday", hc.getDescription());
+			j.put("h_dates", hc.getHolidayDates());
+			j.put("h_hours", hc.getHolidayHours());
+			j.put("hours", hc.getHours());
+//			j.put("detail", hc.getWorkDetail() );
+			
+			ja.add(j);
+		}
+		
+		
+		return ja;
 	}
+
 }
