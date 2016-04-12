@@ -736,6 +736,8 @@
 // 		destroy any previously loaded DataTable
 		if($.fn.DataTable.isDataTable("#reportTable")){
 			$('#reportTable').DataTable().clear().destroy();
+			$('#reportTable_container').empty();
+			$('#reportTable_container').append("<table id=\"reportTable\" class=\"table display \" style=\"width: 100%\; \"></table>");
 		};
 		
 //		sets to 0 if null
@@ -746,28 +748,21 @@
 		
 		var selectedReport = $('select[name=reports]').val();
 		
-		searchReport((null!=selectedReport?selectedReport[0]:false));
-	};
+		var opt = (null!=selectedReport?selectedReport[0]:0);	//set to '0' if listbox selection is not defined (eg when loading page for the first time)
 	
-	function searchReport(opt){
-	
-// 	reportmap = {
-// 		'0' : 'mywork',
-// 		'1' : 'morethanforty',
-// 		'2' : 'lessthanforty',
-// 		'3' : 'noholidays',
-// 		'4' : 'multipleprojects'
-// 	};
-	
-		switch(opt){
-		
-			case "1": report = "morethanforty"; weekSummaryView(1); break;
-			case "2": report = "lessthanforty"; weekSummaryView(2); break;
- 			case "3": report = "noholidays"; noHolidaysView(3); break;
-			case "4": report = "multipleprojects"; weekSummaryView(4); break;
-			default: report = "mywork"; weekSummaryView(0);
-		
+// 		destinations of the ajax request
+		var reportmap = {
+			'0' : 'mywork',
+			'1' : 'morethanforty',
+			'2' : 'lessthanforty',
+			'3' : 'noholidays',
+			'4' : 'multipleprojects'
 		};
+		
+		report = reportmap[opt];
+
+		retrieveData(opt);
+
 	};
 
 	function findHoliday (){
@@ -868,120 +863,122 @@
 	};
 	
 	
+// 	arg: 'index' -> array index corresponding to the selected report 
 	function buildTable(index){
-	
-
-	var headers = {
-			'eid' : "Employee ID",
-			'ename' : "Name",
-			'country' : "Country",
-			'manager' : "Manager",
-			'week' : "Week",
-			'holiday' : "Description",
-			'h_dates' : "Dates",
-			'h_hours' : "Required Hours",
-			'ahours' : "Actual Hours",
-			'thours' : "Total Hours"
-		};
+		
+		showLoadingAnimation('reportTable_container');
+		
+		var headers = {
+				'eid' : "Employee ID",
+				'ename' : "Name",
+				'country' : "Country",
+				'manager' : "Manager",
+				'week' : "Week",
+				'holiday' : "Description",
+				'h_dates' : "Dates",
+				'h_hours' : "Required Hours",
+				'ahours' : "Actual Hours",
+				'thours' : "Total Hours"
+			};
+		
+		var table = {};
 		
 		switch (index) {
-
-		case 3: {
-			var table = $('#reportTable').DataTable(
-					{
-						data : jsonData[index],
-						columns : [ {
-							"className" : 'details-control',
-							"orderable" : false,
-							"data" : null,
-							"defaultContent" : ''
-						}, {
-							"data" : "id",
-							"title" : headers['eid']
-						}, {
-							"data" : "name",
-							"title" : headers['ename']
-						}, {
-							"data" : "country",
-							"title" : headers['country']
-						}, {
-							"data" : "manager",
-							"title" : headers['manager']
-						}, {
-							"data" : "week",
-							"title" : headers['week']
-						}, {
-							"data" : "holiday",
-							"title" : headers['holiday']
-						}, {
-							"data" : "h_dates",
-							"title" : headers['h_dates']
-						}, {
-							"data" : "h_hours",
-							"title" : headers['h_hours']
-						}, {
-							"data" : "hours",
-							"title" : headers['ahours']
-						} ],
-						"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
-								[ 5, 'asc' ] ]
-					});
-		}
-			;
-			break;
-
-		default: {
-
-			var table = $('#reportTable').DataTable(
-					{
-						data : jsonData[index],
-						columns : [ {
-							"className" : 'details-control',
-							"orderable" : false,
-							"data" : null,
-							"defaultContent" : ''
-						}, {
-							"data" : "id",
-							"title" : headers['eid']
-						}, {
-							"data" : "name",
-							"title" : headers['ename']
-						}, {
-							"data" : "country",
-							"title" : headers['country']
-						}, {
-							"data" : "manager",
-							"title" : headers['manager']
-						}, {
-							"data" : "week",
-							"title" : headers['week']
-						}, {
-							"data" : "totalHours",
-							"title" : headers['thours']
-						} ],
-						"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
-								[ 5, 'asc' ] ]
-					});
-
-			// 			    event handler
-			$('#reportTable tbody').off();
-			$('#reportTable tbody').on('click', 'td.details-control',
-					function() {
-						var tr = $(this).closest('tr');
-						var row = table.row(tr);
-
-						if (row.child.isShown()) {
-							row.child.hide();
-							tr.removeClass('shown');
-						} else {
-							row.child(format(row.data())).show();
-							tr.addClass('shown');
-						}
-					});
-			// 		    	end event handler
-
-		}
-		}
+	
+			case '3': {
+				table = $('#reportTable').DataTable(
+						{
+							data : jsonData[index],
+							columns : [ {
+								"className" : 'details-control',
+								"orderable" : false,
+								"data" : null,
+								"defaultContent" : ''
+							}, {
+								"data" : "id",
+								"title" : headers['eid']
+							}, {
+								"data" : "name",
+								"title" : headers['ename']
+							}, {
+								"data" : "country",
+								"title" : headers['country']
+							}, {
+								"data" : "manager",
+								"title" : headers['manager']
+							}, {
+								"data" : "week",
+								"title" : headers['week']
+							}, {
+								"data" : "holiday",
+								"title" : headers['holiday']
+							}, {
+								"data" : "h_dates",
+								"title" : headers['h_dates']
+							}, {
+								"data" : "h_hours",
+								"title" : headers['h_hours']
+							}, {
+								"data" : "hours",
+								"title" : headers['ahours']
+							} ],
+							"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
+									[ 5, 'asc' ] ]
+						});
+			};break;
+	
+			default: {
+	
+				table = $('#reportTable').DataTable(
+						{
+							data : jsonData[index],
+							columns : [ {
+								"className" : 'details-control',
+								"orderable" : false,
+								"data" : null,
+								"defaultContent" : ''
+							}, {
+								"data" : "id",
+								"title" : headers['eid']
+							}, {
+								"data" : "name",
+								"title" : headers['ename']
+							}, {
+								"data" : "country",
+								"title" : headers['country']
+							}, {
+								"data" : "manager",
+								"title" : headers['manager']
+							}, {
+								"data" : "week",
+								"title" : headers['week']
+							}, {
+								"data" : "totalHours",
+								"title" : headers['thours']
+							} ],
+							"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
+									[ 5, 'asc' ] ]
+						});
+	
+				// 			    event handler
+				$('#reportTable tbody').off();
+				$('#reportTable tbody').on('click', 'td.details-control',
+						function() {
+							var tr = $(this).closest('tr');
+							var row = table.row(tr);
+	
+							if (row.child.isShown()) {
+								row.child.hide();
+								tr.removeClass('shown');
+							} else {
+								row.child(format(row.data())).show();
+								tr.addClass('shown');
+							}
+						});
+				// 		    	end event handler
+	
+			}	//end default case
+		}	//end switch
 	};
 
 	function format(d) {
@@ -993,108 +990,33 @@
 		}
 		return child + '</table>';
 	};
-
-	function noHolidaysView(index) {
-
-		// 		report data already fetched
-		if (jsonData[index] != null) {
-			showLoadingAnimation('reportTable_container');
-			buildTable(index);
-		} else {
-			$.ajax({
-				type : "POST",
-				contentType : "application/json",
-				dataType : 'json',
-				data : {
-					'manager' : selectedManager,
-					'country' : selectedCountry,
-					'dateStart' : selectedDateStart,
-					'dateEnd' : selectedDateEnd
-				},
-				url : "noholidays.html",
-				success : function(data) {
-
-					showLoadingAnimation('reportTable_container');
-					jsonData[index] = data;
-					buildTable(index);
-				},
-			});
-		}
-
-	};
-
-	function weekSummaryView(index) {
-
-		// 		report data already fetched
-		if (jsonData[index] != null) {
-
-			showLoadingAnimation('reportTable_container');
-			buildTable(index);
-
-		} else {
-
-			$.ajax({
-				type : "POST",
-				contentType : "application/json",
-				dataType : 'json',
-				data : {
-					'manager' : selectedManager,
-					'country' : selectedCountry,
-					'dateStart' : selectedDateStart,
-					'dateEnd' : selectedDateEnd
-				},
-				url : report + ".html",
-				success : function(data) {
-
-					showLoadingAnimation('reportTable_container');
-
-					jsonData[index] = data;
-					buildTable(index);
-				}
-			});
-
-		}
-		;
-
-	};
-
-	/*
 	
-	function myHours(){
-		
+	
+// 	ajax calls for reports data, which will be finally stored as member elements in jsonData[] array
+// 	arg: 'index' -> jsonData array index corresponding to the selected report 
+	function retrieveData(index) {
+	
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
 			dataType : 'json',
-			url : "mywork.html",
+			data : {
+				'manager' : selectedManager,
+				'country' : selectedCountry,
+				'dateStart' : selectedDateStart,
+				'dateEnd' : selectedDateEnd
+			},
+			url : report + ".html",
 			success : function(data) {
-				showLoadingAnimation('reportTable_container');
-	// 				console.log("SUCCESS: ", data);	
-				var jsonData = data;
-				
-	// 				obtain table headers text from language-specific properties file.
-	// 				var getHeadersArray( _reportName_ ); -> create this method once all js functions are taken off to a separate file.
 
-				var table = $('#reportTable').DataTable({data: jsonData, columns:[{"data":"id","title":'id'},{"data":"name","title":'name'},{"data":"country"},{"data":"manager"},
-							{"data":"week"},{"data":"project"},{"data":"hours"}], "order": [[1, 'asc']]});
-
-	// 	            $('td:nth-child(4),th:nth-child(4)').hide();
-	// 	            $('td:nth-child(3),th:nth-child(3)').hide(); 
+				jsonData[index] = data;
+				buildTable(index);
 			},
 		});
+		
 	};
 	
-	 */
-
-	// 	$('#btnShow').click(function() {
-	//         $('td:nth-child(5),th:nth-child(5)').show();
-	//         $('td:nth-child(4),th:nth-child(4)').show(); 
-	//     });
-	// 	$('#btnHide').click(function() {
-	//         $('td:nth-child(5),th:nth-child(5)').hide();
-	//         $('td:nth-child(4),th:nth-child(4)').hide(); 
-	//     });
-
+	
 	function loadUsers() {
 		$.ajax({
 			type : "POST",
