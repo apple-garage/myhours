@@ -19,7 +19,7 @@ public interface WorkBo {
 	
 	public void loadWorkHistory(String date);
 
-	List<Work> findByManager(int idManager);
+	List<Work> findByManager(int idManager, int integer, String string, String string2);
 	
 	List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt);
 	

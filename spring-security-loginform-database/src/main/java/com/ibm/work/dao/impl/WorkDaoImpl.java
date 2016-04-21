@@ -5,25 +5,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.ibm.employee.model.Employee;
 import com.ibm.holidaycompare.model.HolidayCompare;
 import com.ibm.work.dao.WorkDao;
 import com.ibm.work.model.Work;
 
-
-
 @Repository("workDao")
 public class WorkDaoImpl implements WorkDao{
-	
-//	private EntityManagerFactory em;
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -59,8 +50,20 @@ public class WorkDaoImpl implements WorkDao{
 		query.executeUpdate();
 	}
 
-	public List<Work> findByManager(int idManager) {
-		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery("select w.* from work w, employee e where w.id_employee = e.id and e.id_manager = "+idManager+" order by e.id, w.id_week");
+	public List<Work> findByManager(int idManager, int idCountry, String startDate, String endDate) {
+		String sql = "select w.* from work w, employee e, week we where w.id_employee = e.id and w.id_week = we.id";
+		if(idManager!=0)
+			sql += " and e.id_manager = "+idManager;
+		
+		if(idCountry!=0)
+			sql += " and e.id_country = "+idCountry;
+		
+		if(!startDate.equals("0") && !endDate.equals("0"))
+			sql += " and we.end_date between str_to_date('"+startDate+"','%Y-%m-%d') and str_to_date('"+endDate+"','%Y-%m-%d') ";
+		
+		sql += " order by e.id, w.id_week";
+		
+		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(sql);
 		query.addEntity(Work.class);
 		return query.list();
 	}
@@ -106,6 +109,11 @@ public class WorkDaoImpl implements WorkDao{
 		
 		if (idManager != 0){
 			qtext += (!whereSet?" WHERE":" AND") + " m.id = '" + idManager + "'";
+			whereSet = true;
+		}
+		
+		if(!startDate.equals("0") && !endDate.equals("0")){
+			qtext +=  (!whereSet?" WHERE":" AND") + " w.end_date between str_to_date('"+startDate+"','%Y-%m-%d') and str_to_date('"+endDate+"','%Y-%m-%d') ";
 		}
 		
 		qtext+= " ORDER BY e.id, wk.id_week ";
@@ -113,9 +121,7 @@ public class WorkDaoImpl implements WorkDao{
 		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(qtext);
 		
 		query.addEntity(Work.class);
-		
-		
-		
+
 		return query.list();
 	}
 	
@@ -133,8 +139,14 @@ public class WorkDaoImpl implements WorkDao{
 					+ "JOIN `assignment` as a ON wk.ID_ASSIGNMENT = a.id "
 					+ "JOIN `manager` as m ON e.ID_MANAGER = m.ID ";
 //		Agregar WHERE de `manager`
+		boolean whereSet = false;
 		if (idManager != 0){
 			qtext += "WHERE m.id = '" + idManager + "' ";
+			whereSet = true;
+		}
+		
+		if(!startDate.equals("0") && !endDate.equals("0")){
+			qtext +=  (!whereSet?" WHERE":" AND") + " w.end_date between str_to_date('"+startDate+"','%Y-%m-%d') and str_to_date('"+endDate+"','%Y-%m-%d') ";
 		}
 		
 		qtext+= ") AS B "; 
@@ -149,8 +161,8 @@ public class WorkDaoImpl implements WorkDao{
 					+ "having count(distinct(a.id)) > 1) AS A "
 				+ "ON A.eid = B.id_employee "
 					+ "AND A.wid = B.ID_WEEK ";
-		
 //		Agregar WHERE de `country`
+		
 		if (idCountry != 0){
 			qtext += "WHERE B.id_country = '" + idCountry + "'";
 		}
@@ -184,9 +196,8 @@ public class WorkDaoImpl implements WorkDao{
 					+"JOIN country_has_holiday AS ch ON h.id = ch.id_holiday "
 					+"JOIN country AS c ON c.id = ch.id_country "
 					+"JOIN WEEK AS w ON h.date BETWEEN w.start_date AND w.end_date ";
-					
 					if(!startDate.equals("0") && endDate.equals("0")){
-						qtext+= "WHERE w.num_week BETWEEN startDate AND endDate ";
+						qtext+= " WHERE w.num_week between str_to_date('"+startDate+"','%Y-%m-%d') and str_to_date('"+endDate+"','%Y-%m-%d') ";
 					}
 			qtext+="GROUP BY h_cid, h_cname, wid "
 					+") AS t2 ON emp.ID_COUNTRY = t2.h_cid "
@@ -201,12 +212,12 @@ public class WorkDaoImpl implements WorkDao{
 			+"JOIN WEEK AS w ON wk.id_week = w.id "
 			+"JOIN assignment AS a ON a.id = wk.id_assignment "
 			+"JOIN country AS c ON c.id = e.id_country "
-			+"WHERE a.category LIKE 'Holiday' "
+			+"WHERE a.category LIKE 'Holiday'"
 			+"GROUP BY wk.id_employee, wk.id_week "
 		+") AS t1 ON hxe.eid = t1.eid AND hxe.cid = t1.cid AND hxe.h_wid = t1.wid "
 		
-		+"WHERE hxe.h_hours <> t1.wk_hours "
-			+"OR t1.wk_hours is null ";
+		+"WHERE hxe.h_hours <> t1.wk_hours OR t1.wk_hours is null ";
+		if(idCountry!=0) qtext+=" AND hxe.cid = "+idCountry;
 
 		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(qtext);
 //		query.addEntity(HolidayCompare.class.getName());

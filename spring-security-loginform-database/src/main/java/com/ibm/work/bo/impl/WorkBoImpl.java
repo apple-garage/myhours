@@ -53,8 +53,8 @@ public class WorkBoImpl implements WorkBo{
 		workDao.loadWorkHistory(date);
 	}
 
-	public List<Work> findByManager(int idManager) {
-		return workDao.findByManager(idManager);
+	public List<Work> findByManager(int idManager, int idCountry, String startDate, String endDate) {
+		return workDao.findByManager(idManager, idCountry, startDate, endDate);
 	}
 	
 	@Override

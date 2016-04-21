@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ibm.country.bo.CountryBo;
 import com.ibm.country.model.Country;
+import com.ibm.fileProcess.CreateCSV;
+import com.ibm.fileProcess.CreatePDF;
 import com.ibm.fileProcess.Parse;
 import com.ibm.holiday.bo.HolidayBo;
 import com.ibm.holiday.model.Holiday;
@@ -137,6 +140,7 @@ public class MainController {
 			JSONObject manager = new JSONObject();
 			manager.put("id",aManager.getId());
 			manager.put("name",aManager.getName());
+			manager.put("country",aManager.getCountry().getId());
 			jaManager.add(manager);
 		}
 		
@@ -238,17 +242,18 @@ public class MainController {
 		
 	@RequestMapping(value = "mywork", method = RequestMethod.POST )
 	public @ResponseBody String getMyWork(@RequestBody String params) {
-		int manager = Integer.parseInt(params.split("&")[0].split("=")[1]);
+		String[] parameters = params.split("&");
+		int manager = Integer.parseInt(parameters[0].split("=")[1]);
 		
 		if(manager==0){
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			Manager aManager = managerBo.findManagerByName(auth.getName());
-			manager = (aManager!=null?aManager.getId():19);
+			manager = (aManager!=null?aManager.getId():0);
 		}
 		
- 		List<Work> workList = workBo.findByManager(manager);
+ 		List<Work> workList = workBo.findByManager(manager, Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
  		
- 		return workBo.getWeekSummaryJson(workList).toString();
+ 		return workBo.getJsonWork(workList).toString();
  		//return workBo.getJsonWork(workList).toString();
 	}
 	
@@ -256,7 +261,6 @@ public class MainController {
 	public @ResponseBody String getNoHolidays(@RequestBody String params) {
 		String[] parameters = params.split("&");
  		List<HolidayCompare> hcList = workBo.findNoHolidays(Integer.valueOf(getParameter(parameters[0])), Integer.valueOf(getParameter(parameters[1])), getParameter(parameters[2]), getParameter(parameters[3]));
- 		
  		return workBo.getNoHolidaysJson(hcList).toString();
 	}
 	
@@ -288,11 +292,22 @@ public class MainController {
 		return null;
 	}
 	
-	public void exportCsv(JSONArray array){
-		for(int i = 0;i<=array.size();i++){
-			System.out.println(array.get(i).toString());
-		}
+	@RequestMapping(value = "/downloadRequest")
+	public void exportFiles(HttpServletResponse response, HttpServletRequest request, @RequestBody String data){
+		String[] params = data.split("\r\n");
+		String jsondata = params[0].substring(params[0].indexOf("=")+1);
+		int report = 0;
+		String format = params[1].substring(0,3);
+		
+		
+		if(!("null".equals(params[0].substring(0,params[0].indexOf("=")))))
+			report = Integer.valueOf(params[0].substring(0,params[0].indexOf("=")));
+		if("csv".equals(format))
+			CreateCSV.exportCSV(response, jsondata, report);
+		else
+			CreatePDF.exportPDF(response, request, jsondata, report);
 	}
+
 
 	private static String getParameter(String string) {
 		

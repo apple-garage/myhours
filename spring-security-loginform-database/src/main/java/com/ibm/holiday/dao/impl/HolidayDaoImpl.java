@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ibm.country.model.Country;
 import com.ibm.holiday.dao.HolidayDao;
 import com.ibm.holiday.model.Holiday;
-import com.ibm.util.CustomHibernateDaoSupport;
 
 @Repository("holidayDao")
 public class HolidayDaoImpl implements HolidayDao{
@@ -71,9 +70,7 @@ public class HolidayDaoImpl implements HolidayDao{
 					Holiday newHoliday = new Holiday(holiday, date, country);
 					save(newHoliday);
 				}
-			}
-			
-				
+			}	
 	}
 	
 	public void deleteById(int id){

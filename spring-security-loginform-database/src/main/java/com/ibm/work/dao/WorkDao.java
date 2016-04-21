@@ -17,7 +17,7 @@ public interface WorkDao {
 	
 	void loadWorkHistory(String date);
 
-	List<Work> findByManager(int idManager);
+	List<Work> findByManager(int idManager, int country, String startDate, String endDate);
 
 	List<Work> findDiffThanForty(Integer idManager, Integer idCountry, String startDate, String endDate, boolean gt);
 

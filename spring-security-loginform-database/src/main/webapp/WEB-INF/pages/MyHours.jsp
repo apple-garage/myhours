@@ -440,15 +440,14 @@
 			</div>
 			
 			<div id="menu2" class="tab-pane fade" style="height: 500px">
-				
 				<div class="col-md-12" style="background-color: white; border-style:solid;">
 					<div class="form-group" style="margin-top: 10px;margin-bottom:50px;">
 		               	<div class="col-md-3"><select name="reports" class="selectpicker" data-style="btn-primary" multiple data-max-options="1" title="<fmt:message key="myhours.menu3.selectReport"/>">
-		                     <option value=0>Default</option>
-		                     <option value=1>Mas de 40</option>
-		                     <option value=2>Menos de 40</option>
-		                     <option value=3>Holidays mal cargados</option>
-		                     <option value=4>Mas de un proyecto</option>
+		                     <option value=0><fmt:message key="myhours.menu3.allHours"/></option>
+		                     <option value=1><fmt:message key="myhours.menu3.moreForty"/></option>
+		                     <option value=2><fmt:message key="myhours.menu3.lessForty"/></option>
+		                     <option value=3><fmt:message key="myhours.menu3.nonHolidays"/></option>
+		                     <option value=4><fmt:message key="myhours.menu3.moreOneProject"/></option>
 	                    </select>
 	                    </div>									
 				        <label class="col-md-1 control-label"><fmt:message key="myhours.menu3.date"/>:</label>
@@ -465,10 +464,18 @@
 							</select>
 						</div>
 <!-- 						<select class="selectpicker" id="countryList"></select> -->
-						<div class="btn-group btn-sm col-md-6">	
-							<button id="btnHide" class="btn btn-primary" type="submit"><fmt:message key="myhours.menu3.hideColumns" /></button>
-							<button id="btnShow" class="btn btn-primary" type="submit"><fmt:message key="myhours.menu3.showColumns" /></button>
-						</div>	
+<!-- 						<div class="btn-group btn-sm col-md-6">	 -->
+<%-- 							<button id="btnHide" class="btn btn-primary" type="submit"><fmt:message key="myhours.menu3.hideColumns" /></button> --%>
+<%-- 							<button id="btnShow" class="btn btn-primary" type="submit"><fmt:message key="myhours.menu3.showColumns" /></button> --%>
+<!-- 						</div> -->
+						<form action="downloadRequest" method="post" id="downloadCSV" enctype="text/plain">
+							<input type="hidden" id="reportId" name="report" value="tmp"/>
+<!-- 							<input type="hidden" id="reportFormat" name="format" value="tmp"/> -->
+							<div class="btn-group btn-sm col-md-6">	
+								<button id="csv" class="btn btn-primary" name="csv" type="submit" onclick="setExport(this.name)"><fmt:message key="myhours.menu3.exportcsv" /></button>
+								<button id="pdf" class="btn btn-primary" name="pdf" type="submit" onclick="setExport(this.name)"><fmt:message key="myhours.menu3.exportpdf" /></button>
+							</div>	
+						</form>
 					</div>
 					
 				</div>
@@ -842,6 +849,22 @@
 		});
 	};
 	
+	$("#countryList").change(function() {
+		seleccionCountry = ($('select[name=country]').val());
+		var listManagers;
+		if(seleccionCountry != null){
+			for (var i in JsonManagers){
+	        	if(JsonManagers[i].country == seleccionCountry){
+	        		listManagers+= "<option value='" + JsonManagers[i].id + "'>" + JsonManagers[i].name + "</option>";
+	        	}
+	        	$("#managerList").html(listManagers);
+	        }
+	    }else{
+	    	$("#managerList").html(managersList);
+	    }
+	    $('.selectpicker').selectpicker('refresh');
+	});
+	
 	function loadManagers(){
 	    $.ajax({
 			type : "POST",
@@ -851,11 +874,12 @@
 			timeout : 100000,
 			success : function(data) {	
 // 				console.log("SUCCESS ", this);	
-				JsonCountry = data;
+				JsonManagers = data;
 				var listItemsM;
 	        for (var i in data){
 	        	listItemsM+= "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
 	        }
+	        managersList = listItemsM;
 	        $("#managerList").html(listItemsM);
 	        $('.selectpicker').selectpicker('refresh');
 			},
@@ -867,6 +891,7 @@
 	function buildTable(index){
 		
 		showLoadingAnimation('reportTable_container');
+		datatoexport = jsonData[index];
 		
 		var headers = {
 				'eid' : "Employee ID",
@@ -878,58 +903,17 @@
 				'h_dates' : "Dates",
 				'h_hours' : "Required Hours",
 				'ahours' : "Actual Hours",
+				'aproyect' : "Project",
+				'hours' : "Hours",
 				'thours' : "Total Hours"
 			};
 		
 		var table = {};
 		
 		switch (index) {
-	
-			case '3': {
-				table = $('#reportTable').DataTable(
-						{
-							data : jsonData[index],
-							columns : [ {
-								"className" : 'details-control',
-								"orderable" : false,
-								"data" : null,
-								"defaultContent" : ''
-							}, {
-								"data" : "id",
-								"title" : headers['eid']
-							}, {
-								"data" : "name",
-								"title" : headers['ename']
-							}, {
-								"data" : "country",
-								"title" : headers['country']
-							}, {
-								"data" : "manager",
-								"title" : headers['manager']
-							}, {
-								"data" : "week",
-								"title" : headers['week']
-							}, {
-								"data" : "holiday",
-								"title" : headers['holiday']
-							}, {
-								"data" : "h_dates",
-								"title" : headers['h_dates']
-							}, {
-								"data" : "h_hours",
-								"title" : headers['h_hours']
-							}, {
-								"data" : "hours",
-								"title" : headers['ahours']
-							} ],
-							"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
-									[ 5, 'asc' ] ]
-						});
-			};break;
-	
-			default: {
-	
-				table = $('#reportTable').DataTable(
+					case '1':
+					case '2':
+					{table = $('#reportTable').DataTable(
 						{
 							data : jsonData[index],
 							columns : [ {
@@ -975,8 +959,122 @@
 								tr.addClass('shown');
 							}
 						});
-				// 		    	end event handler
 	
+			};break;
+			case '3': {
+				table = $('#reportTable').DataTable(
+						{
+							data : jsonData[index],
+							columns : [{
+								"data" : "id",
+								"title" : headers['eid']
+							}, {
+								"data" : "name",
+								"title" : headers['ename']
+							}, {
+								"data" : "country",
+								"title" : headers['country']
+							}, {
+								"data" : "manager",
+								"title" : headers['manager']
+							}, {
+								"data" : "week",
+								"title" : headers['week']
+							}, {
+								"data" : "holiday",
+								"title" : headers['holiday']
+							}, {
+								"data" : "h_dates",
+								"title" : headers['h_dates']
+							}, {
+								"data" : "h_hours",
+								"title" : headers['h_hours']
+							}, {
+								"data" : "hours",
+								"title" : headers['ahours']
+							} ],
+							"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
+									[ 5, 'asc' ] ]
+						});
+			};break;
+			case '4': {
+			table = $('#reportTable').DataTable(
+						{
+							data : jsonData[index],
+							columns : [ {
+								"className" : 'details-control',
+								"orderable" : false,
+								"data" : null,
+								"defaultContent" : ''
+							}, {
+								"data" : "id",
+								"title" : headers['eid']
+							}, {
+								"data" : "name",
+								"title" : headers['ename']
+							}, {
+								"data" : "country",
+								"title" : headers['country']
+							}, {
+								"data" : "manager",
+								"title" : headers['manager']
+							}, {
+								"data" : "week",
+								"title" : headers['week']
+							}, {
+								"data" : "totalHours",
+								"title" : headers['thours']
+							} ],
+							"order" : [ [ 3, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ],
+									[ 5, 'asc' ] ]
+						});
+	
+				// 			    event handler
+				$('#reportTable tbody').off();
+				$('#reportTable tbody').on('click', 'td.details-control',
+						function() {
+							var tr = $(this).closest('tr');
+							var row = table.row(tr);
+	
+							if (row.child.isShown()) {
+								row.child.hide();
+								tr.removeClass('shown');
+							} else {
+								row.child(format(row.data())).show();
+								tr.addClass('shown');
+							}
+						});
+	
+			};break;
+			default: {
+	
+				table = $('#reportTable').DataTable(
+						{
+							data : jsonData[index],
+							columns : [{
+								"data" : "id",
+								"title" : headers['eid']
+							}, {
+								"data" : "name",
+								"title" : headers['ename']
+							}, {
+								"data" : "country",
+								"title" : headers['country']
+							}, {
+								"data" : "manager",
+								"title" : headers['manager']
+							}, {
+								"data" : "week",
+								"title" : headers['week']
+							}, {
+								"data" : "project",
+								"title" : headers['aproject']
+							}, {
+								"data" : "hours",
+								"title" : headers['hours']
+							} ],
+							"order" : [ [ 1, 'asc' ]]
+						});
 			}	//end default case
 		}	//end switch
 	};
@@ -1008,7 +1106,6 @@
 			},
 			url : report + ".html",
 			success : function(data) {
-
 				jsonData[index] = data;
 				buildTable(index);
 			},
@@ -1099,6 +1196,12 @@
 			},
 		});
 	};
+	
+	function setExport(name){
+		document.getElementById("reportId").name = ($('select[name=reports]').val());
+		document.getElementById("reportId").value = JSON.stringify(datatoexport);
+	}
+	
 </script>
 
 </body>
