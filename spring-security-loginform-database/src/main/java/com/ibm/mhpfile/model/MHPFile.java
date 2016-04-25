@@ -2,6 +2,9 @@ package com.ibm.mhpfile.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,24 +22,28 @@ public class MHPFile {
 	
 
 	@Column(name = "date")
-	String date;
+	Date date;
 	public MHPFile(String date) {
-		this.date = date;
+		try{
+			SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+			Date aDate = formatter.parse(date);
+			this.date = aDate;
+		}catch(Exception e){ e.printStackTrace();}
 		
 	}
 	public MHPFile() {
 
 	}
-	public MHPFile(String id, String date) {
+	public MHPFile(String id, Date date) {
 		super();
 		this.id = id;
 		this.date = date;
 	}
-	public String getFecha() {
+	public Date getFecha() {
 		return date;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(Date fecha) {
 		this.date = fecha;
 	}
 

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ibm.country.dao.CountryDao;
 import com.ibm.country.model.Country;
-import com.ibm.user.model.User;
 
 @Repository("CountryDao")
 public class CountryDaoImpl implements CountryDao{

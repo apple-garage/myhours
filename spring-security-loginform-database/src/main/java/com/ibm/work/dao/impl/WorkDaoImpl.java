@@ -145,6 +145,11 @@ public class WorkDaoImpl implements WorkDao{
 			whereSet = true;
 		}
 		
+		if (idCountry != 0){
+			qtext += (!whereSet?" WHERE":" AND") + " c.id =" + idCountry;
+			whereSet = true;
+		}
+		
 		if(!startDate.equals("0") && !endDate.equals("0")){
 			qtext +=  (!whereSet?" WHERE":" AND") + " w.end_date between str_to_date('"+startDate+"','%Y-%m-%d') and str_to_date('"+endDate+"','%Y-%m-%d') ";
 		}
@@ -163,11 +168,7 @@ public class WorkDaoImpl implements WorkDao{
 					+ "AND A.wid = B.ID_WEEK ";
 //		Agregar WHERE de `country`
 		
-		if (idCountry != 0){
-			qtext += "WHERE B.id_country = '" + idCountry + "'";
-		}
-		
-		qtext+= "ORDER BY B.id_employee, B.id_week ";
+		qtext+= " ORDER BY B.id_employee, B.id_week ";
 		
 		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(qtext);
 		

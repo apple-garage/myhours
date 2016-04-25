@@ -851,7 +851,7 @@
 	
 	$("#countryList").change(function() {
 		seleccionCountry = ($('select[name=country]').val());
-		var listManagers;
+		var listManagers = null;
 		if(seleccionCountry != null){
 			for (var i in JsonManagers){
 	        	if(JsonManagers[i].country == seleccionCountry){

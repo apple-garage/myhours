@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ibm.assignment.bo.AssignmentBo;
 import com.ibm.country.bo.CountryBo;
 import com.ibm.country.model.Country;
+import com.ibm.employee.bo.EmployeeBo;
 import com.ibm.fileProcess.CreateCSV;
 import com.ibm.fileProcess.CreatePDF;
 import com.ibm.fileProcess.Parse;
@@ -38,10 +40,12 @@ import com.ibm.holiday.model.Holiday;
 import com.ibm.holidaycompare.model.HolidayCompare;
 import com.ibm.manager.bo.ManagerBo;
 import com.ibm.manager.model.Manager;
+import com.ibm.mhpfile.bo.MHPFileBo;
 import com.ibm.role.bo.RoleBo;
 import com.ibm.role.model.Role;
 import com.ibm.user.bo.UserBo;
 import com.ibm.user.model.User;
+import com.ibm.week.bo.WeekBo;
 import com.ibm.work.bo.WorkBo;
 import com.ibm.work.model.Work;
 
@@ -59,6 +63,14 @@ public class MainController {
 	ManagerBo managerBo;
 	@Autowired
 	WorkBo workBo;
+	@Autowired
+	WeekBo weekBo;
+	@Autowired
+	EmployeeBo employeeBo;
+	@Autowired
+	AssignmentBo assignmentBo;
+	@Autowired
+	MHPFileBo mhpfileBo;
 
 	//Views
 	@RequestMapping(value ={"/", "/welcome**"}, method = RequestMethod.GET)
@@ -83,7 +95,8 @@ public class MainController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath))); 
                 stream.write(bytes);
                 stream.close();
-                Parse.processFile(filePath);
+                Parse parser = new Parse(mhpfileBo, workBo, countryBo, managerBo, employeeBo, assignmentBo, weekBo);
+                parser.processFile(filePath);
                 
                 return new ModelAndView("MyHours", "info","myhours.messages.fileerror"); 
             } catch (Exception e) {

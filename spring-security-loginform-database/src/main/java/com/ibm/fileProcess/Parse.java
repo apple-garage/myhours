@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ibm.assignment.bo.AssignmentBo;
 import com.ibm.assignment.model.Assignment;
@@ -29,20 +28,13 @@ import com.ibm.work.bo.WorkBo;
 import com.ibm.work.model.Work;
 
 public class Parse {
-	@Autowired
-	static WeekBo weekBo;
-	@Autowired
-	static WorkBo workBo;
-	@Autowired
-	static EmployeeBo employeeBo;
-	@Autowired
-	static AssignmentBo assignmentBo;
-	@Autowired
-	static ManagerBo managerBo;
-	@Autowired
-	static CountryBo countryBo;
-	@Autowired
 	static MHPFileBo mhpfileBo;
+	static WorkBo workBo;
+	static CountryBo countryBo;
+	static ManagerBo managerBo;
+	static EmployeeBo employeeBo;
+	static AssignmentBo assignmentBo;
+	static WeekBo weekBo;
 	
 	final static int CELL_NAME = 65;
 	final static int CELL_EMPLOYEE_COUNTRY = 7;
@@ -59,10 +51,19 @@ public class Parse {
 	final static int CELL_WEEK1 = 109; //first column week
 	
 	static Week[] weeks = new Week[20];
-	static MHPFileBo fileBo;
-	static Boolean flag;
+	static Boolean flag = false;
 	
-	public static int processFile(String filePath){
+	public Parse(MHPFileBo mhpfile, WorkBo work, CountryBo country, ManagerBo manager, EmployeeBo employee, AssignmentBo assignment, WeekBo week){
+		mhpfileBo = mhpfile;
+		workBo = work;
+		countryBo = country;
+		managerBo = manager;
+		employeeBo = employee;
+		assignmentBo = assignment;
+		weekBo = week;
+	}
+
+	public int processFile(String filePath){
 	try{
         FileInputStream file = new FileInputStream(new File(filePath));
 
@@ -72,11 +73,12 @@ public class Parse {
         Iterator<Row> rowIterator = sheet.iterator();
         while (rowIterator.hasNext()){
             Row row = rowIterator.next();
-            if(row.getRowNum()==11)
+            if(row.getRowNum()==11){
             	processHeader(row);
-            if(flag)
-            	workBo.loadWorkHistory(weeks[0].getEndDate().toString());
-            if (row.getRowNum()>11 && !isEmpty(row.getCell(1)))
+            	if(flag)
+            		workBo.loadWorkHistory(weeks[0].getEndDate().toString());
+            }
+            if (row.getRowNum()>11 && !isEmpty(row.getCell(1)) && flag)
             	processBody(row);
             else{
         		if (row.getRowNum()>11 && isEmpty(row.getCell(1)))
@@ -105,7 +107,7 @@ public class Parse {
 		Assignment newAssignment = assignmentBo.getAssignment(Integer.valueOf(row.getCell(CELL_ASIGMENT).toString()),row.getCell(CELL_PROJECT_NAME).toString(), 
 				row.getCell(CELL_CLIENT_NAME).toString(), country, row.getCell(CELL_INDUSTRY).toString(), row.getCell(CELL_CATEGORY).toString());
 		
-        for(int i=0;i<20;i++){
+        for(int i=0;i<19;i++){
         	Work newWork = new Work(newEmployee,weeks[i],newAssignment,(int) row.getCell((CELL_WEEK1+i)).getNumericCellValue());	
         	if(newWork.getHoursByWeek()>0)
         		workBo.save(newWork);
@@ -113,17 +115,22 @@ public class Parse {
 	}
 
 	private static void processHeader(Row row) {
-		flag = mhpfileBo.getMHPFile(row.getCell(CELL_WEEK1).toString());
-		if(weekBo.findByDate(row.getCell(CELL_WEEK1+20).toString()) == null){
+		if(weekBo.findByDate(row.getCell(CELL_WEEK1+19).toString()) == null){
 			addWeeks(row.getCell(CELL_WEEK1).toString());
 		}
-		for(int i=0;i<20;i++){
+		for(int i=0;i<19;i++){
 			Week aWeek = weekBo.findByDate(row.getCell((CELL_WEEK1+i)).toString());
 			weeks[i] = aWeek;
 		}
-		flag = fileBo.getMHPFile(weeks[0].getEndDate().toString());
+		flag = mhpfileBo.getMHPFile(changeDate(weeks[0].getEndDate()));
 	}
 	
+	private static String changeDate(Date endDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+		String stringDate = sdf.format(endDate);
+		return stringDate;
+	}
+
 	private static void addWeeks(String start){
 		try {
             SimpleDateFormat sf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
